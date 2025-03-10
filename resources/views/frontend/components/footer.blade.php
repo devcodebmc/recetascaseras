@@ -31,10 +31,16 @@
     </div>
     <div class="mt-10 border-t border-gray-700 pt-6 text-center text-gray-400">
         <p>&copy; 2025 Recetas Caseras. Todos los derechos reservados.</p>
-        <div class="mt-4 space-x-4">
-            <a href="#" class="hover:text-gray-500">Facebook</a>
-            <a href="#" class="hover:text-gray-500">Twitter</a>
-            <a href="#" class="hover:text-gray-500">Instagram</a>
+        <div class="mt-4 space-x-4 flex justify-center">
+            <a href="#" class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm leading-5 font-medium rounded-full text-white bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 transition duration-300 ease-in-out transform hover:scale-105">
+            Facebook
+            </a>
+            <a href="#" class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm leading-5 font-medium rounded-full text-white bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 transition duration-300 ease-in-out transform hover:scale-105">
+            Instagram
+            </a>
+            <a href="#" class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm leading-5 font-medium rounded-full text-white bg-gradient-to-r from-red-600 to-red-800 hover:from-red-700 hover:to-red-900 transition duration-300 ease-in-out transform hover:scale-105">
+            YouTube
+            </a>
         </div>
     </div>
 </footer>

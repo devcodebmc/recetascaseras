@@ -12,6 +12,22 @@
                     {{ __("You're logged in!") }}
                 </div>
             </div>
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-6">
+                <div class="p-6 text-gray-900">
+                    <h3 class="font-semibold text-lg text-gray-800 leading-tight">
+                        {{ __('Catálogos') }}
+                    </h3>
+                    <ul class="mt-4">
+                        <li>
+                            <a href="{{ route('categories.index') }}" class="text-blue-500">
+                                Categorías
+                            </a>
+                        </li>
+                        <li><a href="" class="text-blue-500">{{ __('Catálogo 2') }}</a></li>
+                        <li><a href="" class="text-blue-500">{{ __('Catálogo 3') }}</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </x-app-layout>

@@ -5,7 +5,7 @@
     <p class="text-gray-600 mb-8">
       Ellas destacan por su pasión, talento y experiencia en la cocina, creando platos inolvidables para nuestros paladares.
     </p>
-    <div class="flex flex-col md:flex-row justify-center gap-6">
+    <div class="flex flex-col md:flex-row justify-center gap-8">
       <!-- Cocinera 1 -->
       <div class="relative bg-white rounded-3xl p-6 text-center shadow-lg w-full md:w-1/3 transform transition duration-500 hover:scale-105">
         <div class="absolute inset-0 bg-gray-400 opacity-20 rounded-3xl transform rotate-6"></div>

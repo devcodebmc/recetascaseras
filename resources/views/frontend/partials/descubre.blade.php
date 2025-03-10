@@ -28,7 +28,7 @@
         </div>
 
         <!-- Tarjetas de platillos -->
-        <div class="flex flex-wrap gap-12 md:w-3/4 mt-2">
+        <div class="flex flex-wrap gap-12 md:w-3/3 mt-2">
             <!-- Ensalada de Salmón -->
             <div class="relative bg-green-100 p-6 rounded-2xl w-full md:w-64">
                 <button class="absolute -top-6 -left-2 bg-red-300 p-3 rounded-full">

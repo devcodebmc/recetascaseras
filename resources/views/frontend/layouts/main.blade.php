@@ -12,7 +12,6 @@
         <section class="bg-yellow-300 p-6 md:p-10 relative rounded-b-3xl">
             <!-- Navbar -->
             @include('frontend.components.navbar')
-        
             <!-- Main Content -->
             <div class="grid md:grid-cols-2 items-center gap-4">
                 <div class="space-y-1 px-6 md:px-0 text-center md:text-left">
@@ -46,5 +45,6 @@
         @include('frontend.components.footer')
     
         <script src="js/index.js" defer></script>
+        @stack('js')
     </body>    
 </html>
