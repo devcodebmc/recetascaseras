@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Category as Category;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -15,7 +16,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::paginate(10);
+        $categories = Category::OrderBy('created_at', 'DESC')->paginate(5);
         return view('categories.index', compact('categories'));
     }
 
@@ -39,13 +40,22 @@ class CategoryController extends Controller
     {
         // Validate the request
         $request->validate([
-            'name' => ['required','string','max:255'],
+            'name' => ['required', 'string', 'max:255'],
+            'icon_url' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
+
+        // Handle the file upload using Storage
+        if ($request->hasFile('icon_url')) {
+            $file = $request->file('icon_url');
+            $path = $file->store('public/images/categories');
+            $icon_url = Storage::url($path);
+        }
 
         // Create a new category
         $category               = new Category;
         $category->name         = $request->name;
         $category->description  = $request->description;
+        $category->icon_url     = $icon_url;
         $category->save();
 
         // Redirect to the categories index
@@ -71,7 +81,8 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $category = Category::findorFail($id);
+        return view('categories.edit', compact('category'));
     }
 
     /**
@@ -83,7 +94,37 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // Validate the request
+        $request->validate([
+            'name' => ['required','string','max:255'],
+            'icon_url' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+        ]);
+
+        // Handle the file upload using Storage
+        if ($request->hasFile('icon_url')) {
+            $category = Category::find($id);
+            // Delete the old image
+            if ($category->icon_url) {
+            $oldImagePath = str_replace('/storage', 'public', $category->icon_url);
+            Storage::delete($oldImagePath);
+            }
+            // Store the new image
+            $file = $request->file('icon_url');
+            $path = $file->store('public/images/categories');
+            $icon_url = Storage::url($path);
+        } else {
+            $icon_url = Category::find($id)->icon_url;
+        }
+
+        // Update the category
+        $category               = Category::find($id);
+        $category->name         = $request->name;
+        $category->description  = $request->description;
+        $category->icon_url     = $icon_url;
+        $category->save();
+
+        // Redirect to the categories index
+        return redirect()->route('categories.index')->with('success', 'Categoría actualizada correctamente.');
     }
 
     /**
