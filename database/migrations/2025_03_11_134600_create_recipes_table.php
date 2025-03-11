@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('video_url')->nullable(); // URL del video (opcional)
             $table->enum('status', ['draft', 'published'])->default('draft'); // Estado de la receta
             $table->timestamps();
+            $table->softDeletes(); // Soft deletes
         });
     }
 
