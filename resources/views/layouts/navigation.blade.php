@@ -18,6 +18,9 @@
                     <x-nav-link :href="route('categories.index')" :active="request()->is('categories*')">
                         {{ __('Categorías') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('tags.index')" :active="request()->is('tags*')">
+                        {{ __('Etiquetas') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -75,6 +78,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link  :href="route('categories.index')" :active="request()->is('categories*')">
                 {{ __('Categorías') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link  :href="route('tags.index')" :active="request()->is('tags*')">
+                {{ __('Etiquetas') }}
             </x-responsive-nav-link>
         </div>
 
