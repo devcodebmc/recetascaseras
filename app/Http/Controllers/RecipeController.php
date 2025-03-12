@@ -12,11 +12,11 @@ class RecipeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $recipes = Recipe::all();
-        dump($recipes);
-        // return view('recipes.index', compact('recipes'));
+        $search = $request->input('search');
+        $recipes = Recipe::OrderBy('updated_at', 'DESC')->search($search)->paginate(5);
+        return view('recipes.index', compact('recipes'));
     }
 
     /**

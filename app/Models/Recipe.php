@@ -44,6 +44,12 @@ class Recipe extends Model
         });
     }
 
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('title', 'like', "%{$search}%")
+                     ->orWhereRaw('LOWER(title) like ?', ['%' . strtolower($search) . '%']);
+    }
+
     /**
      * Relación con la categoría (Muchas recetas pertenecen a una categoría).
      */
