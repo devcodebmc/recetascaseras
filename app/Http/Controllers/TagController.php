@@ -76,8 +76,19 @@ class TagController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
-    }
+        // Validar los datos de la solicitud
+        $request->validate([
+            'name' => ['required', 'string', 'max:255', 'unique:tags,name,'.$id],
+        ]);
+    
+        // Encontrar la etiqueta por su ID y actualizar solo el nombre
+        $tag = Tag::findOrFail($id);
+        $tag->name = $request->input('name');
+        $tag->save();
+    
+        // Redirigir con un mensaje de éxito
+        return redirect()->route('tags.index')->with('success', 'Etiqueta actualizada correctamente.');
+    }    
 
     /**
      * Remove the specified resource from storage.
@@ -87,6 +98,8 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $tag = Tag::find($id);
+        $tag->delete();
+        return redirect()->route('tags.index')->with('success', 'Etiqueta eliminada correctamente.');
     }
 }

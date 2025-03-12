@@ -14,9 +14,10 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::OrderBy('created_at', 'DESC')->paginate(5);
+        $search = $request->input('search');
+        $categories = Category::OrderBy('updated_at', 'DESC')->search($search)->paginate(5);
         return view('categories.index', compact('categories'));
     }
 

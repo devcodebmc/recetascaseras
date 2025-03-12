@@ -15,10 +15,16 @@ class Tag extends Model
     protected static function boot()
     {
         parent::boot();
+
         static::creating(function ($tag) {
             $tag->slug = Str::slug($tag->name);
         });
+
+        static::updating(function ($tag) {
+            $tag->slug = Str::slug($tag->name);
+        });
     }
+
   
     public function recipes()
     {

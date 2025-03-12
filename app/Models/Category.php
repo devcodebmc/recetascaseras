@@ -18,8 +18,17 @@ class Category extends Model
         static::creating(function ($category) {
             $category->slug = Str::slug($category->name);
         });
+
+        static::updating(function ($category) {
+            $category->slug = Str::slug($category->name);
+        });
     }
   
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('name', 'like', "%{$search}%")
+                     ->orWhereRaw('LOWER(name) like ?', ['%' . strtolower($search) . '%']);
+    }
 
     // public function recipes()
     // {

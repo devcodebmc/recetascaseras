@@ -21,6 +21,9 @@
                     <x-nav-link :href="route('tags.index')" :active="request()->is('tags*')">
                         {{ __('Etiquetas') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('recipes.index')" :active="request()->is('recipes*')">
+                        {{ __('Recetas') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -81,6 +84,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link  :href="route('tags.index')" :active="request()->is('tags*')">
                 {{ __('Etiquetas') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link  :href="route('recipes.index')" :active="request()->is('recipes*')">
+                {{ __('Recipes') }}
             </x-responsive-nav-link>
         </div>
 

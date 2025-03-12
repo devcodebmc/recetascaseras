@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Recipe;
 use Illuminate\Http\Request;
+use App\Models\Recipe;
 
 class RecipeController extends Controller
 {
@@ -14,7 +14,9 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        //
+        $recipes = Recipe::all();
+        dump($recipes);
+        // return view('recipes.index', compact('recipes'));
     }
 
     /**
@@ -41,10 +43,10 @@ class RecipeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\RecipeController  $recipeController
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(RecipeController $recipeController)
+    public function show($id)
     {
         //
     }
@@ -52,10 +54,10 @@ class RecipeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\RecipeController  $recipeController
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(RecipeController $recipeController)
+    public function edit($id)
     {
         //
     }
@@ -64,10 +66,10 @@ class RecipeController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\RecipeController  $recipeController
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, RecipeController $recipeController)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -75,10 +77,10 @@ class RecipeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\RecipeController  $recipeController
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(RecipeController $recipeController)
+    public function destroy($id)
     {
         //
     }
