@@ -19,6 +19,12 @@ class TagController extends Controller
         return view('tags.index', compact('tags'));
     }
 
+    public function indexAction()
+    {
+        $tags = Tag::select('id', 'name')->get(); // Obtener todas las etiquetas
+        return response()->json($tags); // Devolver como JSON
+    }
+
     /**
      * Show the form for creating a new resource.
      *

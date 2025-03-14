@@ -3,34 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Recipe;
-use App\Models\Category;
 use App\Models\Tag;
 
-class RecipeController extends Controller
+class FetchTagController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
-        $recipes = Recipe::OrderBy('updated_at', 'DESC')->search($search)->paginate(5);
-        return view('recipes.index', compact('recipes'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $categories = Category::select('id', 'name')->orderBy('name', 'asc')->get();
-        $tags = Tag::select('id', 'name')->orderBy('name', 'asc')->get();
-        return view('recipes.create', compact('categories', 'tags'));
+        $tags = Tag::select('id', 'name')->get(); // Obtener todas las etiquetas
+        return response()->json($tags); // Devolver como JSON
     }
 
     /**
@@ -51,17 +36,6 @@ class RecipeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
     {
         //
     }

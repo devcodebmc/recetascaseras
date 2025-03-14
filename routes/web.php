@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\FetchTagController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('tags', TagController::class);
     Route::resource('recipes', RecipeController::class);
+    Route::get('/fetch-tags', [FetchTagController::class, 'index'])->name('fetch-tags.index');
 });
 
 require __DIR__.'/auth.php';
