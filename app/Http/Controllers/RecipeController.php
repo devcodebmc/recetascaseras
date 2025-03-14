@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Recipe;
+use App\Models\Category;
 
 class RecipeController extends Controller
 {
@@ -26,7 +27,8 @@ class RecipeController extends Controller
      */
     public function create()
     {
-        return view('recipes.create');
+        $categories = Category::select('id', 'name')->orderBy('name', 'asc')->get();
+        return view('recipes.create', compact('categories'));
     }
 
     /**

@@ -27,6 +27,16 @@
                         @include('components.wysiwygEditor')
                     </div>
 
+                     <!-- Categorías de Recetas -->
+                     <div>
+                        <label for="categorias" class="block text-sm font-medium text-gray-700 mb-2">Categorías</label>
+                        <select name="category_id" id="category_id" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200">
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     <!-- Ingredientes -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Ingredientes</label>
@@ -57,6 +67,10 @@
                         </div>
                     </div>
 
+                </div>
+
+                <!-- Columna Derecha -->
+                <div class="space-y-6">
                     <!-- Tiempo de Preparación, Cocción y Porciones -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
@@ -76,10 +90,6 @@
                             <input type="number" name="porciones" id="porciones" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ej: 4" min="1">
                         </div>
                     </div>
-                </div>
-
-                <!-- Columna Derecha -->
-                <div class="space-y-6">
                     <!-- Imagen de Portada -->
                     <div>
                         <label for="imagen_portada" class="block text-sm font-medium text-gray-700 mb-2">Imagen de Portada</label>
