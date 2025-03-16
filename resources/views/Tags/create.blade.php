@@ -23,7 +23,7 @@
                             </div>
                         </div>
                         <div class="flex items-center justify-end mt-6">
-                            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600">
+                            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600">
                                 Crear Etiqueta
                             </button>
                         </div>

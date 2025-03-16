@@ -38,7 +38,7 @@
                         <div class="flex items-center space-x-2 w-full sm:w-auto">
                             <input id="name" type="text" name="name" value="{{ old('name') }}" placeholder="Nueva etiqueta" required class="block w-full border border-gray-300 rounded-md pl-3 text-sm" oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1)"/>
                         </div>
-                        <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-500 hover:bg-blue-600 w-full sm:w-auto">
+                        <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 w-full sm:w-auto">
                             Crear Etiqueta
                         </button>
                         @error('name')

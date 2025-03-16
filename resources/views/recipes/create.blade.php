@@ -8,11 +8,11 @@
     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <form action="{{ route('recipes.store') }}" method="POST" enctype="multipart/form-data" class="bg-white p-8 rounded-lg shadow-lg">
             @csrf
-
+            @method('POST')
             <!-- Título de la Receta (Ocupa todo el ancho) -->
             <div class="mb-8">
-                <label for="titulo" class="block text-sm font-medium text-gray-700 mb-2">Título de la Receta</label>
-                <input type="text" name="titulo" id="titulo" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ej: Tarta de Manzana" required>
+                <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Título de la Receta</label>
+                <input type="text" name="title" id="title" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ej: Tarta de Manzana" required>
             </div>
 
             <!-- Grid de dos columnas -->
@@ -21,7 +21,7 @@
                 <div class="space-y-6">
                     <!-- Descripción con Editor WYSIWYG -->
                     <div>
-                        <label for="descripcion" class="block text-sm font-medium text-gray-700 mb-2">
+                        <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
                             Descripción
                         </label>
                         @include('components.wysiwygEditor')
@@ -29,7 +29,7 @@
 
                      <!-- Categorías de Recetas -->
                      <div>
-                        <label for="categorias" class="block text-sm font-medium text-gray-700 mb-2">Categorías</label>
+                        <label for="category_id" class="block text-sm font-medium text-gray-700 mb-2">Categorías</label>
                         <select name="category_id" id="category_id" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200">
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -45,7 +45,7 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">Ingredientes</label>
                         <div id="ingredientes-container" class="space-y-3">
                             <div class="flex items-center gap-2">
-                                <input type="text" name="ingredientes[]" class="flex-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ejemplo: 2 tazas de harina">
+                                <input type="text" name="ingredients[]" class="flex-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ejemplo: 2 tazas de harina">
                                 <button type="button" onclick="agregarIngrediente()" class="px-1 py-1 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition duration-200">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -60,7 +60,7 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">Pasos de Preparación</label>
                         <div id="pasos-container" class="space-y-3">
                             <div class="flex items-center gap-2">
-                                <input type="text" name="pasos[]" class="flex-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ejemplo: Mezclar los ingredientes secos">
+                                <input type="text" name="steps[]" class="flex-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ejemplo: Mezclar los ingredientes secos">
                                 <button type="button" onclick="agregarPaso()" class="px-1 py-1 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition duration-200">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -77,25 +77,27 @@
                     <!-- Tiempo de Preparación, Cocción y Porciones -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
-                            <label for="tiempo_preparacion" class="block text-sm font-medium text-gray-700 mb-2">T. Preparación (min)</label>
-                            <input type="number" id="tiempo_preparacion" name="tiempo_preparacion" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ej: 30" min="1">
+                            <label for="prep_time" class="block text-sm font-medium text-gray-700 mb-2">T. Preparación (min)</label>
+                            <input type="number" id="prep_time" name="prep_time" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ej: 30" min="1">
                         </div>
                         <div>
-                            <label for="tiempo_coccion" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="cook_time" class="block text-sm font-medium text-gray-700 mb-2">
                                 T. Cocción (min)
                             </label>
-                            <input type="number" id="tiempo_coccion" name="tiempo_coccion" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ej: 45" min="1">
+                            <input type="number" id="cook_time" name="cook_time" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ej: 45" min="1">
                         </div>
                         <div>
-                            <label for="porciones" class="block text-sm font-medium text-gray-700 mb-2">
+                            <label for="servings" class="block text-sm font-medium text-gray-700 mb-2">
                                 N.° Porciones
                             </label>
-                            <input type="number" name="porciones" id="porciones" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ej: 4" min="1">
+                            <input type="number" name="servings" id="servings" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ej: 4" min="1">
                         </div>
                     </div>
                     <!-- Imagen de Portada -->
                     <div>
-                        <label for="imagen_portada" class="block text-sm font-medium text-gray-700 mb-2">Imagen de Portada</label>
+                        <label for="image" class="block text-sm font-medium text-gray-700 mb-2">
+                            Imagen de Portada
+                        </label>
                         <div class="mt-1 flex items-center justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg bg-gray-50 hover:bg-gray-100 transition duration-200">
                             <div class="space-y-1 text-center">
                                 <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
@@ -104,7 +106,7 @@
                                 <div class="flex text-sm text-gray-600">
                                     <label for="imagen_portada" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500">
                                         <span>Subir una imagen</span>
-                                        <input type="file" name="imagen_portada" id="imagen_portada" class="sr-only" accept="image/*">
+                                        <input type="file" name="image" id="image" class="sr-only" accept="image/*">
                                     </label>
                                     <p class="pl-1">o arrastra y suelta</p>
                                 </div>
@@ -139,11 +141,11 @@
                         </div>
                     </div>
                      <!-- Botón de Envío -->
-            <div class="mt-8">
-                <button type="submit" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg transition duration-200">
-                    Guardar Receta
-                </button>
-            </div>
+                    <div class="mt-8">
+                        <button type="submit" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg transition duration-200">
+                            Guardar Receta
+                        </button>
+                    </div>
                 </div>
             </div>
 
