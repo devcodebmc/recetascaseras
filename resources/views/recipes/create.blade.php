@@ -51,9 +51,6 @@
 
                     <!-- Etiquetas Seleccionables -->
                     @include('components.tagList')
-                    @error('tags')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
 
                     <!-- Ingredientes -->
                     <div>
@@ -70,25 +67,25 @@
                                         </button>
                                     </div>
                                 @endforeach
-                            @else
-                                <div class="flex items-center gap-2">
-                                    <input type="text" name="ingredients[]" class="flex-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ejemplo: 2 tazas de harina">
-                                    <button type="button" onclick="agregarIngrediente()" class="px-1 py-1 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition duration-200">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                        </svg>
-                                    </button>
-                                </div>
                             @endif
+                            <!-- Fila vacía para nuevo ingrediente -->
+                            <div class="flex items-center gap-2">
+                                <input type="text" name="ingredients[]" class="flex-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ejemplo: 2 tazas de harina">
+                                <button type="button" onclick="agregarIngrediente()" class="px-1 py-1 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition duration-200">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m-7-7h14" />
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                         @error('ingredients')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
-                    </div>
+                    </div>                    
 
                     <!-- Pasos de Preparación -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Pasos de Preparación</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Pasos</label>
                         <div id="pasos-container" class="space-y-3">
                             @if(old('steps'))
                                 @foreach(old('steps') as $step)
@@ -101,21 +98,21 @@
                                         </button>
                                     </div>
                                 @endforeach
-                            @else
-                                <div class="flex items-center gap-2">
-                                    <input type="text" name="steps[]" class="flex-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ejemplo: Mezclar los ingredientes secos">
-                                    <button type="button" onclick="agregarPaso()" class="px-1 py-1 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition duration-200">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                        </svg>
-                                    </button>
-                                </div>
                             @endif
+                            <!-- Fila vacía para nuevo paso -->
+                            <div class="flex items-center gap-2">
+                                <input type="text" name="steps[]" class="flex-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ejemplo: Mezcla los ingredientes...">
+                                <button type="button" onclick="agregarPaso()" class="px-1 py-1 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition duration-200">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m-7-7h14" />
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                         @error('steps')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
-                    </div>
+                    </div>                    
                 </div>
 
                 <!-- Columna Derecha -->
@@ -220,34 +217,69 @@
     <script>
         // Función para agregar más campos de ingredientes
         function agregarIngrediente() {
-            const container = document.getElementById('ingredientes-container');
-            const div = document.createElement('div');
-            div.className = 'flex items-center gap-2';
-            div.innerHTML = `
-                <input type="text" name="ingredients[]" class="flex-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ejemplo: 2 tazas de harina">
-                <button type="button" onclick="this.parentElement.remove()" class="px-1 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
-                    </svg>
-                </button>
-            `;
-            container.appendChild(div);
+            let container = document.getElementById('ingredientes-container');
+            
+            // Crear el nuevo div para el ingrediente
+            let div = document.createElement('div');
+            div.classList.add('flex', 'items-center', 'gap-2');
+
+            // Crear el input
+            let input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'ingredients[]';
+            input.classList.add('flex-1', 'p-2', 'border', 'border-gray-300', 'rounded-lg', 'shadow-sm', 'focus:border-indigo-500', 'focus:ring-2', 'focus:ring-indigo-200', 'transition', 'duration-200');
+
+            // Crear el botón de eliminar
+            let button = document.createElement('button');
+            button.type = 'button';
+            button.classList.add('px-1', 'py-1', 'bg-red-500', 'text-white', 'rounded-full', 'hover:bg-red-600', 'transition', 'duration-200');
+            button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+                                </svg>`;
+            button.onclick = function () {
+                div.remove();
+            };
+
+            // Agregar input y botón al div
+            div.appendChild(input);
+            div.appendChild(button);
+
+            // Insertar el nuevo ingrediente antes del último input
+            container.insertBefore(div, container.lastElementChild);
         }
+
 
         // Función para agregar más campos de pasos
         function agregarPaso() {
-            const container = document.getElementById('pasos-container');
-            const div = document.createElement('div');
-            div.className = 'flex items-center gap-2';
-            div.innerHTML = `
-                <input type="text" name="steps[]" class="flex-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ejemplo: Mezclar los ingredientes secos">
-                <button type="button" onclick="this.parentElement.remove()" class="px-1 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
-                    </svg>
-                </button>
-            `;
-            container.appendChild(div);
+            let container = document.getElementById('pasos-container');
+            
+            // Crear el nuevo div para el paso
+            let div = document.createElement('div');
+            div.classList.add('flex', 'items-center', 'gap-2');
+
+            // Crear el input
+            let input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'steps[]';
+            input.classList.add('flex-1', 'p-2', 'border', 'border-gray-300', 'rounded-lg', 'shadow-sm', 'focus:border-indigo-500', 'focus:ring-2', 'focus:ring-indigo-200', 'transition', 'duration-200');
+
+            // Crear el botón de eliminar
+            let button = document.createElement('button');
+            button.type = 'button';
+            button.classList.add('px-1', 'py-1', 'bg-red-500', 'text-white', 'rounded-full', 'hover:bg-red-600', 'transition', 'duration-200');
+            button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+                                </svg>`;
+            button.onclick = function () {
+                div.remove();
+            };
+
+            // Agregar input y botón al div
+            div.appendChild(input);
+            div.appendChild(button);
+
+            // Insertar el nuevo paso antes del último input
+            container.insertBefore(div, container.lastElementChild);
         }
     </script>
 </x-app-layout>

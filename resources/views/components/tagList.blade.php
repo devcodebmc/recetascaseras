@@ -40,11 +40,11 @@
     }
 </style>
 
-<!-- Etiquetas Seleccionables -->
+<!-- Contenedor de etiquetas -->
 <div>
     <label for="etiquetas" class="block text-sm font-medium text-gray-700 mb-2">Etiquetas</label>
     <div class="relative">
-        <!-- Input para buscar y agregar etiquetas -->
+        <!-- Input para buscar/agregar etiquetas -->
         <input type="text" id="etiquetas-input" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Buscar o agregar etiquetas">
         
         <!-- Contenedor para mostrar las sugerencias -->
@@ -52,104 +52,128 @@
             <ul id="sugerencias-list" class="py-1"></ul>
         </div>
 
-        <!-- Contenedor para mostrar las etiquetas seleccionadas -->
+        <!-- Contenedor para mostrar etiquetas seleccionadas -->
         <div id="etiquetas-container" class="mt-2 flex flex-wrap gap-2"></div>
     </div>
 
-    <!-- Input oculto para enviar las etiquetas seleccionadas -->
-    <input type="hidden" name="tags" id="tags-hidden-input">
+    <!-- Select oculto para sincronización con Laravel -->
+    <select name="tags[]" id="tags-select" multiple class="w-full hidden">
+        @foreach(old('tags', []) as $tagId)
+            <option value="{{ $tagId }}" selected>
+                {{ \App\Models\Tag::find($tagId)->name ?? '' }}
+            </option>
+        @endforeach
+    </select>
+
+    <!-- Mensaje de error de Laravel -->
+    @error('tags')
+        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+    @enderror
 </div>
 
+
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const etiquetasInput = document.getElementById('etiquetas-input');
-        const sugerenciasContainer = document.getElementById('sugerencias-container');
-        const sugerenciasList = document.getElementById('sugerencias-list');
-        const etiquetasContainer = document.getElementById('etiquetas-container');
-        const tagsHiddenInput = document.getElementById('tags-hidden-input');
+document.addEventListener('DOMContentLoaded', function () {
+    const etiquetasInput = document.getElementById('etiquetas-input');
+    const sugerenciasContainer = document.getElementById('sugerencias-container');
+    const sugerenciasList = document.getElementById('sugerencias-list');
+    const etiquetasContainer = document.getElementById('etiquetas-container');
+    const tagsSelect = document.getElementById('tags-select');
 
-        let etiquetasSeleccionadas = []; // Almacena etiquetas seleccionadas
-        let todasLasEtiquetas = []; // Almacena etiquetas desde el backend
+    let etiquetasSeleccionadas = [];
+    let todasLasEtiquetas = [];
 
-        // Cargar etiquetas desde el backend
-        async function cargarEtiquetas() {
-            try {
-                const response = await fetch('/fetch-tags');
-                if (!response.ok) throw new Error('Error al cargar etiquetas');
-                todasLasEtiquetas = await response.json();
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
+    // Cargar etiquetas desde el backend
+    async function cargarEtiquetas() {
+        try {
+            const response = await fetch('/fetch-tags');
+            if (!response.ok) throw new Error('Error al cargar etiquetas');
+            todasLasEtiquetas = await response.json();
 
-        // Mostrar sugerencias con etiquetas tachadas si ya fueron seleccionadas
-        function mostrarSugerencias(query) {
-            sugerenciasList.innerHTML = ''; // Limpiar lista de sugerencias
-
-            const sugerencias = todasLasEtiquetas.filter(tag =>
-                tag.name.toLowerCase().includes(query.toLowerCase())
-            );
-
-            sugerencias.forEach(tag => {
-                const li = document.createElement('li');
-                li.textContent = tag.name;
-
-                // Si ya está seleccionada, la tachamos
-                if (etiquetasSeleccionadas.some(e => e.id === tag.id)) {
-                    li.classList.add('tachado');
-                } else {
-                    li.classList.add('hover:bg-gray-100');
-                    li.onclick = () => agregarEtiqueta(tag.name, tag.id);
+            // Si Laravel devuelve old(), rellenar etiquetas iniciales
+            document.querySelectorAll('#tags-select option').forEach(option => {
+                if (option.value) {
+                    agregarEtiqueta(option.textContent || todasLasEtiquetas.find(tag => tag.id == option.value)?.name, option.value, true);
                 }
-
-                sugerenciasList.appendChild(li);
             });
-
-            sugerenciasContainer.classList.remove('hidden');
+        } catch (error) {
+            console.error('Error:', error);
         }
+    }
 
-        // Agregar etiqueta
-        function agregarEtiqueta(nombre, id) {
-            if (etiquetasSeleccionadas.some(etiqueta => etiqueta.id === id)) return;
+    // Mostrar sugerencias con etiquetas tachadas si ya fueron seleccionadas
+    function mostrarSugerencias(query) {
+        sugerenciasList.innerHTML = '';
 
-            etiquetasSeleccionadas.push({ id, nombre });
-            tagsHiddenInput.value = etiquetasSeleccionadas.map(etiqueta => etiqueta.id).join(',');
+        const sugerencias = todasLasEtiquetas.filter(tag =>
+            tag.name.toLowerCase().includes(query.toLowerCase())
+        );
 
-            // Crear "pill" de la etiqueta
-            const pill = document.createElement('div');
-            pill.className = 'etiqueta-pill';
-            pill.setAttribute('data-id', id);
-            pill.innerHTML = `
-                ${nombre}
-                <button type="button" onclick="eliminarEtiqueta(${id})">
-                    &times;
-                </button>
-            `;
+        sugerencias.forEach(tag => {
+            const li = document.createElement('li');
+            li.textContent = tag.name;
 
-            etiquetasContainer.appendChild(pill);
-            etiquetasInput.value = ''; 
-            sugerenciasContainer.classList.add('hidden');
-        }
-
-        // Eliminar etiqueta
-        window.eliminarEtiqueta = function (id) {
-            etiquetasSeleccionadas = etiquetasSeleccionadas.filter(etiqueta => etiqueta.id !== id);
-            tagsHiddenInput.value = etiquetasSeleccionadas.map(etiqueta => etiqueta.id).join(',');
-
-            document.querySelector(`.etiqueta-pill[data-id="${id}"]`).remove();
-        };
-
-        // Evento para mostrar sugerencias
-        etiquetasInput.addEventListener('input', function () {
-            const query = this.value.trim();
-            if (query.length > 0) {
-                mostrarSugerencias(query);
+            if (etiquetasSeleccionadas.some(e => e.id === tag.id)) {
+                li.classList.add('tachado');
             } else {
-                sugerenciasContainer.classList.add('hidden');
+                li.classList.add('hover:bg-gray-100');
+                li.onclick = () => agregarEtiqueta(tag.name, tag.id);
             }
+
+            sugerenciasList.appendChild(li);
         });
 
-        // Cargar etiquetas al iniciar
-        cargarEtiquetas();
+        sugerenciasContainer.classList.remove('hidden');
+    }
+
+    // Agregar etiqueta
+    function agregarEtiqueta(nombre, id, inicial = false) {
+        if (etiquetasSeleccionadas.some(etiqueta => etiqueta.id == id)) return;
+
+        etiquetasSeleccionadas.push({ id, nombre });
+
+        // Crear la "pill" de la etiqueta
+        const pill = document.createElement('div');
+        pill.className = 'etiqueta-pill';
+        pill.setAttribute('data-id', id);
+        pill.innerHTML = `
+            ${nombre}
+            <button type="button" onclick="eliminarEtiqueta(${id})">&times;</button>
+        `;
+
+        etiquetasContainer.appendChild(pill);
+
+        // Agregar opción al select multiple
+        if (!inicial) {
+            const option = document.createElement('option');
+            option.value = id;
+            option.textContent = nombre;
+            option.selected = true;
+            tagsSelect.appendChild(option);
+        }
+
+        etiquetasInput.value = '';
+        sugerenciasContainer.classList.add('hidden');
+    }
+
+    // Eliminar etiqueta
+    window.eliminarEtiqueta = function (id) {
+        etiquetasSeleccionadas = etiquetasSeleccionadas.filter(etiqueta => etiqueta.id != id);
+        document.querySelector(`.etiqueta-pill[data-id="${id}"]`).remove();
+        document.querySelector(`#tags-select option[value="${id}"]`).remove();
+    };
+
+    // Evento para mostrar sugerencias
+    etiquetasInput.addEventListener('input', function () {
+        const query = this.value.trim();
+        if (query.length > 0) {
+            mostrarSugerencias(query);
+        } else {
+            sugerenciasContainer.classList.add('hidden');
+        }
     });
+
+    // Cargar etiquetas iniciales
+    cargarEtiquetas();
+});
 </script>
