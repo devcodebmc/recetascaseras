@@ -29,11 +29,8 @@
                             Descripción
                         </label>
                         @include('components.wysiwygEditor')
-                        @error('description')
-                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                        @enderror
                     </div>
-
+                    
                     <!-- Categorías de Recetas -->
                     <div>
                         <label for="category_id" class="block text-sm font-medium text-gray-700 mb-2">Categorías</label>

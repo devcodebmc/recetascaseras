@@ -94,9 +94,12 @@
         </button>
       </div>
 
-      <div class="h-40 overflow-auto" data-hs-editor-field="" name="description" id="description"></div>
+      <div class="h-40 overflow-auto" data-hs-editor-field=""></div>
     </div>
   </div>
+  @error('description')
+    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+  @enderror
   <!-- End Tiptap -->
 
   <script type="module">
@@ -177,7 +180,9 @@
         }),
         Paragraph.configure({
           HTMLAttributes: {
-            class: 'text-md text-gray-800 dark:text-neutral-200'
+            class: 'text-md text-gray-800 dark:text-neutral-200',
+            name:  'descriptionEditor',
+            id:    'descriptionEditor'
           }
         }),
         Bold.configure({
