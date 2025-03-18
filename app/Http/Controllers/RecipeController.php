@@ -30,9 +30,12 @@ class RecipeController extends Controller
      */
     public function create()
     {
+        
         $categories = Category::select('id', 'name')->orderBy('name', 'asc')->get();
+        // Obtener el valor antiguo de 'description' si existe
+        $oldDescription = old('description', '');
         $tags = Tag::select('id', 'name')->orderBy('name', 'asc')->get();
-        return view('recipes.create', compact('categories', 'tags'));
+        return view('recipes.create', compact('categories', 'oldDescription', 'tags'));
     }
 
     /**

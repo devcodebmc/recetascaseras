@@ -78,7 +78,13 @@
                         @error('ingredients')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
-                    </div>                    
+                    </div>    
+      
+                </div>
+
+                <!-- Columna Derecha -->
+                <div class="space-y-6">
+                                    
 
                     <!-- Pasos de Preparación -->
                     <div>
@@ -109,11 +115,7 @@
                         @error('steps')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
-                    </div>                    
-                </div>
-
-                <!-- Columna Derecha -->
-                <div class="space-y-6">
+                    </div>              
                     <!-- Tiempo de Preparación, Cocción y Porciones -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
