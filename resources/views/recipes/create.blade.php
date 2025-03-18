@@ -9,7 +9,6 @@
         <form action="{{ route('recipes.store') }}" method="POST" enctype="multipart/form-data" class="bg-white p-8 rounded-lg shadow-lg">
             @csrf
             @method('POST')
-
             <!-- Título de la Receta (Ocupa todo el ancho) -->
             <div class="mb-8">
                 <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Título de la Receta</label>
@@ -49,6 +48,39 @@
                     <!-- Etiquetas Seleccionables -->
                     @include('components.tagList')
 
+                    <!-- Tiempo de Preparación, Cocción y Porciones -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label for="prep_time" class="block text-sm font-medium text-gray-700 mb-2">T. Preparación (min)</label>
+                            <input type="number" id="prep_time" name="prep_time" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ej: 30" min="1" value="{{ old('prep_time') }}">
+                            @error('prep_time')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div>
+                            <label for="cook_time" class="block text-sm font-medium text-gray-700 mb-2">
+                                T. Cocción (min)
+                            </label>
+                            <input type="number" id="cook_time" name="cook_time" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ej: 45" min="1" value="{{ old('cook_time') }}">
+                            @error('cook_time')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div>
+                            <label for="servings" class="block text-sm font-medium text-gray-700 mb-2">
+                                N.° Porciones
+                            </label>
+                            <input type="number" name="servings" id="servings" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ej: 4" min="1" value="{{ old('servings') }}">
+                            @error('servings')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+      
+                </div>
+
+                <!-- Columna Derecha -->
+                <div class="space-y-6">
                     <!-- Ingredientes -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Ingredientes</label>
@@ -79,13 +111,6 @@
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>    
-      
-                </div>
-
-                <!-- Columna Derecha -->
-                <div class="space-y-6">
-                                    
-
                     <!-- Pasos de Preparación -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Pasos</label>
@@ -116,35 +141,6 @@
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>              
-                    <!-- Tiempo de Preparación, Cocción y Porciones -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                            <label for="prep_time" class="block text-sm font-medium text-gray-700 mb-2">T. Preparación (min)</label>
-                            <input type="number" id="prep_time" name="prep_time" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ej: 30" min="1" value="{{ old('prep_time') }}">
-                            @error('prep_time')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div>
-                            <label for="cook_time" class="block text-sm font-medium text-gray-700 mb-2">
-                                T. Cocción (min)
-                            </label>
-                            <input type="number" id="cook_time" name="cook_time" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ej: 45" min="1" value="{{ old('cook_time') }}">
-                            @error('cook_time')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div>
-                            <label for="servings" class="block text-sm font-medium text-gray-700 mb-2">
-                                N.° Porciones
-                            </label>
-                            <input type="number" name="servings" id="servings" class="w-full p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ej: 4" min="1" value="{{ old('servings') }}">
-                            @error('servings')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
-                    </div>
-
                     <!-- Imagen de Portada -->
                     <div>
                         <label for="image" class="block text-sm font-medium text-gray-700 mb-2">

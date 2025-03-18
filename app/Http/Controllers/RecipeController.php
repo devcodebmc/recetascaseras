@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Recipe;
 use App\Models\Category;
 use App\Models\Tag;
-use App\Models\RecipeTag;
 use App\Models\RecipeImage;
+use Illuminate\Support\Facades\Storage;
 
 class RecipeController extends Controller
 {
@@ -68,20 +68,23 @@ class RecipeController extends Controller
         $imagePath = null;
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('recipes', 'public');
+            $image = Storage::url($imagePath);
         }
 
         // Guardar la receta
         $recipe = Recipe::create([
             'title' => $request->title,
             'description' => $request->description,
-            'category_id' => $request->category_id,
             'ingredients' => json_encode($request->ingredients),
             'steps' => json_encode($request->steps),
             'prep_time' => $request->prep_time,
             'cook_time' => $request->cook_time,
             'servings' => $request->servings,
-            'image' => $imagePath,
+            'category_id' => $request->category_id,
+            'user_id' => auth()->id(),
+            'image' => $image,
             'video_url' => $request->video_url,
+            'status' => 'draft',
         ]);
 
         // Guardar las tags (si se enviaron)
@@ -98,10 +101,11 @@ class RecipeController extends Controller
         if ($request->hasFile('secondary_images')) {
             foreach ($request->file('secondary_images') as $file) {
                 $secondaryImagePath = $file->store('recipe_images', 'public');
-
+                $secondaryImage = Storage::url($secondaryImagePath);
+                
                 RecipeImage::create([
                     'recipe_id' => $recipe->id,
-                    'image_path' => $secondaryImagePath,
+                    'image_path' => $secondaryImage,
                 ]);
             }
         }

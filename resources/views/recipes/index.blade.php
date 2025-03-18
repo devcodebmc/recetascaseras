@@ -55,10 +55,16 @@
                         <thead>
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Portada
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Titulo
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Slug
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Estatus
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Fecha de creación
@@ -75,6 +81,15 @@
                             @foreach ($recipes as $recipe)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap">
+                                        @if ($recipe->image)
+                                            <img src="{{ asset($recipe->image) }}" alt="{{ $recipe->title }}" class="w-10 h-10 rounded-full border-2 border-emerald-500">
+                                        @else
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-red-500">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
                                         <div id="tag-view-{{ $recipe->id }}">
                                             <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                                                 {{ $recipe->title }}
@@ -83,6 +98,11 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         {{ $recipe->slug }}
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-yellow-400 text-yellow-800">
+                                            {{ $recipe->status == 'draft' ? 'Borrador' : 'Publicado' }}
+                                        </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         {{ $recipe->created_at->diffForHumans() }}
