@@ -24,8 +24,7 @@ class Tag extends Model
             $tag->slug = Str::slug($tag->name);
         });
     }
-
-  
+    
     public function recipes()
     {
         return $this->belongsToMany(Recipe::class, 'recipe_tags', 'tag_id', 'recipe_id');

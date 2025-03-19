@@ -28,8 +28,8 @@ class Recipe extends Model
     ];
     
     protected $casts = [
-        'ingredients' => 'json',
-        'steps' => 'json',
+        'ingredients' => 'array',
+        'steps' => 'array',
     ];
 
     /**

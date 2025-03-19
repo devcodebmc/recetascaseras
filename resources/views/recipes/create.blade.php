@@ -239,8 +239,8 @@
             div.appendChild(input);
             div.appendChild(button);
 
-            // Insertar el nuevo ingrediente antes del último input
-            container.insertBefore(div, container.lastElementChild);
+            // Insertar el nuevo ingrediente despues del último input
+            container.insertBefore(div, container.lastElementChild.nextSibling);
         }
 
 
@@ -273,8 +273,8 @@
             div.appendChild(input);
             div.appendChild(button);
 
-            // Insertar el nuevo paso antes del último input
-            container.insertBefore(div, container.lastElementChild);
+            // Insertar el nuevo ingrediente despues del último input
+            container.insertBefore(div, container.lastElementChild.nextSibling);
         }
     </script>
 </x-app-layout>
