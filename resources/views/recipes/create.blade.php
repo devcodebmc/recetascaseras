@@ -147,7 +147,7 @@
                             Imagen de Portada
                         </label>
                         <div class="mt-1 flex items-center justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg bg-gray-50 hover:bg-gray-100 transition duration-200">
-                            <div class="space-y-1 text-center">
+                            <div class="space-y-1 text-center" id="upload-container">
                                 <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
                                     <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
@@ -159,6 +159,10 @@
                                     <p class="pl-1">o arrastra y suelta</p>
                                 </div>
                                 <p class="text-xs text-gray-500">PNG, JPG, GIF hasta 10MB</p>
+                            </div>
+                            <div id="image-preview" class="hidden text-center">
+                                <img id="preview" class="max-w-full h-48 rounded-lg" src="#" alt="Previsualización de la imagen" />
+                                <button type="button" id="remove-image" class="mt-2 text-sm text-red-600 hover:text-red-500">Reemplazar imagen</button>
                             </div>
                         </div>
                         @error('image')
@@ -179,7 +183,7 @@
                     <div>
                         <label for="recipe_images" class="block text-sm font-medium text-gray-700 mb-2">Imágenes Secundarias</label>
                         <div class="mt-1 flex items-center justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg bg-gray-50 hover:bg-gray-100 transition duration-200">
-                            <div class="space-y-1 text-center">
+                            <div class="space-y-1 text-center" id="upload-container-secondary">
                                 <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
                                     <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
@@ -191,6 +195,9 @@
                                     <p class="pl-1">o arrastra y suelta</p>
                                 </div>
                                 <p class="text-xs text-gray-500">PNG, JPG, GIF hasta 10MB cada una</p>
+                            </div>
+                            <div id="images-preview" class="flex flex-wrap gap-4 mt-4">
+                                <!-- Aquí se mostrarán las imágenes seleccionadas -->
                             </div>
                         </div>
                         @error('recipe_images')
@@ -210,6 +217,93 @@
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Previsualización de la imagen de portada
+            const imageInput = document.getElementById('image');
+            const uploadContainer = document.getElementById('upload-container');
+            const imagePreview = document.getElementById('image-preview');
+            const previewImage = document.getElementById('preview');
+            const removeImageButton = document.getElementById('remove-image');
+
+            imageInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewImage.src = e.target.result;
+                        uploadContainer.classList.add('hidden');
+                        imagePreview.classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            removeImageButton.addEventListener('click', function() {
+                imageInput.value = '';
+                previewImage.src = '#';
+                imagePreview.classList.add('hidden');
+                uploadContainer.classList.remove('hidden');
+            });
+
+            // Previsualización de las imagenes secundarias
+            const imagesInput = document.getElementById('recipe_images');
+            const uploadContainerSecondary = document.getElementById('upload-container-secondary');
+            const imagesPreview = document.getElementById('images-preview');
+
+            imagesInput.addEventListener('change', function(event) {
+                const files = event.target.files;
+                if (files.length > 0) {
+                    imagesPreview.innerHTML = ''; // Limpiar previsualizaciones anteriores
+                    Array.from(files).forEach(file => {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const imageContainer = document.createElement('div');
+                            imageContainer.className = 'relative';
+
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.className = 'w-24 h-24 object-cover rounded-lg';
+
+                            const removeButton = document.createElement('button');
+                            removeButton.type = 'button';
+                            removeButton.className = 'absolute top-0 right-0 px-1 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-200';
+                            removeButton.innerHTML = `
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                            </svg>
+                            `;
+                            removeButton.onclick = function() {
+                                imageContainer.remove();
+                                updateFileInput(files, file);
+                                // Verificar si no hay imágenes después de eliminar
+                                if (imagesPreview.children.length === 0) {
+                                    imagesPreview.classList.add('hidden');
+                                    uploadContainerSecondary.classList.remove('hidden');
+                                }
+                            };
+
+                            imageContainer.appendChild(img);
+                            imageContainer.appendChild(removeButton);
+                            imagesPreview.appendChild(imageContainer);
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                    uploadContainerSecondary.classList.add('hidden');
+                    imagesPreview.classList.remove('hidden');
+                }
+            });
+
+            function updateFileInput(allFiles, fileToRemove) {
+                const dataTransfer = new DataTransfer();
+                Array.from(allFiles).forEach(file => {
+                    if (file !== fileToRemove) {
+                        dataTransfer.items.add(file);
+                    }
+                });
+                imagesInput.files = dataTransfer.files;
+            }
+
+        });
         // Función para agregar más campos de ingredientes
         function agregarIngrediente() {
             let container = document.getElementById('ingredientes-container');

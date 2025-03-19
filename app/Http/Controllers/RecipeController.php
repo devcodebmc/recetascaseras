@@ -89,23 +89,19 @@ class RecipeController extends Controller
 
         // Guardar las tags (si se enviaron)
         if ($request->has('tags')) {
-            $tagIds = [];
-            foreach ($request->tags as $tagName) {
-                $tag = Tag::firstOrCreate(['name' => $tagName]);
-                $tagIds[] = $tag->id;
-            }
-            $recipe->tags()->sync($tagIds);
+            $recipe->tags()->sync($request->tags);
         }
 
         // Guardar imágenes secundarias si se suben
-        if ($request->hasFile('secondary_images')) {
-            foreach ($request->file('secondary_images') as $file) {
+        if ($request->hasFile('recipe_images')) {
+            foreach ($request->file('recipe_images') as $key => $file) {
                 $secondaryImagePath = $file->store('recipe_images', 'public');
                 $secondaryImage = Storage::url($secondaryImagePath);
                 
                 RecipeImage::create([
                     'recipe_id' => $recipe->id,
                     'image_path' => $secondaryImage,
+                    'order' => $key,
                 ]);
             }
         }
