@@ -151,6 +151,8 @@ class RecipeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $recipe = Recipe::findOrFail($id);
+        $recipe->delete();
+        return redirect()->route('recipes.index')->with('success', 'Receta enviada a la papelera correctamente.');
     }
 }

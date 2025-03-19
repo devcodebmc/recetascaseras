@@ -33,7 +33,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="flex flex-col sm:flex-row justify-between items-center py-6 px-4 sm:px-6 space-y-4 sm:space-y-0">
                     <form method="GET" action="{{ route('categories.index') }}" class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
-                        <input id="search" type="text" name="search" value="{{ request('search') }}" placeholder="Buscar etiquetas" class="block w-full border border-gray-300 rounded-md pl-3 text-sm"/>
+                        <input id="search" type="text" name="search" value="{{ request('search') }}" placeholder="Buscar categorías" class="block w-full border border-gray-300 rounded-md pl-3 text-sm"/>
                         <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-emerald-500 hover:bg-emerald-600 w-full sm:w-auto">
                             Buscar
                         </button>

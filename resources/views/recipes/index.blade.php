@@ -23,7 +23,7 @@
     <script>
         setTimeout(function() {
             document.getElementById('flash-message').style.display = 'none';
-        }, 4000); // Ocultar después de 6 segundos
+        }, 4000); // Ocultar después de 4 segundos
     </script>
     @endif
 
@@ -33,7 +33,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="flex flex-col sm:flex-row justify-between items-center py-6 px-4 sm:px-6 space-y-4 sm:space-y-0">
                     <form method="GET" action="{{ route('recipes.index') }}" class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
-                        <input id="search" type="text" name="search" value="{{ request('search') }}" placeholder="Buscar etiquetas" class="block w-full border border-gray-300 rounded-md pl-3 text-sm"/>
+                        <input id="search" type="text" name="search" value="{{ request('search') }}" placeholder="Buscar recetas" class="block w-full border border-gray-300 rounded-md pl-3 text-sm"/>
                         <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-emerald-500 hover:bg-emerald-600 w-full sm:w-auto">
                             Buscar
                         </button>
@@ -131,8 +131,9 @@
                                                     Confirmación
                                                 </h2>
                                                 <p class="mt-2 text-gray-600 text-center text-xs lg:text-lg md:text-md break-words flex flex-wrap">
-                                                    ¿Estás seguro de que deseas eliminar la etiqueta 
-                                                    <strong class="ml-1">{{ $recipe->slug }}</strong>?
+                                                    ¿Estás seguro de que deseas enviar la receta 
+                                                    <strong class="ml-1">{{ $recipe->title }}</strong> 
+                                                    a la papelera de reciclaje ?
                                                 </p>
                                                 <div class="mt-4 flex justify-end">
                                                     <button type="button" class="mr-2 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400" onclick="closeModal({{ $recipe->id }})">Cancelar</button>

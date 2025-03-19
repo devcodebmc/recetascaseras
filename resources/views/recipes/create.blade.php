@@ -9,9 +9,19 @@
         <form action="{{ route('recipes.store') }}" method="POST" enctype="multipart/form-data" class="bg-white p-8 rounded-lg shadow-lg">
             @csrf
             @method('POST')
+            <!-- Icono para retornar al listado de recetas -->
+            <div class="flex justify-end items-center">
+                <a href="{{ route('recipes.index') }}" class="text-gray-500 hover:text-gray-600 transition duration-200 flex items-center" title="Volver al listado de recetas">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h16.5" />
+                    </svg>                                                                
+                </a>
+            </div>
             <!-- Título de la Receta (Ocupa todo el ancho) -->
             <div class="mb-8">
-                <label for="title" class="block text-sm font-medium text-gray-700 mb-2">Título de la Receta</label>
+                <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
+                    Título de la Receta
+                </label>
                 <input type="text" name="title" id="title" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ej: Tarta de Manzana" value="{{ old('title') }}">
                 @error('title')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
