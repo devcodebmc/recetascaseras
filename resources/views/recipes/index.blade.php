@@ -64,7 +64,7 @@
                                     Slug
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Estatus
+                                    Estado
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Fecha de creación
@@ -100,9 +100,15 @@
                                         {{ $recipe->slug }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-yellow-400 text-yellow-800">
-                                            {{ $recipe->status == 'draft' ? 'Borrador' : 'Publicado' }}
-                                        </span>
+                                        @if ($recipe->status == 'draft')
+                                            <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-yellow-400 text-yellow-800">
+                                                Borrador
+                                            </span>
+                                            @else
+                                            <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-green-400 text-green-800">
+                                                Publicado
+                                            </span>
+                                        @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         {{ $recipe->created_at->diffForHumans() }}

@@ -19,7 +19,7 @@ class RecipeController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $recipes = Recipe::OrderBy('updated_at', 'DESC')->search($search)->paginate(5);
+        $recipes = Recipe::orderBy('updated_at', 'DESC')->search($search)->paginate(5);
         return view('recipes.index', compact('recipes'));
     }
 
