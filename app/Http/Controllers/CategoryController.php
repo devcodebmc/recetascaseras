@@ -136,7 +136,17 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
+        // Delete the category's image
+        $category = Category::find($id);
+
+        // Eliminar el prefijo "/storage" de la ruta
+        $imagePath = str_replace('/storage', 'public', $category->icon_url);
+        if (Storage::exists($imagePath)) {
+            Storage::delete($imagePath);
+        }
+        // Delete the category
         Category::destroy($id);
+        // Redirect to the categories index
         return redirect()->route('categories.index')->with('success', 'Categoría eliminada correctamente.');
     }
 }

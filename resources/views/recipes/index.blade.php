@@ -61,9 +61,6 @@
                                     Titulo
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Slug
-                                </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Estado
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -95,9 +92,6 @@
                                                 {{ $recipe->title }}
                                             </span>
                                         </div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        {{ $recipe->slug }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @if ($recipe->status == 'draft')
