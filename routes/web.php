@@ -33,6 +33,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('tags', TagController::class);
     Route::resource('recipes', RecipeController::class);
     Route::get('/fetch-tags', [FetchTagController::class, 'index'])->name('fetch-tags.index');
+
+    // Recyclebin routes
+    Route::get('/recyclebin', [App\Http\Controllers\RecyclebinController::class, 'index'])->name('recyclebin.index');
+    Route::patch('/recyclebin/{id}/restore', [App\Http\Controllers\RecyclebinController::class, 'restore'])->name('recyclebin.restore');
+    Route::delete('/recyclebin/{id}/destroy', [App\Http\Controllers\RecyclebinController::class, 'destroy'])->name('recyclebin.destroy');
 });
 
 require __DIR__.'/auth.php';
