@@ -40,5 +40,47 @@
                 {{ $slot }}
             </main>
         </div>
+        <script>
+            // Función para alternar la visibilidad del dropdown
+            function toggleDropdown(dropdownId, event) {
+                event.stopPropagation(); // Evita que el clic se propague y cierre el dropdown inmediatamente
+                const dropdown = document.getElementById(dropdownId);
+                const allDropdowns = document.querySelectorAll('.dropdown-content');
+    
+                // Cerrar todos los dropdowns excepto el actual
+                allDropdowns.forEach(function(d) {
+                    if (d.id !== dropdownId) {
+                        d.classList.add('hidden');
+                    }
+                });
+    
+                // Alternar la visibilidad del dropdown actual
+                dropdown.classList.toggle('hidden');
+            }
+            // Cerrar el dropdown al hacer clic fuera de él
+            document.addEventListener('click', function(event) {
+                const dropdowns = document.querySelectorAll('.dropdown-content');
+                const isClickInsideDropdown = Array.from(dropdowns).some(dropdown => dropdown.contains(event.target));
+                const isClickOnButton = event.target.matches('.dropdown-button') || event.target.closest('.dropdown-button');
+    
+                if (!isClickInsideDropdown && !isClickOnButton) {
+                    dropdowns.forEach(function(dropdown) {
+                        dropdown.classList.add('hidden');
+                    });
+                }
+            });
+            // Ocultar vista de cuadrícula al cargar la página
+             document.getElementById('grid-view-container').classList.add('hidden');
+            // Alternar entre vistas de lista y cuadrícula
+            document.getElementById('list-view').addEventListener('click', function() {
+                document.getElementById('list-view-container').classList.remove('hidden');
+                document.getElementById('grid-view-container').classList.add('hidden');
+            });
+    
+            document.getElementById('grid-view').addEventListener('click', function() {
+                document.getElementById('grid-view-container').classList.remove('hidden');
+                document.getElementById('list-view-container').classList.add('hidden');
+            });
+        </script>
     </body>
 </html>

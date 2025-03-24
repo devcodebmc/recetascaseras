@@ -18,7 +18,6 @@ class RecyclebinController extends Controller
         $recipes = Recipe::onlyTrashed()->orderBy('deleted_at', 'DESC')->paginate(10);
         return view('recyclebin.index', compact('recipes'));
     }
-
     public function restore($id)
     {
         $recipe = Recipe::withTrashed()->where('id', $id)->first();
@@ -32,7 +31,7 @@ class RecyclebinController extends Controller
 
         // Verificar si la receta existe
         if (!$recipe) {
-            return redirect()->route('recipes.index')->with('error', 'Receta no encontrada');
+            return redirect()->route('recyclebin.index')->with('error', 'Receta no encontrada');
         }
 
         try {
@@ -64,10 +63,10 @@ class RecyclebinController extends Controller
             $recipe->forceDelete();
 
             // Redirigir con mensaje de éxito
-            return redirect()->route('recipes.index')->with('success', 'Receta eliminada correctamente');
+            return redirect()->route('recyclebin.index')->with('success', 'Receta eliminada definitivamente');
         } catch (\Exception $e) {
             // Manejar errores y redirigir con mensaje de error
-            return redirect()->route('recipes.index')->with('error', 'Error al eliminar la receta: ' . $e->getMessage());
+            return redirect()->route('recyclebin.index')->with('error', 'Error al eliminar la receta: ' . $e->getMessage());
         }
     }
     

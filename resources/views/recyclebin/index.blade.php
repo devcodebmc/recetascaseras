@@ -4,7 +4,34 @@
             {{ __('Papelera de reciclaje') }}
         </h2>
     </x-slot>
-
+    {{-- Modal de confirmación --}}
+    <div id="confirmModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-300">
+        <div class="bg-white rounded-lg shadow-xl transform transition-all duration-300 scale-95 opacity-0 max-w-md w-full" id="modalContent">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Confirmar eliminación</h3>
+                    <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <p class="text-gray-600 mb-6">¿Estás seguro que deseas eliminar esta receta definitivamente? Esta acción no se puede deshacer.</p>
+                <div class="flex justify-end space-x-3">
+                    <button onclick="closeModal()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Cancelar
+                    </button>
+                    <form id="deleteForm" method="POST" class="inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                            Eliminar definitivamente
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     {{-- Mostrar mensaje flash --}}
     @if (session('success'))
     <div id="flash-message" class="fixed top-20 right-8 flex items-center justify-between p-8 text-sm rounded-lg shadow-md bg-white border border-gray-200">
@@ -90,7 +117,7 @@
                                                 <form action="{{ route('recyclebin.restore', $recipe->id) }}" method="POST" class="inline">
                                                     @csrf
                                                     @method('PATCH')
-                                                    <button type="submit" class="text-indigo-600 hover:text-indigo-900" title="Restaurar">
+                                                    <button type="submit" class="text-gray-500 hover:text-indigo-600" title="Restaurar">
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                             <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
                                                         </svg>
@@ -99,7 +126,7 @@
                                                 <form action="{{ route('recyclebin.destroy', $recipe->id) }}" method="POST" class="inline ml-2">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="text-red-600 hover:text-red-700" title="Eliminar definitivamente">
+                                                    <button onclick="showDeleteModal('{{ route('recyclebin.destroy', $recipe->id) }}')" type="button" class="text-gray-500 hover:text-red-600" title="Eliminar definitivamente">
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                             <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                                                         </svg>
@@ -137,7 +164,7 @@
                                         <!-- Dropdown de acciones -->
                                         <div id="dropdown-{{ $recipe->id }}" class="dropdown-content hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
                                             <div class="py-1">
-                                                <form action="{{ route('recyclebin.restore', $recipe->id) }}" method="POST" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                <form action="{{ route('recyclebin.restore', $recipe->id) }}" method="POST" class="block w-full text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                                     @csrf
                                                     @method('PATCH')
                                                     <button type="submit" class="w-full flex items-center gap-2">
@@ -147,10 +174,10 @@
                                                         Restaurar
                                                     </button>
                                                 </form>
-                                                <form action="{{ route('recyclebin.destroy', $recipe->id) }}" method="POST" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                <form action="{{ route('recyclebin.destroy', $recipe->id) }}" method="POST" class="block w-full text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="w-full flex items-center gap-2 text-left">
+                                                    <button onclick="showDeleteModal('{{ route('recyclebin.destroy', $recipe->id) }}')" type="button" class="w-full flex items-center gap-2 text-left">
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                                                             <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                                                         </svg>
@@ -170,45 +197,46 @@
     </div>
 
     <script>
-        // Función para alternar la visibilidad del dropdown
-        function toggleDropdown(dropdownId, event) {
-            event.stopPropagation(); // Evita que el clic se propague y cierre el dropdown inmediatamente
-            const dropdown = document.getElementById(dropdownId);
-            const allDropdowns = document.querySelectorAll('.dropdown-content');
-
-            // Cerrar todos los dropdowns excepto el actual
-            allDropdowns.forEach(function(d) {
-                if (d.id !== dropdownId) {
-                    d.classList.add('hidden');
-                }
-            });
-
-            // Alternar la visibilidad del dropdown actual
-            dropdown.classList.toggle('hidden');
+        // Función para mostrar u ocultar el dropdown de acciones
+        document.getElementById('confirmModal').classList.add('hidden');
+        // Función para mostrar el modal de confirmación
+        function showDeleteModal(actionUrl) {
+            const modal = document.getElementById('confirmModal');
+            const modalContent = document.getElementById('modalContent');
+            const deleteForm = document.getElementById('deleteForm');
+            
+            // Configurar el formulario
+            deleteForm.action = actionUrl;
+            
+            // Mostrar modal con animación
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.add('opacity-100');
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
         }
-        // Cerrar el dropdown al hacer clic fuera de él
-        document.addEventListener('click', function(event) {
-            const dropdowns = document.querySelectorAll('.dropdown-content');
-            const isClickInsideDropdown = Array.from(dropdowns).some(dropdown => dropdown.contains(event.target));
-            const isClickOnButton = event.target.matches('.dropdown-button') || event.target.closest('.dropdown-button');
 
-            if (!isClickInsideDropdown && !isClickOnButton) {
-                dropdowns.forEach(function(dropdown) {
-                    dropdown.classList.add('hidden');
-                });
+        // Función para cerrar el modal
+        function closeModal() {
+            const modal = document.getElementById('confirmModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            // Animación de salida
+            modalContent.classList.remove('scale-100', 'opacity-100');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            modal.classList.remove('opacity-100');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Cerrar modal al hacer clic fuera del contenido
+        document.getElementById('confirmModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
             }
-        });
-        // Ocultar vista de cuadrícula al cargar la página
-         document.getElementById('grid-view-container').classList.add('hidden');
-        // Alternar entre vistas de lista y cuadrícula
-        document.getElementById('list-view').addEventListener('click', function() {
-            document.getElementById('list-view-container').classList.remove('hidden');
-            document.getElementById('grid-view-container').classList.add('hidden');
-        });
-
-        document.getElementById('grid-view').addEventListener('click', function() {
-            document.getElementById('grid-view-container').classList.remove('hidden');
-            document.getElementById('list-view-container').classList.add('hidden');
         });
     </script>
 </x-app-layout>
