@@ -69,17 +69,25 @@
                     });
                 }
             });
-            // Ocultar vista de cuadrícula al cargar la página
-             document.getElementById('grid-view-container').classList.add('hidden');
-            // Alternar entre vistas de lista y cuadrícula
+            
+           // Ocultar vista de cuadrícula al cargar la página
+            document.getElementById('grid-view-container').classList.add('hidden');
+
+            // Función para alternar vistas y estilos
+            function toggleView(activeButton, inactiveButton, activeContainer, inactiveContainer) {
+                document.getElementById(activeContainer).classList.remove('hidden');
+                document.getElementById(inactiveContainer).classList.add('hidden');
+                document.getElementById(activeButton).classList.add('bg-indigo-200');
+                document.getElementById(inactiveButton).classList.remove('bg-indigo-200');
+            }
+
+            // Agregar eventos a los botones
             document.getElementById('list-view').addEventListener('click', function() {
-                document.getElementById('list-view-container').classList.remove('hidden');
-                document.getElementById('grid-view-container').classList.add('hidden');
+                toggleView('list-view', 'grid-view', 'list-view-container', 'grid-view-container');
             });
-    
+
             document.getElementById('grid-view').addEventListener('click', function() {
-                document.getElementById('grid-view-container').classList.remove('hidden');
-                document.getElementById('list-view-container').classList.add('hidden');
+                toggleView('grid-view', 'list-view', 'grid-view-container', 'list-view-container');
             });
         </script>
     </body>

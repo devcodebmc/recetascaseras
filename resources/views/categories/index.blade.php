@@ -32,16 +32,23 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="flex flex-col sm:flex-row justify-between items-center py-6 px-4 sm:px-6 space-y-4 sm:space-y-0">
-                    <form method="GET" action="{{ route('categories.index') }}" class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
-                        <input id="search" type="text" name="search" value="{{ request('search') }}" placeholder="Buscar categorías" class="block w-full border border-gray-300 rounded-md pl-3 text-sm"/>
-                        <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-emerald-500 hover:bg-emerald-600 w-full sm:w-auto">
-                            Buscar
-                        </button>
-                        @if (request('search'))
-                        <a href="{{ route('categories.index') }}" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 w-full sm:w-auto">
-                            Limpiar
-                        </a>
-                        @endif
+                    <form method="GET" action="{{ route('categories.index') }}" class="flex flex-col sm:flex-row items-stretch w-full sm:w-auto">
+                        <div class="flex flex-col sm:flex-row flex-grow space-y-4 sm:space-y-0 sm:space-x-4">
+                            <div class="flex-grow relative">
+                                <input id="search" type="text" name="search" value="{{ request('search') }}" placeholder="Buscar categorías" 
+                                       class="w-full h-full border border-gray-300 rounded-md pl-3 pr-3 py-2 text-sm focus:ring-emerald-500 focus:border-emerald-500" required/>
+                            </div>
+                            <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                                <button type="submit" class="inline-flex justify-center items-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-emerald-500 hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 h-full">
+                                    Buscar
+                                </button>
+                                @if (request('search'))
+                                <a href="{{ route('categories.index') }}" class="inline-flex justify-center items-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 h-full">
+                                    Limpiar
+                                </a>
+                                @endif
+                            </div>
+                        </div>
                     </form>
                     <a href="{{ route('categories.create') }}" class="text-sm font-medium text-gray-500 hover:text-gray-700 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
