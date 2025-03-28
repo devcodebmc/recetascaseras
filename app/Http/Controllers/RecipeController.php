@@ -128,9 +128,41 @@ class RecipeController extends Controller
      */
     public function edit($id)
     {
-        //
+        $recipe = Recipe::with(['category', 'tags', 'images'])->findOrFail($id);
+        
+        $categories = Category::all();
+        $tags = Tag::all();
+
+        // Convertir ingredientes a array si es necesario
+        $ingredients = $this->convertToArray($recipe->ingredients);
+        
+        // Convertir pasos a array si es necesario
+        $steps = $this->convertToArray($recipe->steps);
+
+        // Obtener el valor antiguo de 'description' si existe
+        $oldDescription = old('description', '');
+
+        return view('recipes.edit', compact('recipe', 'categories', 'tags', 'ingredients', 'steps', 'oldDescription'));
     }
 
+    // Función auxiliar para convertir a array
+    protected function convertToArray($data)
+    {
+        if (is_array($data)) {
+            return $data;
+        }
+        
+        if (is_string($data)) {
+            $decoded = json_decode($data, true);
+            return is_array($decoded) ? $decoded : [$data];
+        }
+        
+        if (is_object($data)) {
+            return (array)$data;
+        }
+        
+        return [];
+    }
     /**
      * Update the specified resource in storage.
      *
