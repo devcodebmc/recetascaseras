@@ -207,40 +207,40 @@
                     </div>
 
                    <!-- Imágenes Secundarias -->
-                    <div>
-                        <label for="recipe_images" class="block text-sm font-medium text-gray-700 mb-2">Imágenes Secundarias</label>
-                        <div class="mt-1 flex items-center justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg bg-gray-50 hover:bg-gray-100 transition duration-200">
-                            <div class="space-y-1 text-center" id="upload-container-secondary">
-                                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                <div class="flex flex-col text-sm text-gray-600">
-                                    <label for="recipe_images" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500">
-                                        <span>Subir imágenes</span>
-                                        <input type="file" name="recipe_images[]" id="recipe_images" class="sr-only" accept="image/*" multiple>
-                                    </label>
-                                </div>
-                                <p class="text-xs text-gray-500">PNG, JPG, GIF hasta 10MB cada una</p>
-                            </div>
-                            <div id="images-preview" class="flex flex-wrap gap-4 mt-4">
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Imágenes Secundarias</label>
+                        
+                        <div class="mt-1 border-2 border-gray-300 border-dashed rounded-lg bg-gray-50 hover:bg-gray-100 transition duration-200 p-4">
+                            <!-- Contenedor de imágenes existentes -->
+                            <div id="existing-images" class="flex flex-wrap gap-4 mb-4">
                                 @foreach($recipe->images as $image)
-                                    <div class="relative">
-                                        <img src="{{ asset($image->image_path) }}" class="w-24 h-24 object-cover rounded-lg">
-                                        <input type="hidden" name="existing_images[]" value="{{ $image->id }}">
-                                        <button type="button" onclick="removeExistingImage(this)" class="absolute top-0 right-0 px-1 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-200">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                                            </svg>
-                                        </button>
-                                    </div>
+                                <div class="relative group" data-image-id="{{ $image->id }}">
+                                    <img src="{{ asset($image->image_path) }}" class="w-32 h-32 object-cover rounded-lg shadow-md">
+                                    <button type="button" onclick="deleteImage(this)" class="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-200">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
                                 @endforeach
                             </div>
+                            
+                            <!-- Contenedor de imágenes nuevas -->
+                            <div id="images-preview" class="flex flex-wrap gap-4 mb-4"></div>
+                            <!-- Input para subir imágenes (siempre visible) -->
+                            <div class="flex flex-col items-center text-sm text-center text-gray-600">
+                                <label class="w-fit px-4 cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500">
+                                    <span>Subir imagenes</span>
+                                    <input type="file" name="recipe_images[]" id="recipe_images" class="sr-only" accept="image/*" multiple>
+                                </label>
+                                <p class="mt-1 text-xs text-gray-500">PNG, JPG, GIF hasta 10MB cada una</p>
+                            </div>
                         </div>
+                        
                         @error('recipe_images')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
-
 
                    <!-- Botón de Envío -->
                     <div class="mt-8">
@@ -315,55 +315,86 @@
         })();
     </script>
     <script>
+        // Función para eliminar imágenes existentes via Fetch
+        async function deleteImage(button) {
+            const imageContainer = button.parentElement;
+            const imageId = imageContainer.getAttribute('data-image-id');
+            
+            try {
+                const response = await fetch(`/images/${imageId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    // Eliminar el contenedor de la imagen del DOM
+                    imageContainer.remove();
+                    
+                    // Mostrar notificación de éxito
+                    showNotification('Imagen eliminada correctamente', 'success');
+                } else {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Error al eliminar la imagen');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification(error.message, 'error');
+            }
+        }
+
+        // Función para mostrar notificaciones
+        function showNotification(message, type = 'success') {
+            // Implementa tu sistema de notificaciones preferido
+            // Puedes usar Toastr, SweetAlert2 o un div simple
+            alert(`${type.toUpperCase()}: ${message}`); // Ejemplo básico
+        }
+
+        // Manejo de nuevas imágenes (igual que antes)
         document.addEventListener('DOMContentLoaded', function() {
-            // Previsualización de las imagenes secundarias
             const imagesInput = document.getElementById('recipe_images');
-            const uploadContainerSecondary = document.getElementById('upload-container-secondary');
             const imagesPreview = document.getElementById('images-preview');
 
             imagesInput.addEventListener('change', function(event) {
                 const files = event.target.files;
                 if (files.length > 0) {
-                    imagesPreview.innerHTML = ''; // Limpiar previsualizaciones anteriores
                     Array.from(files).forEach(file => {
+                        if (!file.type.match('image.*')) return;
+                        
                         const reader = new FileReader();
                         reader.onload = function(e) {
                             const imageContainer = document.createElement('div');
-                            imageContainer.className = 'relative';
-
+                            imageContainer.className = 'relative group';
+                            
                             const img = document.createElement('img');
                             img.src = e.target.result;
-                            img.className = 'w-24 h-24 object-cover rounded-lg';
-
+                            img.className = 'w-32 h-32 object-cover rounded-lg shadow-md';
+                            
                             const removeButton = document.createElement('button');
                             removeButton.type = 'button';
-                            removeButton.className = 'absolute top-0 right-0 px-1 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-200';
+                            removeButton.className = 'absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-200';
                             removeButton.innerHTML = `
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3 h-3">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                            </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                </svg>
                             `;
                             removeButton.onclick = function() {
                                 imageContainer.remove();
                                 updateFileInput(files, file);
-                                // Verificar si no hay imágenes después de eliminar
-                                if (imagesPreview.children.length === 0) {
-                                    imagesPreview.classList.add('hidden');
-                                    uploadContainerSecondary.classList.remove('hidden');
-                                }
                             };
-
+                            
                             imageContainer.appendChild(img);
                             imageContainer.appendChild(removeButton);
                             imagesPreview.appendChild(imageContainer);
                         };
                         reader.readAsDataURL(file);
                     });
-                    uploadContainerSecondary.classList.add('hidden');
-                    imagesPreview.classList.remove('hidden');
                 }
             });
-
+            
             function updateFileInput(allFiles, fileToRemove) {
                 const dataTransfer = new DataTransfer();
                 Array.from(allFiles).forEach(file => {
@@ -373,20 +404,7 @@
                 });
                 imagesInput.files = dataTransfer.files;
             }
-
         });
-
-        // Función para eliminar imágenes existentes
-        function removeExistingImage(button) {
-            const container = button.parentElement;
-            const input = container.querySelector('input[type="hidden"]');
-            
-            // Cambiar el nombre para indicar que debe ser eliminado
-            input.name = 'deleted_images[]';
-            
-            // Ocultar el contenedor en lugar de eliminarlo para mantener el input
-            container.style.display = 'none';
-        }
         
        // Función para agregar más campos de ingredientes
        function agregarIngrediente() {
