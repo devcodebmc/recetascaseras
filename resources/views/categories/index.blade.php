@@ -126,36 +126,36 @@
                                             </button>
                                         </div>
                                         <!-- Modal -->
-                                        <div id="confirmationModal{{ $category->id }}" class="hidden fixed inset-0 z-50 items-center justify-center bg-gray-500 bg-opacity-50">
-                                            <div class="bg-white rounded-lg mt-20 p-6 mx-4 sm:mx-auto w-auto max-w-md lg:max-w-lg">
-                                                <h2 class="text-xl font-semibold text-gray-800">
-                                                    Confirmación
-                                                </h2>
-                                                <p class="mt-2 text-gray-600 text-center text-xs lg:text-lg md:text-md break-words flex flex-wrap">
-                                                    ¿Estás seguro de que deseas eliminar la categoría 
-                                                    <strong class="ml-1">{{ $category->name }}</strong>?
-                                                </p>
-                                                <div class="mt-4 flex justify-end">
-                                                    <button type="button" class="mr-2 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400" onclick="closeModal({{ $category->id }})">Cancelar</button>
-                                                    <form action="{{ route('categories.destroy', $category->id) }}" method="POST" class="inline">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Eliminar</button>
-                                                    </form>
+                                        <div id="confirmationModal{{ $category->id }}" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-300 hidden">
+                                            <div class="bg-white rounded-lg shadow-xl transform transition-all duration-300 scale-95 opacity-0 max-w-md w-full" id="modalContent">
+                                                <div class="p-6">
+                                                    <div class="flex items-center justify-between mb-4">
+                                                        <h3 class="text-lg font-semibold text-gray-900">Confirmar eliminación</h3>
+                                                        <button onclick="closeModal({{ $category->id }})" class="text-gray-400 hover:text-gray-600">
+                                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                    <p class="text-gray-600 mb-6 text-center">¿Estás seguro de que deseas eliminar la categoría <strong class="ml-1">{{ $category->name }}</strong>? 
+                                                        <br>
+                                                        <b class="text-red-400">Esta acción no se puede deshacer.</b>
+                                                    </p>
+                                                    <div class="flex justify-end space-x-3">
+                                                        <button onclick="closeModal({{ $category->id }})" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                            Cancelar
+                                                        </button>
+                                                        <form action="{{ route('categories.destroy', $category->id) }}" method="POST" class="inline">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                                                Eliminar definitivamente
+                                                            </button>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <script>
-                                            function openModal(id) {
-                                                document.getElementById('confirmationModal' + id).classList.remove('hidden');
-                                            }
-
-                                            function closeModal(id) {
-                                                document.getElementById('confirmationModal' + id).classList.add('hidden');
-                                            }
-                                        </script>
-
                                     </td>
                                 </tr>
                             @endforeach
@@ -170,4 +170,43 @@
         </div>
     </div>
 <!-- Main Content -->
+<script>
+    // Función para mostrar el modal con animación
+    function openModal(id) {
+        const modal = document.getElementById('confirmationModal' + id);
+        const modalContent = modal.querySelector('#modalContent');
+
+        // Mostrar modal
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+            modal.classList.add('opacity-100');
+            modalContent.classList.remove('scale-95', 'opacity-0');
+            modalContent.classList.add('scale-100', 'opacity-100');
+        }, 10);
+    }
+
+    // Función para cerrar el modal con animación
+    function closeModal(id) {
+        const modal = document.getElementById('confirmationModal' + id);
+        const modalContent = modal.querySelector('#modalContent');
+
+        // Animación de salida
+        modalContent.classList.remove('scale-100', 'opacity-100');
+        modalContent.classList.add('scale-95', 'opacity-0');
+        modal.classList.remove('opacity-100');
+
+        setTimeout(() => {
+            modal.classList.add('hidden');
+        }, 300);
+    }
+
+    // Cerrar modal al hacer clic fuera del contenido
+    document.querySelectorAll('[id^="confirmationModal"]').forEach((modal) => {
+        modal.addEventListener('click', function (e) {
+            if (e.target === this) {
+                closeModal(this.id.replace('confirmationModal', ''));
+            }
+        });
+    });
+</script>
 </x-app-layout>
