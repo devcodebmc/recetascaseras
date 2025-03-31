@@ -1,3 +1,10 @@
+<style>
+    @media (prefers-color-scheme: dark) {
+        .dark\:text-neutral-200 {
+            color: inherit !important;
+        }
+    }
+</style>
 <section class="bg-[#F5F3EF] p-10">
     <!-- Contenido Principal -->
     <div class="flex flex-col md:flex-row justify-between items-center mb-6">
@@ -26,92 +33,40 @@
         <!-- Sidebar Filters -->
         <div class="col-span-1 bg-white p-4 rounded-lg shadow-md">
             <ul class="space-y-4">
+                @foreach ($categories as $category)
                 <li class="flex items-center p-3 rounded-full bg-gray-200 cursor-pointer">
                     <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-                        <img src="/images/guisos.png" alt="Guisos" class="w-6 h-6">
+                        <img src="{{ asset($category->icon_url) }}" alt="{{ $category->name }}" class="w-6 h-6">
                     </div>
-                    <span class="ml-3 font-medium">Guisos</span>
+                    <span class="ml-3 font-medium">{{ $category->name }}</span>
                 </li>
-                <li class="flex items-center p-3 rounded-full bg-yellow-200 cursor-pointer">
-                    <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-                        <img src="/images/tacos.png" alt="Tacos" class="w-6 h-6">
-                    </div>
-                    <span class="ml-3 font-medium">Tacos</span>
-                </li>
-                <li class="flex items-center p-3 rounded-full bg-gray-200 cursor-pointer">
-                    <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-                        <img src="/images/sopas.png" alt="Sopas" class="w-6 h-6">
-                    </div>
-                    <span class="ml-3 font-medium">Sopas</span>
-                </li>
-                <li class="flex items-center p-3 rounded-full bg-gray-200 cursor-pointer">
-                    <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-                        <img src="/images/moles.png" alt="Moles" class="w-6 h-6">
-                    </div>
-                    <span class="ml-3 font-medium">Moles</span>
-                </li>
-                <li class="flex items-center p-3 rounded-full bg-gray-200 cursor-pointer">
-                    <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-                        <img src="/images/caldos.png" alt="Caldos" class="w-6 h-6">
-                    </div>
-                    <span class="ml-3 font-medium">Caldos</span>
-                </li>
-                <li class="flex items-center p-3 rounded-full bg-gray-200 cursor-pointer">
-                    <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-                        <img src="/images/garnachas.png" alt="Garnachas" class="w-6 h-6">
-                    </div>
-                    <span class="ml-3 font-medium">Garnachas</span>
-                </li>
-                <li class="flex items-center p-3 rounded-full bg-gray-200 cursor-pointer">
-                    <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-                        <img src="/images/tamales.png" alt="Tamales" class="w-6 h-6">
-                    </div>
-                    <span class="ml-3 font-medium">Tamales</span>
-                </li>
+                @endforeach
             </ul>
         </div>
         <!-- Main Content -->
         <div class="col-span-1 md:col-span-2 grid grid-cols-1 gap-6">
             <!-- Large Recipe Card -->
+            @foreach ($recipes as $recipe)
             <div class="bg-white rounded-lg shadow-md p-6 flex flex-col md:flex-row">
-                <img src="https://cdn.pixabay.com/photo/2021/01/20/04/22/fajitas-5933057_1280.jpg" alt="Ensalada Cítrica" class="w-full md:w-32 h-32 rounded-lg">
+                <img src="{{ asset($recipe->image) }}" alt="Ensalada Cítrica" class="w-full md:w-32 h-32 rounded-lg">
                 <div class="ml-0 md:ml-4 mt-4 md:mt-0">
-                    <h3 class="text-xl font-bold">Bistec a la Mexicana</h3>
-                    <p class="text-gray-600 text-sm">
-                        Para tu menú de la semana, agrega este BISTEC a la MEXICANA. El chile serrano y la cebolla no pueden faltan en esta receta.
-                    </p>
+                    <h3 class="text-xl font-bold">{{ $recipe->title }}</h3>
+                        {!! $recipe->description !!}
                     <div class="flex mt-2 text-sm font-secondary">
-                        <span class="mr-4">👥 Porciones</span>
-                        <span>⏳ Tiempo de preparación <strong>1h 15m</strong></span>
+                        <span class="mr-4">👥 {{ $recipe->servings }}</span>
+                        <span>⏳ Tiempo de preparación 
+                            <strong>
+                                @if ($recipe->cook_time > 60)
+                                    {{ intdiv($recipe->cook_time, 60) }}h {{ $recipe->cook_time % 60 }}m
+                                @else
+                                    {{ $recipe->cook_time }}m
+                                @endif
+                            </strong>
+                        </span>
                     </div>
                 </div>
             </div>
-            <div class="bg-white rounded-lg shadow-md p-6 flex flex-col md:flex-row">
-                <img src="https://cdn.pixabay.com/photo/2021/01/20/04/22/fajitas-5933057_1280.jpg" alt="Ensalada Cítrica" class="w-full md:w-32 h-32 rounded-lg">
-                <div class="ml-0 md:ml-4 mt-4 md:mt-0">
-                    <h3 class="text-xl font-bold">Bistec a la Mexicana</h3>
-                    <p class="text-gray-600 text-sm">
-                        Para tu menú de la semana, agrega este BISTEC a la MEXICANA. El chile serrano y la cebolla no pueden faltan en esta receta.
-                    </p>
-                    <div class="flex mt-2 text-sm font-secondary">
-                        <span class="mr-4">👥 Porciones</span>
-                        <span>⏳ Tiempo de preparación <strong>1h 15m</strong></span>
-                    </div>
-                </div>
-            </div>
-            <div class="bg-white rounded-lg shadow-md p-6 flex flex-col md:flex-row">
-                <img src="https://cdn.pixabay.com/photo/2021/01/20/04/22/fajitas-5933057_1280.jpg" alt="Ensalada Cítrica" class="w-full md:w-32 h-32 rounded-lg">
-                <div class="ml-0 md:ml-4 mt-4 md:mt-0">
-                    <h3 class="text-xl font-bold">Bistec a la Mexicana</h3>
-                    <p class="text-gray-600 text-sm">
-                        Para tu menú de la semana, agrega este BISTEC a la MEXICANA. El chile serrano y la cebolla no pueden faltan en esta receta.
-                    </p>
-                    <div class="flex mt-2 text-sm font-secondary">
-                        <span class="mr-4">👥 Porciones</span>
-                        <span>⏳ Tiempo de preparación <strong>1h 15m</strong></span>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
         <div class="col-span-1 grid grid-cols-1 gap-6">
             <!-- Smaller Recipe Cards -->
@@ -150,3 +105,4 @@
         </div>
     </div>
 </section>
+
