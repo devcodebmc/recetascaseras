@@ -61,7 +61,7 @@ class RecipeController extends Controller
             'video_url' => 'nullable|url|max:255',
             'tags' => 'nullable|array',
             'tags.*' => 'string|max:50',
-            'secondary_images.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:10240',
+            'recipe_images.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:10240',
         ]);
 
         // Subir imagen principal si se proporciona
@@ -170,9 +170,74 @@ class RecipeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Recipe $recipe)
     {
-        //
+        // dd($request->ingredients);
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'ingredients' => 'required|array|min:1',  // Primero valida que sea array
+            'steps' => 'required|array',
+            'prep_time' => 'required|integer|min:1',
+            'cook_time' => 'required|integer|min:1',
+            'servings' => 'required|integer|min:1',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:10240',
+            'video_url' => 'nullable|url|max:255',
+            'tags' => 'nullable|array',
+            'tags.*' => 'string|max:50',
+            'recipe_images.*' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:10240',
+        ]);
+
+        // Procesar imagen principal si se cambió
+        $image = $recipe->image;
+        if ($request->hasFile('image')) {
+            // Eliminar la imagen anterior si existe
+            if ($recipe->image) {
+                $oldImagePath = str_replace('/storage', 'public', $recipe->image);
+                Storage::delete($oldImagePath);
+            }
+            
+            // Subir la nueva imagen
+            $imagePath = $request->file('image')->store('recipes', 'public');
+            $image = Storage::url($imagePath);
+        }
+
+        // Actualizar la receta
+        $recipe->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'ingredients' => json_encode($request->ingredients),
+            'steps' => json_encode($request->steps),
+            'prep_time' => $request->prep_time,
+            'cook_time' => $request->cook_time,
+            'servings' => $request->servings,
+            'category_id' => $request->category_id,
+            'image' => $image,
+            'video_url' => $request->video_url,
+        ]);
+
+        // Sincronizar tags (maneja automáticamente las que se quitaron)
+        if ($request->has('tags')) {
+            $recipe->tags()->sync($request->tags);
+        }
+
+        // Añadir nuevas imágenes secundarias
+        if ($request->hasFile('recipe_images')) {
+            foreach ($request->file('recipe_images') as $key => $file) {
+                $secondaryImagePath = $file->store('recipe_images', 'public');
+                $secondaryImage = Storage::url($secondaryImagePath);
+                
+                RecipeImage::create([
+                    'recipe_id' => $recipe->id,
+                    'image_path' => $secondaryImage,
+                    'order' => $key,
+                ]);
+            }
+        }
+
+        return redirect()->route('recipes.index', $recipe->id)
+            ->with('success', 'Receta actualizada con éxito.');
     }
 
     /**

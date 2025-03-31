@@ -11,10 +11,11 @@
             @method('POST')
             <!-- Icono para retornar al listado de recetas -->
             <div class="flex justify-end items-center">
-                <a href="{{ route('recipes.index') }}" class="text-gray-500 hover:text-gray-600 transition duration-200 flex items-center" title="Volver al listado de recetas">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                <a href="{{ route('recipes.index') }}" class="text-indigo-500 hover:text-indigo-600 transition duration-200 flex items-center font-semibold" title="Volver al listado de recetas">
+                   <small>Regresar al listado de recetas</small> 
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 ml-2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h16.5" />
-                    </svg>                                                                
+                    </svg>
                 </a>
             </div>
             <!-- Título de la Receta (Ocupa todo el ancho) -->
@@ -97,60 +98,93 @@
                         <div id="ingredientes-container" class="space-y-3">
                             @if(old('ingredients'))
                                 @foreach(old('ingredients') as $ingredient)
-                                    <div class="flex items-center gap-2">
-                                        <input type="text" name="ingredients[]" class="flex-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" value="{{ $ingredient }}">
-                                        <button type="button" onclick="this.parentElement.remove()" class="px-1 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-200">
+                                    @if(!empty(trim($ingredient)))
+                                    <div class="ingredient-row flex items-center gap-2">
+                                        <input type="text" name="ingredients[]" value="{{ $ingredient }}" 
+                                            class="ingredient-input flex-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200">
+                                        <button type="button" onclick="removeRow(this)" class="remove-btn px-1 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-200">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
                                             </svg>
                                         </button>
                                     </div>
+                                    @endif
                                 @endforeach
+                            @else
+                                <!-- Campo inicial visible -->
+                                <div class="ingredient-row flex items-center gap-2">
+                                    <input type="text" name="ingredients[]" 
+                                        class="ingredient-input flex-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200"
+                                        placeholder="Ejemplo: 2 tazas de harina">
+                                    <button type="button" onclick="removeRow(this)" class="remove-btn px-1 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-200">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+                                        </svg>
+                                    </button>
+                                </div>
                             @endif
-                            <!-- Fila vacía para nuevo ingrediente -->
-                            <div class="flex items-center gap-2">
-                                <input type="text" name="ingredients[]" class="flex-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ejemplo: 2 tazas de harina">
-                                <button type="button" onclick="agregarIngrediente()" class="px-1 py-1 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition duration-200">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m-7-7h14" />
-                                    </svg>
-                                </button>
-                            </div>
+                        </div>
+                        <div class="flex justify-end items-center gap-4 mt-2">
+                            <label class="block text-sm font-medium text-gray-700">
+                                Agregar Ingrediente
+                            </label>
+                            <button type="button" onclick="addIngredient()" class="px-1 py-1 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition duration-200 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m-7-7h14" />
+                                </svg>
+                            </button>
                         </div>
                         @error('ingredients')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
-                    </div>    
+                    </div>
+
                     <!-- Pasos de Preparación -->
-                    <div>
+                    <div class="mt-6">
                         <label class="block text-sm font-medium text-gray-700 mb-2">Pasos</label>
                         <div id="pasos-container" class="space-y-3">
                             @if(old('steps'))
                                 @foreach(old('steps') as $step)
-                                    <div class="flex items-center gap-2">
-                                        <input type="text" name="steps[]" class="flex-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" value="{{ $step }}">
-                                        <button type="button" onclick="this.parentElement.remove()" class="px-1 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-200">
+                                    @if(!empty(trim($step)))
+                                    <div class="step-row flex items-center gap-2">
+                                        <textarea name="steps[]" rows="2"
+                                            class="step-input flex-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200">{{ $step }}</textarea>
+                                        <button type="button" onclick="removeRow(this)" class="remove-btn px-1 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-200">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
                                             </svg>
                                         </button>
                                     </div>
+                                    @endif
                                 @endforeach
+                            @else
+                                <!-- Campo inicial visible -->
+                                <div class="step-row flex items-center gap-2">
+                                    <textarea name="steps[]" rows="2"
+                                        class="step-input flex-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200"
+                                        placeholder="Ejemplo: Mezcla los ingredientes secos..."></textarea>
+                                    <button type="button" onclick="removeRow(this)" class="remove-btn px-1 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-200">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+                                        </svg>
+                                    </button>
+                                </div>
                             @endif
-                            <!-- Fila vacía para nuevo paso -->
-                            <div class="flex items-center gap-2">
-                                <input type="text" name="steps[]" class="flex-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200" placeholder="Ejemplo: Mezcla los ingredientes...">
-                                <button type="button" onclick="agregarPaso()" class="px-1 py-1 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition duration-200">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m-7-7h14" />
-                                    </svg>
-                                </button>
-                            </div>
+                        </div>
+                        <div class="flex justify-end items-center gap-4 mt-2">
+                            <label class="block text-sm font-medium text-gray-700">
+                                Agregar Paso
+                            </label>
+                            <button type="button" onclick="addStep()" class="px-1 py-1 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition duration-200 flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m-7-7h14" />
+                                </svg>
+                            </button>
                         </div>
                         @error('steps')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror
-                    </div>              
+                    </div>
                     <!-- Imagen de Portada -->
                     <div>
                         <label for="image" class="block text-sm font-medium text-gray-700 mb-2">
@@ -215,7 +249,7 @@
 
                     <!-- Botón de Envío -->
                     <div class="mt-8">
-                        <button type="submit" class="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-3 px-4 rounded-lg transition duration-200">
+                        <button type="submit" class="w-full text-sm font-medium rounded-md text-white bg-indigo-500 hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 py-3 px-4 transition duration-200">
                             Guardar Receta
                         </button>
                     </div>
@@ -312,71 +346,88 @@
             }
 
         });
-        // Función para agregar más campos de ingredientes
-        function agregarIngrediente() {
-            let container = document.getElementById('ingredientes-container');
-            
-            // Crear el nuevo div para el ingrediente
-            let div = document.createElement('div');
-            div.classList.add('flex', 'items-center', 'gap-2');
 
-            // Crear el input
-            let input = document.createElement('input');
-            input.type = 'text';
-            input.name = 'ingredients[]';
-            input.classList.add('flex-1', 'p-2', 'border', 'border-gray-300', 'rounded-lg', 'shadow-sm', 'focus:border-indigo-500', 'focus:ring-2', 'focus:ring-indigo-200', 'transition', 'duration-200');
-
-            // Crear el botón de eliminar
-            let button = document.createElement('button');
-            button.type = 'button';
-            button.classList.add('px-1', 'py-1', 'bg-red-500', 'text-white', 'rounded-full', 'hover:bg-red-600', 'transition', 'duration-200');
-            button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
-                                </svg>`;
-            button.onclick = function () {
-                div.remove();
-            };
-
-            // Agregar input y botón al div
-            div.appendChild(input);
-            div.appendChild(button);
-
-            // Insertar el nuevo ingrediente despues del último input
-            container.insertBefore(div, container.lastElementChild.nextSibling);
+        // Función para agregar ingredientes
+        function addIngredient() {
+            const container = document.getElementById('ingredientes-container');
+            const newRow = document.createElement('div');
+            newRow.className = 'ingredient-row flex items-center gap-2';
+            newRow.innerHTML = `
+                <input type="text" name="ingredients[]" 
+                    class="ingredient-input flex-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200"
+                    placeholder="Ejemplo: 2 tazas de harina">
+                <button type="button" onclick="removeRow(this)" class="remove-btn px-1 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+                    </svg>
+                </button>
+            `;
+            container.appendChild(newRow);
+            newRow.querySelector('input').focus();
         }
 
-
-        // Función para agregar más campos de pasos
-        function agregarPaso() {
-            let container = document.getElementById('pasos-container');
-            
-            // Crear el nuevo div para el paso
-            let div = document.createElement('div');
-            div.classList.add('flex', 'items-center', 'gap-2');
-
-            // Crear el input
-            let input = document.createElement('input');
-            input.type = 'text';
-            input.name = 'steps[]';
-            input.classList.add('flex-1', 'p-2', 'border', 'border-gray-300', 'rounded-lg', 'shadow-sm', 'focus:border-indigo-500', 'focus:ring-2', 'focus:ring-indigo-200', 'transition', 'duration-200');
-
-            // Crear el botón de eliminar
-            let button = document.createElement('button');
-            button.type = 'button';
-            button.classList.add('px-1', 'py-1', 'bg-red-500', 'text-white', 'rounded-full', 'hover:bg-red-600', 'transition', 'duration-200');
-            button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
-                                </svg>`;
-            button.onclick = function () {
-                div.remove();
-            };
-
-            // Agregar input y botón al div
-            div.appendChild(input);
-            div.appendChild(button);
-
-            // Insertar el nuevo ingrediente despues del último input
-            container.insertBefore(div, container.lastElementChild.nextSibling);
+        // Función para agregar pasos
+        function addStep() {
+            const container = document.getElementById('pasos-container');
+            const newRow = document.createElement('div');
+            newRow.className = 'step-row flex items-center gap-2';
+            newRow.innerHTML = `
+                <textarea name="steps[]" rows="2"
+                    class="step-input flex-1 p-2 border border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition duration-200"
+                    placeholder="Ejemplo: Mezcla los ingredientes secos..."></textarea>
+                <button type="button" onclick="removeRow(this)" class="remove-btn px-1 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+                    </svg>
+                </button>
+            `;
+            container.appendChild(newRow);
+            newRow.querySelector('textarea').focus();
         }
+
+        // Función genérica para eliminar filas
+        function removeRow(button) {
+            const row = button.closest('.ingredient-row, .step-row');
+            if (row) {
+                // No permitir eliminar el último campo de ingredientes/pasos
+                const container = row.parentElement;
+                const rows = container.querySelectorAll('.ingredient-row, .step-row');
+                
+                if (rows.length > 1) {
+                    row.remove();
+                } else {
+                    // Limpiar el campo en lugar de eliminarlo
+                    const input = row.querySelector('input, textarea');
+                    if (input) input.value = '';
+                    input.focus();
+                }
+            }
+        }
+
+        // Limpiar campos vacíos antes de enviar el formulario
+        document.querySelector('form').addEventListener('submit', function(e) {
+            // Limpiar ingredientes vacíos
+            document.querySelectorAll('.ingredient-input').forEach(input => {
+                if (!input.value.trim()) {
+                    input.closest('.ingredient-row')?.remove();
+                }
+            });
+            
+            // Limpiar pasos vacíos
+            document.querySelectorAll('.step-input').forEach(input => {
+                if (!input.value.trim()) {
+                    input.closest('.step-row')?.remove();
+                }
+            });
+            
+            // Validar que haya al menos un ingrediente y un paso
+            const ingredientes = document.querySelectorAll('.ingredient-row').length;
+            const pasos = document.querySelectorAll('.step-row').length;
+            
+            if (ingredientes === 0 || pasos === 0) {
+                e.preventDefault();
+                alert('Debe agregar al menos un ingrediente y un paso de preparación');
+            }
+        });
     </script>
 </x-app-layout>
