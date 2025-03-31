@@ -46,7 +46,6 @@ class RecipeController extends Controller
      */
     public function create()
     {
-        
         $categories = Category::select('id', 'name')->orderBy('name', 'asc')->get();
         // Obtener el valor antiguo de 'description' si existe
         $oldDescription = old('description', '');
@@ -145,13 +144,24 @@ class RecipeController extends Controller
     public function edit($id)
     {
         $recipe = Recipe::with(['category', 'tags', 'images'])->findOrFail($id);
-        
+
+        // Validar autenticación
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+
+        // Validar roles y propiedad de la receta
+        if (auth()->user()->role === 'user' && $recipe->user_id !== auth()->id()) {
+            abort(403, 'No tienes permiso para editar esta receta.');
+        }
+
+        // Los roles 'admin' y 'editor' pueden editar cualquier receta
         $categories = Category::all();
         $tags = Tag::all();
 
         // Convertir ingredientes a array si es necesario
         $ingredients = $this->convertToArray($recipe->ingredients);
-        
+
         // Convertir pasos a array si es necesario
         $steps = $this->convertToArray($recipe->steps);
 
@@ -188,12 +198,21 @@ class RecipeController extends Controller
      */
     public function update(Request $request, Recipe $recipe)
     {
-        // dd($request->ingredients);
+        // Validar autenticación
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+
+        // Validar roles y propiedad de la receta
+        if (auth()->user()->role === 'user' && $recipe->user_id !== auth()->id()) {
+            abort(403, 'No tienes permiso para editar esta receta.');
+        }
+
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'category_id' => 'required|exists:categories,id',
-            'ingredients' => 'required|array|min:1',  // Primero valida que sea array
+            'ingredients' => 'required|array|min:1',
             'steps' => 'required|array',
             'prep_time' => 'required|integer|min:1',
             'cook_time' => 'required|integer|min:1',
@@ -213,7 +232,7 @@ class RecipeController extends Controller
                 $oldImagePath = str_replace('/storage', 'public', $recipe->image);
                 Storage::delete($oldImagePath);
             }
-            
+
             // Subir la nueva imagen
             $imagePath = $request->file('image')->store('recipes', 'public');
             $image = Storage::url($imagePath);
@@ -233,7 +252,7 @@ class RecipeController extends Controller
             'video_url' => $request->video_url,
         ]);
 
-        // Sincronizar tags (maneja automáticamente las que se quitaron)
+        // Sincronizar tags
         if ($request->has('tags')) {
             $recipe->tags()->sync($request->tags);
         }
@@ -243,7 +262,7 @@ class RecipeController extends Controller
             foreach ($request->file('recipe_images') as $key => $file) {
                 $secondaryImagePath = $file->store('recipe_images', 'public');
                 $secondaryImage = Storage::url($secondaryImagePath);
-                
+
                 RecipeImage::create([
                     'recipe_id' => $recipe->id,
                     'image_path' => $secondaryImage,
@@ -264,7 +283,18 @@ class RecipeController extends Controller
      */
     public function destroy($id)
     {
+        // Validar autenticación
+        if (!auth()->check()) {
+            return redirect()->route('login');
+        }
+
         $recipe = Recipe::findOrFail($id);
+
+        // Validar roles y propiedad de la receta
+        if (auth()->user()->role === 'user' && $recipe->user_id !== auth()->id()) {
+            abort(403, 'No tienes permiso para eliminar esta receta.');
+        }
+
         $recipe->delete();
         return redirect()->route('recipes.index')->with('success', 'Receta enviada a la papelera correctamente.');
     }

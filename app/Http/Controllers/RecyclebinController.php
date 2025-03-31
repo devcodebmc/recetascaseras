@@ -15,59 +15,78 @@ class RecyclebinController extends Controller
      */
     public function index()
     {
-        $recipes = Recipe::onlyTrashed()->orderBy('deleted_at', 'DESC')->paginate(10);
+        // Base query para recetas eliminadas
+        $query = Recipe::onlyTrashed()->orderBy('deleted_at', 'DESC');
+        
+        // Si el usuario es 'user', solo verá sus propias recetas eliminadas
+        if (auth()->user()->role === 'user') {
+            $query->where('user_id', auth()->id());
+        }
+        // Admin y editor ven todas las recetas eliminadas
+        
+        $recipes = $query->paginate(10);
         return view('recyclebin.index', compact('recipes'));
     }
+
     public function restore($id)
     {
         $recipe = Recipe::withTrashed()->where('id', $id)->first();
+        
+        // Verificar existencia y permisos
+        if (!$recipe) {
+            return redirect()->route('recyclebin.index')->with('error', 'Receta no encontrada');
+        }
+        
+        // Solo el propietario o admin/editor pueden restaurar
+        if (auth()->user()->role !== 'admin' && auth()->user()->role !== 'editor' && $recipe->user_id !== auth()->id()) {
+            return redirect()->route('recyclebin.index')->with('error', 'No tienes permiso para restaurar esta receta');
+        }
+        
         $recipe->restore();
         return redirect()->route('recipes.index')->with('success', 'Receta restaurada correctamente');
     }
+
     public function destroy($id)
     {
-        // Buscar la receta (incluyendo las eliminadas con soft delete)
         $recipe = Recipe::withTrashed()->where('id', $id)->first();
 
-        // Verificar si la receta existe
         if (!$recipe) {
             return redirect()->route('recyclebin.index')->with('error', 'Receta no encontrada');
+        }
+        
+        // Verificar permisos para eliminación permanente
+        if (auth()->user()->role !== 'admin' && auth()->user()->role !== 'editor' && $recipe->user_id !== auth()->id()) {
+            return redirect()->route('recyclebin.index')->with('error', 'No tienes permiso para eliminar esta receta');
         }
 
         try {
             // Desasociar etiquetas
             $recipe->tags()->detach();
 
-            // Eliminar la imagen principal de la receta si existe
+            // Eliminar imagen principal
             if ($recipe->image) {
-                // Eliminar el prefijo "/storage" de la ruta
                 $imagePath = str_replace('/storage', 'public', $recipe->image);
                 if (Storage::exists($imagePath)) {
                     Storage::delete($imagePath);
                 }
             }
 
-            // Eliminar imágenes asociadas y sus archivos
+            // Eliminar imágenes asociadas
             $images = $recipe->images;
             foreach ($images as $image) {
-                // Eliminar el prefijo "/storage" de la ruta
                 $imagePath = str_replace('/storage', 'public', $image->image_path);
                 if (Storage::exists($imagePath)) {
                     Storage::delete($imagePath);
                 }
-                // Eliminar el registro de la imagen de la base de datos
                 $image->delete();
             }
 
-            // Forzar la eliminación de la receta (incluyendo soft delete)
+            // Eliminación permanente
             $recipe->forceDelete();
 
-            // Redirigir con mensaje de éxito
             return redirect()->route('recyclebin.index')->with('success', 'Receta eliminada definitivamente');
         } catch (\Exception $e) {
-            // Manejar errores y redirigir con mensaje de error
             return redirect()->route('recyclebin.index')->with('error', 'Error al eliminar la receta: ' . $e->getMessage());
         }
     }
-    
 }
