@@ -6,6 +6,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\FetchTagController;
+use App\Http\Controllers\RecipeImageController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,6 +35,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('tags', TagController::class);
     Route::resource('recipes', RecipeController::class);
     Route::get('/fetch-tags', [FetchTagController::class, 'index'])->name('fetch-tags.index');
+    Route::delete('/recipes/images/{recipeImage}', [RecipeImageController::class, 'destroy'])->name('recipes.images.destroy');
+
 
     // Recyclebin routes
     Route::get('/recyclebin', [App\Http\Controllers\RecyclebinController::class, 'index'])->name('recyclebin.index');

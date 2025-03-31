@@ -5,6 +5,8 @@
         </h2>
     </x-slot>
 
+    @include('components.flash-notification')
+
     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <form action="{{ route('recipes.update', $recipe->id) }}" method="POST" enctype="multipart/form-data" class="bg-white p-8 rounded-lg shadow-lg">
             @csrf
@@ -315,43 +317,97 @@
         })();
     </script>
     <script>
-        // Función para eliminar imágenes existentes via Fetch
-        async function deleteImage(button) {
-            const imageContainer = button.parentElement;
-            const imageId = imageContainer.getAttribute('data-image-id');
-            
-            try {
-                const response = await fetch(`/images/${imageId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    }
-                });
+        let currentDeleteCallback = null;
 
-                if (response.ok) {
-                    // Eliminar el contenedor de la imagen del DOM
-                    imageContainer.remove();
-                    
-                    // Mostrar notificación de éxito
-                    showNotification('Imagen eliminada correctamente', 'success');
-                } else {
-                    const errorData = await response.json();
-                    throw new Error(errorData.message || 'Error al eliminar la imagen');
+        function showConfirm(message, callback) {
+        document.getElementById('custom-confirm').classList.remove('hidden');
+        document.getElementById('confirm-message').textContent = message;
+        currentDeleteCallback = callback;
+        }
+
+        function hideConfirm() {
+        document.getElementById('custom-confirm').classList.add('hidden');
+        currentDeleteCallback = null;
+        }
+
+    async function deleteImage(button) {
+        // Verificar que el botón y su parentElement existan
+        if (!button || !button.parentElement) {
+            console.error('Elemento de imagen no encontrado');
+            return;
+        }
+
+        const imageContainer = button.parentElement;
+        const imageId = imageContainer.getAttribute('data-image-id');
+
+        try {
+            // Mostrar spinner de carga
+            button.disabled = true;
+            button.innerHTML = `
+                <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            `;
+
+            const response = await fetch(`/recipes/images/${imageId}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json'
                 }
-            } catch (error) {
-                console.error('Error:', error);
-                showNotification(error.message, 'error');
+            });
+
+            if (response.ok) {
+                imageContainer.remove();
+                showFlashMessage('Imagen eliminada correctamente', true);
+            } else {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Error al eliminar la imagen');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showFlashMessage(error.message, false);
+            
+            // Restaurar botón si aún existe
+            if (button.parentElement) {
+                button.disabled = false;
+                button.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"/>
+                    </svg>
+                `;
             }
         }
+    }
 
-        // Función para mostrar notificaciones
-        function showNotification(message, type = 'success') {
-            // Implementa tu sistema de notificaciones preferido
-            // Puedes usar Toastr, SweetAlert2 o un div simple
-            alert(`${type.toUpperCase()}: ${message}`); // Ejemplo básico
+    // Función para mostrar notificaciones flash
+    function showFlashMessage(message, isSuccess) {
+        const flashMessage = document.getElementById('flash-message');
+        const flashIcon = document.getElementById('flash-icon');
+        const flashText = document.getElementById('flash-text');
+        
+        if (!flashMessage || !flashIcon || !flashText) return;
+        
+        flashText.textContent = message;
+        
+        // Cambiar icono y color según el tipo de mensaje
+        if (isSuccess) {
+            flashIcon.classList.remove('text-red-500');
+            flashIcon.classList.add('text-green-500');
+            flashIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />';
+        } else {
+            flashIcon.classList.remove('text-green-500');
+            flashIcon.classList.add('text-red-500');
+            flashIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />';
         }
+        
+        // Mostrar y ocultar después de 5 segundos
+        flashMessage.classList.remove('hidden');
+        setTimeout(() => {
+            flashMessage.classList.add('hidden');
+        }, 5000);
+    }
 
         // Manejo de nuevas imágenes (igual que antes)
         document.addEventListener('DOMContentLoaded', function() {
