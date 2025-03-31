@@ -12,9 +12,9 @@
             @auth
                 <a href="{{ url('/dashboard') }}" class="text-black">Dashboard</a>
             @else
-                <a href="{{ route('login') }}" class="text-black">Iniciar Sesión</a>
+                <a href="{{ route('login') }}" target="_blank" rel="noopener noreferrer" class="text-black">Iniciar Sesión</a>
                 @if (Route::has('register'))
-                    <a href="{{ route('register') }}" class="bg-white px-4 py-2 rounded-full text-black">Registrarse</a>
+                    <a href="{{ route('register') }}" target="_blank" rel="noopener noreferrer" class="bg-white px-4 py-2 rounded-full text-black">Registrarse</a>
                 @endif
             @endauth
         @endif
@@ -37,10 +37,10 @@
                 </li>
             @else
                 <li>
-                    <a href="{{ route('login') }}" class="text-black">Iniciar Sesión</a>
+                    <a href="{{ route('login') }}" target="_blank" rel="noopener noreferrer" class="text-black">Iniciar Sesión</a>
                 </li>
                 @if (Route::has('register'))
-                    <li><a href="{{ route('register') }}" class="bg-white px-4 py-2 rounded-full text-black">Registrarse</a></li>
+                    <li><a href="{{ route('register') }}" target="_blank" rel="noopener noreferrer" class="bg-white px-4 py-2 rounded-full text-black">Registrarse</a></li>
                 @endif
             @endauth
         @endif
