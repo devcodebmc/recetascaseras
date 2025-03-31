@@ -1,11 +1,11 @@
 <section>
     <header>
         <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Profile Information') }}
+            {{ __('Información del Perfil') }}
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
-            {{ __("Update your account's profile information and email address.") }}
+            {{ __("Actualiza la información del perfil y la dirección de correo electrónico de tu cuenta.") }}
         </p>
     </header>
 
@@ -21,6 +21,12 @@
             <x-input-label for="name" :value="__('Name')" />
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
+        </div>
+
+        <div>
+            <x-input-label for="role" :value="__('Role')" />
+            <x-text-input id="role" name="role" type="text" class="mt-1 block w-full" :value="old('role', $user->role)" disabled/>
+            <x-input-error class="mt-2" :messages="$errors->get('role')" />
         </div>
 
         <div>
