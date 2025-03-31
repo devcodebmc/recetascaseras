@@ -19,7 +19,23 @@ class RecipeController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $recipes = Recipe::orderBy('updated_at', 'DESC')->search($search)->paginate(5);
+
+         // Verificar si el usuario está autenticado
+        if (!auth()->check()) {
+            return redirect()->route('login'); // O manejar usuarios no autenticados
+        }
+        
+        // Base query con ordenación y búsqueda
+        $query = Recipe::orderBy('updated_at', 'DESC')->search($search);
+        
+        // Filtrar según el rol del usuario
+        if (auth()->user()->role === 'user') {
+            $query->where('user_id', auth()->id()); // Solo recetas del usuario actual
+        }
+        // Los roles 'admin' y 'editor' ven todas las recetas sin filtro
+        
+        $recipes = $query->paginate(5);
+        
         return view('recipes.index', compact('recipes'));
     }
 
