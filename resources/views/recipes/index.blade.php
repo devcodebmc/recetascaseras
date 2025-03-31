@@ -132,15 +132,34 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center space-x-2">
+                                            <!-- Icono para cambiar estado (solo para admin/editor) -->
+                                            @if(in_array(auth()->user()->role, ['admin', 'editor']))
+                                                <form action="{{ route('recipes.update-status', $recipe->id) }}" method="POST" class="inline mr-1">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <input type="hidden" name="new_status" value="{{ $recipe->status == 'draft' ? 'published' : 'draft' }}">
+                                                    <button type="submit" class="text-gray-500 {{ $recipe->status == 'draft' ? 'hover:text-green-600' : 'hover:text-yellow-500'}}" title="{{ $recipe->status == 'draft' ? 'Publicar' : 'Marcar como borrador' }}">
+                                                        @if($recipe->status == 'draft')
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                            </svg>
+                                                        @else
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-h h-6">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3" />
+                                                            </svg>  
+                                                        @endif
+                                                    </button>
+                                                </form>
+                                            @endif
                                             <!-- Icono de editar -->
-                                            <a href="{{ route('recipes.edit', $recipe->id) }}" class="text-gray-500 hover:text-indigo-600 mb-1" title="Editar">
+                                            <a href="{{ route('recipes.edit', $recipe->id) }}" class="text-gray-500 hover:text-indigo-600 mb-2" title="Editar">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                                 </svg>
                                             </a>
-                                    
+                                            
                                             <!-- Icono de mover a la papelera -->
-                                            <form action="{{ route('recipes.destroy', $recipe->id) }}" method="POST">
+                                            <form action="{{ route('recipes.destroy', $recipe->id) }}" method="POST" class="inline">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="text-gray-500 hover:text-red-600" title="Mover a la papelera">
@@ -163,6 +182,19 @@
                 <div id="grid-view-container" class="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     @foreach ($recipes as $recipe)
                         <div class="relative bg-cover bg-center rounded-lg shadow-md h-48 group" style="background-image: url('{{ asset($recipe->image) }}');">
+                            <!-- Badge de estado en la esquina superior izquierda -->
+                            <div class="absolute top-2 left-2 z-10">
+                                @if ($recipe->status == 'draft')
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-400 text-yellow-800">
+                                        Borrador
+                                    </span>
+                                @else
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-400 text-green-800">
+                                        Publicado
+                                    </span>
+                                @endif
+                            </div>
+                            
                             <div class="absolute inset-0 bg-black bg-opacity-50 rounded-lg p-4 flex flex-col justify-end transition-all duration-300 hover:bg-opacity-65 group">
                                 <!-- Título con mejor contraste -->
                                 <div class="text-sm font-semibold text-white group-hover:text-yellow-300 transition-colors duration-300">
@@ -173,7 +205,7 @@
                                     {{ $recipe->updated_at->format('d/m/Y h:i a') }}
                                 </div>
                             </div>
-                                                           
+                                                                    
                             <!-- Menú de tres puntos y dropdown de acciones -->
                             <div class="absolute top-2 right-2">
                                 <!-- Botón de tres puntos -->
@@ -184,6 +216,26 @@
                                 <!-- Dropdown de acciones -->
                                 <div id="dropdown-{{ $recipe->id }}" class="dropdown-content hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
                                     <div class="py-1">
+                                        @if(in_array(auth()->user()->role, ['admin', 'editor']))
+                                            <form action="{{ route('recipes.update-status', $recipe->id) }}" method="POST" class="block w-full text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                @csrf
+                                                @method('PATCH')
+                                                <input type="hidden" name="new_status" value="{{ $recipe->status == 'draft' ? 'published' : 'draft' }}">
+                                                <button type="submit" class="w-full flex items-center gap-2 text-left">
+                                                    @if($recipe->status == 'draft')
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                        </svg>
+                                                        Publicar
+                                                    @else
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                        </svg>
+                                                        Marcar como borrador
+                                                    @endif
+                                                </button>
+                                            </form>
+                                        @endif
                                         <div class="block w-full text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                             <a href="{{ route('recipes.edit', $recipe->id) }}" class="w-full flex items-center gap-2 text-left" title="Editar">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -191,7 +243,8 @@
                                                 </svg>
                                                 Editar
                                             </a>
-                                        </div> 
+                                        </div>
+                                        
                                         <form action="{{ route('recipes.destroy', $recipe->id) }}" method="POST" class="block w-full text-left px-2 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                             @csrf
                                             @method('DELETE')

@@ -20,6 +20,20 @@
                     overflow-x: scroll !important;
                 }
             }
+            /* Transición suave para los iconos */
+            svg {
+                transition: all 0.2s ease;
+            }
+
+            /* Efecto de escala al hacer hover */
+            button:hover svg {
+                transform: scale(1.1);
+            }
+
+            /* Color diferente para el estado activo */
+            button:active svg {
+                transform: scale(0.95);
+            }
         </style>
     </head>
     <body class="font-sans antialiased">

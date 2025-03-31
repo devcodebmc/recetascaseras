@@ -252,4 +252,15 @@ class RecipeController extends Controller
         $recipe->delete();
         return redirect()->route('recipes.index')->with('success', 'Receta enviada a la papelera correctamente.');
     }
+
+    public function updateStatus(Request $request, Recipe $recipe)
+    {
+        $validated = $request->validate([
+            'new_status' => 'required|in:published,draft'
+        ]);
+        
+        $recipe->update(['status' => $validated['new_status']]);
+        
+        return back()->with('success', 'Estado actualizado correctamente');
+    }
 }
