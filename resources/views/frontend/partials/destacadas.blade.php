@@ -104,7 +104,7 @@
         <div class="col-span-1 grid grid-cols-1 gap-5">
             <!-- Recipe Cards with Background Image -->
             @foreach ($recipes as $key => $recipe)
-                @if ($key >= 3)
+                @if ($key >= 4)
                 <div class="relative rounded-xl shadow-lg overflow-hidden group min-h-[160px] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                     <!-- Background Image Container -->
                     <div class="absolute inset-0 bg-yellow-200">
@@ -115,7 +115,7 @@
                             loading="lazy"
                         >
                         <!-- Gradient Overlay -->
-                        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-amber-100/30 to-black/50"></div>
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-amber-100/10 to-black/60"></div>
                     </div>
                     
                     <!-- Content Container -->

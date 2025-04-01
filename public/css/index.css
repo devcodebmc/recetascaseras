@@ -25,6 +25,48 @@ p, li, a, button, input {
     text-overflow: ellipsis;
 }
 
+/* Transición suave para el modal */
+.modal-enter {
+    opacity: 0;
+}
+.modal-enter-active {
+    opacity: 1;
+    transition: opacity 200ms;
+}
+.modal-exit {
+    opacity: 1;
+}
+.modal-exit-active {
+    opacity: 0;
+    transition: opacity 200ms;
+}
+
+/* Barra de progreso para historias (opcional) */
+.story-progress {
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.3);
+    position: relative;
+}
+
+.story-progress::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    transform: scaleX(0);
+    transform-origin: left center;
+    animation: progress 8s linear forwards;
+}
+
+@keyframes progress {
+    to {
+        transform: scaleX(1);
+    }
+}
+
 /*  Resoluciones Pequeñas */
 
 @media only screen and (max-width: 599px) {

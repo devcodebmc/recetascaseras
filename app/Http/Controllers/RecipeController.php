@@ -16,27 +16,52 @@ class RecipeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $search = $request->input('search');
+        $recipes = Recipe::with('user')
+                    ->where('status', 'published')
+                    ->whereNull('deleted_at')
+                    ->orderBy('created_at', 'asc')
+                    ->limit(7)
+                    ->get();
 
-         // Verificar si el usuario está autenticado
-        if (!auth()->check()) {
-            return redirect()->route('login'); // O manejar usuarios no autenticados
-        }
+        // Obtener historias (última receta de cada usuario)
+        $stories = Recipe::select('id', 'title', 'image')
+                ->with('user:id') // Solo incluir el id del usuario relacionado
+                ->where('status', 'published')
+                ->whereNull('deleted_at')
+                ->orderBy('created_at', 'desc')
+                ->get()
+                ->unique('user_id');
+
+        // Obtener TODAS las recetas agrupadas por usuario para el modal
+        $userRecipes = Recipe::with(['user:id,name,avatar'])
+            ->select('id', 'title', 'image', 'user_id', 'created_at')
+            ->where('status', 'published')
+            ->whereNull('deleted_at')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->groupBy('user_id')
+            ->map(function($recipes) {
+                return $recipes->take(10)->map(function($recipe) {
+                    return [
+                        'id' => $recipe->id,
+                        'title' => $recipe->title,
+                        'image' => $recipe->image,
+                        'created_at' => $recipe->created_at,
+                        'user' => [
+                            'id' => $recipe->user->id,
+                            'name' => $recipe->user->name,
+                            'avatar' => $recipe->user->avatar
+                        ]
+                    ];
+                });
+            });
+
+        $categories = Category::select('id', 'name', 'icon_url', 'description')->orderBy('name', 'asc')->get();
+        $tags = Tag::select('id', 'name')->orderBy('name', 'asc')->limit(10)->get();
         
-        // Base query con ordenación y búsqueda
-        $query = Recipe::orderBy('updated_at', 'DESC')->search($search);
-        
-        // Filtrar según el rol del usuario
-        if (auth()->user()->role === 'user') {
-            $query->where('user_id', auth()->id()); // Solo recetas del usuario actual
-        }
-        // Los roles 'admin' y 'editor' ven todas las recetas sin filtro
-        
-        $recipes = $query->paginate(5);
-        
-        return view('recipes.index', compact('recipes'));
+        return view('welcome', compact('recipes', 'stories', 'userRecipes', 'categories', 'tags'));
     }
 
     /**

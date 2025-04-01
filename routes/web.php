@@ -21,6 +21,7 @@ use App\Http\Controllers\HomemadeRecipeController;
 */
 
 Route::get('/', [HomemadeRecipeController::class, 'index'])->name('welcome');
+Route::get('/stories/user/{user}', [HomemadeRecipeController::class, 'getUserStories']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
