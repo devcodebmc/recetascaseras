@@ -13,19 +13,29 @@
     <div class="flex flex-col md:flex-row">
         <!-- Etiquetas -->
         <div class="flex flex-wrap gap-4 mb-12 md:mb-0 md:w-1/4 font-secondary">
-            <span class="px-6 py-2 bg-yellow-200 rounded-full">Hamburguesa</span>
-            <span class="px-6 py-2 bg-gray-200  rounded-full">Sopa</span>
-            <span class="px-6 py-2 bg-yellow-200 rounded-full">Pescado</span>
-            <span class="px-6 py-2 bg-gray-200  rounded-full">Vegetales</span>
-            <span class="px-6 py-2 bg-gray-200  rounded-full">Ensalada</span>
-            <span class="px-6 py-2 bg-gray-200  rounded-full">Frutas</span>
-            <span class="px-6 py-2 bg-yellow-200 rounded-full">Saludable</span>
-            <span class="px-6 py-2 bg-gray-200  rounded-full">Verano</span>
-            <span class="px-6 py-2 bg-gray-200  rounded-full">Menos Gluten</span>
-            <span class="px-6 py-2 bg-yellow-200 rounded-full">Vegetariano</span>
-            <span class="px-6 py-2 bg-gray-200  rounded-full">Carne</span>
-            <span class="px-6 py-2 bg-yellow-200 rounded-full">Rápido</span>
+            @foreach ($tags as $index => $tag)
+                @php
+                    // Colores y efectos más sofisticados
+                    $colorVariants = [
+                        'bg-blue-100 text-blue-800 border border-blue-200 hover:bg-blue-200',
+                        'bg-green-100 text-green-800 border border-green-200 hover:bg-green-200',
+                        'bg-amber-100 text-amber-800 border border-amber-200 hover:bg-amber-200',
+                        'bg-purple-100 text-purple-800 border border-purple-200 hover:bg-purple-200',
+                        'bg-pink-100 text-pink-800 border border-pink-200 hover:bg-pink-200',
+                        'bg-indigo-100 text-indigo-800 border border-indigo-200 hover:bg-indigo-200',
+                        'bg-amber-100 text-amber-800 border border-amber-200 hover:bg-amber-200',
+                        'bg-rose-100 text-rose-800 border border-rose-200 hover:bg-rose-200'
+                    ];
+                    $colorIndex = $index % count($colorVariants);
+                    $currentColor = $colorVariants[$colorIndex];
+                @endphp
+                
+                <span class="px-6 py-2 rounded-full text-md font-medium {{ $currentColor }} transition-all duration-200 hover:scale-105 shadow-sm">
+                    {{ $tag->name }}
+                </span>
+            @endforeach
         </div>
+
 
         <!-- Tarjetas de platillos -->
         <div class="flex flex-wrap gap-12 md:w-3/3 mt-2">
