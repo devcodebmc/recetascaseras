@@ -32,6 +32,7 @@
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
         <!-- Sidebar Filters -->
         <div class="col-span-1 bg-white p-4 rounded-lg shadow-md">
+            <h3 class="text-2xl font-medium text-gray-800 tracking-widest mb-2">Categorías</h3>
             <ul class="space-y-4">
                 @foreach ($categories as $category)
                 <li class="flex items-center p-3 rounded-full bg-gray-200 cursor-pointer">
@@ -44,64 +45,152 @@
             </ul>
         </div>
         <!-- Main Content -->
-        <div class="col-span-1 md:col-span-2 grid grid-cols-1 gap-6">
-            <!-- Large Recipe Card -->
-            @foreach ($recipes as $recipe)
-            <div class="bg-white rounded-lg shadow-md p-6 flex flex-col md:flex-row">
-                <img src="{{ asset($recipe->image) }}" alt="Ensalada Cítrica" class="w-full md:w-32 h-32 rounded-lg">
-                <div class="ml-0 md:ml-4 mt-4 md:mt-0">
-                    <h3 class="text-xl font-bold">{{ $recipe->title }}</h3>
-                        {!! $recipe->description !!}
-                    <div class="flex mt-2 text-sm font-secondary">
-                        <span class="mr-4">👥 {{ $recipe->servings }}</span>
-                        <span>⏳ Tiempo de preparación 
-                            <strong>
+        <div class="col-span-1 md:col-span-2 grid grid-cols-1 gap-8">
+            <!-- Large Recipe Cards -->
+            @foreach ($recipes as $key => $recipe)
+                @if ($key <= 3)
+                <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <div class="flex flex-col md:flex-row h-full">
+                        <!-- Image Container - Proporción áurea responsive con imagen centrada -->
+                        <div class="md:w-2/5 lg:w-2/5 xl:w-1/3 relative">
+                            <div class="aspect-w-16 aspect-h-9 md:aspect-w-4 md:aspect-h-3 overflow-hidden">
+                                <img 
+                                    src="{{ asset($recipe->image) }}" 
+                                    alt="{{ $recipe->title }}" 
+                                    class="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
+                                    loading="lazy"
+                                >
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent md:bg-gradient-to-r md:from-black/10 md:to-transparent"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Content - Ajustado para balance visual -->
+                        <div class="p-6 md:w-3/5 lg:w-3/5 xl:w-2/3 flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-800 mb-3 tracking-widest">{{ $recipe->title }}</h3>
+                                
+                                <div class="recipe-description text-gray-600 mb-4 line-clamp-3">
+                                    {!! $recipe->description !!}
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-col sm:flex-row gap-4 text-sm text-gray-500 mt-4">
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                    </svg>
+                                    <span class="font-medium text-gray-700">{{ $recipe->servings }} porciones</span>
+                                </span>
+                                
+                                <span class="flex items-center">
+                                    <svg class="w-4 h-4 mr-2 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    <span class="font-medium text-gray-700">
+                                        @if ($recipe->cook_time > 60)
+                                            {{ intdiv($recipe->cook_time, 60) }}h {{ $recipe->cook_time % 60 }}m
+                                        @else
+                                            {{ $recipe->cook_time }}m
+                                        @endif
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
+            @endforeach
+        </div>
+        <div class="col-span-1 grid grid-cols-1 gap-5">
+            <!-- Recipe Cards with Background Image -->
+            @foreach ($recipes as $key => $recipe)
+                @if ($key >= 3)
+                <div class="relative rounded-xl shadow-lg overflow-hidden group min-h-[160px] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                    <!-- Background Image Container -->
+                    <div class="absolute inset-0 bg-yellow-200">
+                        <img 
+                            src="{{ asset($recipe->image) }}" 
+                            alt="{{ $recipe->title }}" 
+                            class="w-full h-full object-cover object-center opacity-90 group-hover:opacity-80 group-hover:scale-105 transition-all duration-500 ease-in-out"
+                            loading="lazy"
+                        >
+                        <!-- Gradient Overlay -->
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-amber-100/30 to-black/50"></div>
+                    </div>
+                    
+                    <!-- Content Container -->
+                    <div class="relative h-full flex flex-col justify-end p-5 text-white">
+                       <!-- Time Information -->
+                        <div class="flex flex-wrap items-center gap-3 text-sm">
+                            <!-- Prep Time (Knife Icon) -->
+                            <span class="flex items-center bg-black/40 rounded-full px-3 py-1 backdrop-blur-sm border border-white/10">
+                                <svg class="w-4 h-4 mr-1.5 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg> 
+                                @if ($recipe->prep_time > 60)
+                                    {{ intdiv($recipe->prep_time, 60) }}h {{ $recipe->prep_time % 60 }}m 
+                                @else
+                                    {{ $recipe->prep_time }}m 
+                                @endif
+                            </span>
+                            
+                            <!-- Cook Time (Pot Icon) -->
+                            <span class="flex items-center bg-black/40 rounded-full px-3 py-1 backdrop-blur-sm border border-white/10">
+                                <svg class="w-4 h-4 mr-1.5 text-amber-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 0 0 .495-7.468 5.99 5.99 0 0 0-1.925 3.547 5.975 5.975 0 0 1-2.133-1.001A3.75 3.75 0 0 0 12 18Z" />
+                                </svg>                                   
                                 @if ($recipe->cook_time > 60)
                                     {{ intdiv($recipe->cook_time, 60) }}h {{ $recipe->cook_time % 60 }}m
                                 @else
                                     {{ $recipe->cook_time }}m
                                 @endif
-                            </strong>
-                        </span>
+                            </span>
+                            
+                            <!-- Servings -->
+                            <span class="flex items-center bg-black/40 rounded-full px-3 py-1 backdrop-blur-sm border border-white/10">
+                                <svg class="w-4 h-4 mr-1.5 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                </svg>
+                                {{ $recipe->servings }} porciones
+                            </span>
+                            
+                            <!-- Calculated Difficulty -->
+                            @php
+                                $totalTime = ($recipe->prep_time ?? 0) + ($recipe->cook_time ?? 0);
+                                $difficulty = 'Fácil';
+                                
+                                if ($totalTime > 90 || $recipe->servings > 6) {
+                                    $difficulty = 'Difícil';
+                                } elseif ($totalTime > 45 || $recipe->servings > 4) {
+                                    $difficulty = 'Media';
+                                }
+                                
+                                $difficultyColor = [
+                                    'Fácil' => 'text-emerald-400',
+                                    'Media' => 'text-amber-400',
+                                    'Difícil' => 'text-red-400'
+                                ][$difficulty];
+                            @endphp
+                            <span class="flex items-center bg-black/40 rounded-full px-3 py-1 backdrop-blur-sm border border-white/10">
+                                <svg class="w-4 h-4 mr-1.5 {{ $difficultyColor }}" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                                </svg>
+                                {{ $difficulty }}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- Hover Effect Indicator -->
+                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <!-- Recipe Title -->
+                        <h3 class="text-lg sm:text-xl text-white font-semibold bg-black/40 backdrop-blur-md rounded-full px-4 py-2 shadow-lg tracking-widest">
+                            {{ $recipe->title }}
+                        </h3>
                     </div>
                 </div>
-            </div>
+                @endif
             @endforeach
-        </div>
-        <div class="col-span-1 grid grid-cols-1 gap-6">
-            <!-- Smaller Recipe Cards -->
-            <div class="bg-yellow-100 text-black rounded-lg shadow-md p-4 flex my-flex items-center">
-                <img src="https://editorialtelevisa.brightspotcdn.com/dims4/default/24f387f/2147483647/strip/true/crop/560x560+220+0/resize/1000x1000!/quality/90/?url=https%3A%2F%2Fk2-prod-editorial-televisa.s3.us-east-1.amazonaws.com%2Fbrightspot%2Fwp-content%2Fuploads%2F2019%2F10%2Fcomo-hacer-arroz-rojo.jpg" alt="Ensalada de Aguacate" class="w-16 h-16 rounded-full">
-                <div class="ml-4">
-                    <h3 class="text-lg font-bold">Arroz Rojo</h3>
-                    <div class="flex mt-1 text-sm font-secondary">
-                        <span class="mr-4">👥 Porciones</span>
-                        <span>⏳ Tiempo de preparación <strong>1h 30m</strong></span>
-                    </div>
-                </div>
-            </div>
-        
-            <div class="bg-white rounded-lg shadow-md p-4 flex my-flex items-center">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwJnEVS1z0vHai2XktgcR2dBzRJuEx2TiCsA&s" alt="Pasta con Pollo Verde" class="w-16 h-16 rounded-full">
-                <div class="ml-4">
-                    <h3 class="text-lg font-bold">Tinga de Pollo</h3>
-                    <div class="flex mt-1 text-sm font-secondary">
-                        <span class="mr-4">👥 Porciones</span>
-                        <span>⏳ Tiempo de preparación <strong>1h 50m</strong></span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-yellow-100 text-black rounded-lg shadow-md p-4 flex my-flex items-center">
-                <img src="https://editorialtelevisa.brightspotcdn.com/dims4/default/24f387f/2147483647/strip/true/crop/560x560+220+0/resize/1000x1000!/quality/90/?url=https%3A%2F%2Fk2-prod-editorial-televisa.s3.us-east-1.amazonaws.com%2Fbrightspot%2Fwp-content%2Fuploads%2F2019%2F10%2Fcomo-hacer-arroz-rojo.jpg" alt="Ensalada de Aguacate" class="w-16 h-16 rounded-full">
-                <div class="ml-4">
-                    <h3 class="text-lg font-bold">Arroz Rojo</h3>
-                    <div class="flex mt-1 text-sm font-secondary">
-                        <span class="mr-4">👥 Porciones</span>
-                        <span>⏳ Tiempo de preparación <strong>1h 30m</strong></span>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </section>
