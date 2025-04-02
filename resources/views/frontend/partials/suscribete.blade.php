@@ -11,7 +11,7 @@
         placeholder="Ingresa tu correo electrónico"
         class="w-full px-4 py-3 text-gray-700 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-yellow-300"
     />
-    <button class="bg-yellow-200 hover:bg-yellow-300 text-white px-6 py-3 rounded-full text-lg font-semibold transition">
+    <button class="bg-yellow-200 hover:bg-yellow-300 text-white px-6 py-3 rounded-full text-lg font-semibold transition tracking-widest">
         Suscribirse
     </button>
     </div>

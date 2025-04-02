@@ -25,7 +25,7 @@
             </p>
             <form class="flex flex-col sm:flex-row gap-4">
                 <input type="email" placeholder="Tu correo electrónico" class="w-full px-4 py-2 text-gray-700 border border-red-300 rounded-full focus:outline-none focus:ring-2 focus:ring-red-400">
-                <button class="bg-red-400 hover:bg-red-500 text-white px-6 py-2 rounded-full text-lg font-semibold transition">Suscribirse</button>
+                <button class="bg-red-400 hover:bg-red-500 text-white px-6 py-2 rounded-full text-lg font-semibold transition tracking-widest">Suscribirse</button>
             </form>
         </div>
     </div>
