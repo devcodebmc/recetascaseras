@@ -15,7 +15,7 @@ class HomemadeRecipeController extends Controller
                 ->where('status', 'published')
                 ->whereNull('deleted_at')
                 ->orderBy('created_at', 'asc')
-                ->limit(7)
+                ->limit(8)
                 ->get();
     
         // Obtener historias (última receta de cada usuario)

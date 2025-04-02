@@ -49,27 +49,24 @@
             <!-- Large Recipe Cards -->
             @foreach ($recipes as $key => $recipe)
                 @if ($key <= 3)
-                <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                <div class="bg-white rounded-xl md:rounded-l-full md:rounded-r-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
                     <div class="flex flex-col md:flex-row h-full">
-                        <!-- Image Container - Proporción áurea responsive con imagen centrada -->
-                        <div class="md:w-2/5 lg:w-2/5 xl:w-1/3 relative">
-                            <div class="aspect-w-16 aspect-h-9 md:aspect-w-4 md:aspect-h-3 overflow-hidden">
+                        <div class="md:w-1/1 p-4 flex items-center justify-center md:justify-start">
+                            <div class="relative w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 rounded-full overflow-hidden border-4 border-amber-100 shadow-inner">
                                 <img 
                                     src="{{ asset($recipe->image) }}" 
                                     alt="{{ $recipe->title }}" 
-                                    class="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
+                                    class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                                     loading="lazy"
                                 >
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent md:bg-gradient-to-r md:from-black/10 md:to-transparent"></div>
                             </div>
                         </div>
-                        
-                        <!-- Content - Ajustado para balance visual -->
-                        <div class="p-6 md:w-3/5 lg:w-3/5 xl:w-2/3 flex flex-col justify-between">
+                        <!-- Content - Ajustado para alineación perfecta -->
+                        <div class="p-6 md:w-2/3 flex flex-col justify-center">
                             <div>
                                 <h3 class="text-2xl font-bold text-gray-800 mb-3 tracking-widest">{{ $recipe->title }}</h3>
                                 
-                                <div class="recipe-description text-gray-600 mb-4 line-clamp-3">
+                                <div class="recipe-description text-gray-600 mb-1 line-clamp-4">
                                     {!! $recipe->description !!}
                                 </div>
                             </div>
@@ -100,11 +97,11 @@
                 </div>
                 @endif
             @endforeach
-        </div>
+</div>
         <div class="col-span-1 grid grid-cols-1 gap-5">
             <!-- Recipe Cards with Background Image -->
             @foreach ($recipes as $key => $recipe)
-                @if ($key >= 4)
+                @if ($key >= 4 && $key <= 7)
                 <div class="relative rounded-xl shadow-lg overflow-hidden group min-h-[160px] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                     <!-- Background Image Container -->
                     <div class="absolute inset-0 bg-yellow-200">

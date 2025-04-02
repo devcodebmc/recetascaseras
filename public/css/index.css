@@ -19,15 +19,6 @@ p, li, a, button, input {
     font-family: 'Edu VIC WA NT Beginner', sans-serif !important;
 }
 
-.recipe-description {
-    display: -webkit-box;
-    -webkit-line-clamp: 4; /* Limita el texto a n cantidad líneas */
-    line-clamp: 4;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
 /* Transición suave para el modal */
 .modal-enter {
     opacity: 0;
