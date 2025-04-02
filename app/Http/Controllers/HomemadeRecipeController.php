@@ -54,5 +54,14 @@ class HomemadeRecipeController extends Controller
         
         return view('welcome', compact('recipes', 'stories', 'userRecipes', 'categories', 'tags', 'topChefs'));
     }
+
+    public function like(Recipe $recipe)
+    {
+        $recipe->increment('likes');
+        return response()->json([
+            'success' => true,
+            'likes' => $recipe->likes
+        ]);
+    }
    
 }
