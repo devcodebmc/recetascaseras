@@ -220,7 +220,7 @@
         header.innerHTML = `
             <div class="flex items-center w-full">
                 <div class="w-8 h-8 rounded-full overflow-hidden mr-3 border-2 border-white">
-                    <img src="${story.user.avatar || '/images/default-avatar.png'}" alt="${story.user.name}" class="w-full h-full object-cover">
+                    <img src="${story.user.avatar || '/images/chef-masculino.png'}" alt="${story.user.name}" class="w-full h-full object-cover">
                 </div>
                 <div class="text-white">
                     <h3 class="font-semibold text-sm">${story.user.name}</h3>
