@@ -1,5 +1,5 @@
 <section class="py-2 pb-8 px-10 bg-white">
-    <h2 class="text-3xl font-bold mb-6">Descubre</h2>
+    <h2 class="text-3xl font-bold mb-6 tracking-widest">Descubre</h2>
 
     <!-- Categorías -->
     <div class="flex flex-wrap gap-4 text-gray-400 font-secondary mb-8 justify-center md:justify-start">

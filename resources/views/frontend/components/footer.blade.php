@@ -2,14 +2,14 @@
     <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
         <!-- About Us -->
         <div>
-            <h3 class="text-xl font-bold mb-4">Sobre Nosotros</h3>
+            <h3 class="text-xl font-bold mb-4 tracking-widest">Sobre Nosotros</h3>
             <p class="text-gray-400">
                 Recetas Caseras es tu fuente de inspiración para cocinar platos deliciosos y saludables en casa. Únete a nuestra comunidad y descubre nuevas recetas cada semana.
             </p>
         </div>
         <!-- Quick Links -->
         <div>
-            <h3 class="text-xl font-bold mb-4">Enlaces Rápidos</h3>
+            <h3 class="text-xl font-bold mb-4 tracking-widest">Enlaces Rápidos</h3>
             <ul class="space-y-2">
                 <li><a href="#" class="text-gray-400 hover:text-gray-500">Inicio</a></li>
                 <li><a href="#" class="text-gray-400 hover:text-gray-500">Recetas</a></li>
@@ -19,7 +19,7 @@
         </div>
         <!-- Newsletter -->
         <div>
-            <h3 class="text-xl font-bold mb-4">Suscríbete a Nuestro Boletín</h3>
+            <h3 class="text-xl font-bold mb-4 tracking-widest">Suscríbete a Nuestro Boletín</h3>
             <p class="text-gray-400 mb-4">
                 Recibe las últimas recetas y noticias directamente en tu bandeja de entrada.
             </p>

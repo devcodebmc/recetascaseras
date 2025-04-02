@@ -14,8 +14,8 @@ class HomemadeRecipeController extends Controller
         $recipes = Recipe::with('user')
                 ->where('status', 'published')
                 ->whereNull('deleted_at')
-                ->orderBy('created_at', 'asc')
-                ->limit(8)
+                ->orderBy('created_at', 'desc')
+                ->limit(9)
                 ->get();
     
         // Obtener historias (última receta de cada usuario)
@@ -38,11 +38,21 @@ class HomemadeRecipeController extends Controller
                 ->map(function($recipes) {
                     return $recipes->take(10); // Limitar a 10 recetas por usuario
                 });
+
+        // Obtener el top 3 de cocineros de acuerdo a la cantidad de recetas en la base de datos
+        $topChefs = Recipe::selectRaw('user_id, COUNT(*) as recipe_count')
+            ->where('status', 'published')
+            ->whereNull('deleted_at')
+            ->groupBy('user_id')
+            ->orderByDesc('recipe_count')
+            ->with('user:id,name') // Cargar información del usuario
+            ->limit(3)
+            ->get();
     
         $categories = Category::select('id', 'name', 'icon_url', 'description')->orderBy('name', 'asc')->get();
         $tags = Tag::select('id', 'name')->orderBy('name', 'asc')->limit(10)->get();
         
-        return view('welcome', compact('recipes', 'stories', 'userRecipes', 'categories', 'tags'));
+        return view('welcome', compact('recipes', 'stories', 'userRecipes', 'categories', 'tags', 'topChefs'));
     }
    
 }

@@ -1,6 +1,6 @@
 <section class="py-16 bg-[#F5F3EF]">
     <div class="max-w-7xl mx-auto px-6 text-center">
-        <h2 class="text-4xl font-bold text-gray-900">Nuestras Características</h2>
+        <h2 class="text-4xl font-bold text-gray-900 tracking-widest">Nuestras Características</h2>
         <p class="mt-4 text-gray-600 max-w-2xl mx-auto">
             Cocinar puede ser una experiencia divertida que estimula la creatividad y mejora las habilidades.
         </p>

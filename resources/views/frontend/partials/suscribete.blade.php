@@ -1,5 +1,5 @@
 <section class="bg-white py-16 px-6 md:px-12 lg:px-24 flex flex-col items-center text-center">
-    <h2 class="text-3xl md:text-4xl font-bold text-gray-900">
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-widest">
     Mantente al día con nuestras últimas recetas
     </h2>
     <p class="text-gray-600 mt-3 text-lg">

@@ -1,7 +1,7 @@
 <!-- Sección de Historias (se mantiene igual) -->
 <section class="bg-white py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold mb-6">Historias</h2>
+        <h2 class="text-3xl font-bold mb-6 tracking-widest">Historias</h2>
         <div class="flex space-x-6 overflow-x-auto pb-4 scrollbar-hide">
             @foreach ($stories as $story)
             <button class="flex flex-col items-center flex-shrink-0 group cursor-pointer" onclick="openStoriesModal({{ $story->user_id }})">
