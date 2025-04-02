@@ -4,19 +4,22 @@
         <h2 class="text-3xl font-bold mb-6">Historias</h2>
         <div class="flex space-x-6 overflow-x-auto pb-4 scrollbar-hide">
             @foreach ($stories as $story)
-            <button onclick="openStoriesModal({{ $story->user_id }})" class="flex flex-col items-center flex-shrink-0 group">
-                <div class="relative w-20 h-20 rounded-full p-1 bg-gradient-to-tr from-yellow-400 via-orange-500 to-red-500 hover:from-orange-500 hover:to-yellow-500 transition-all duration-300 group-hover:scale-105">
-                    <div class="bg-white p-0.5 rounded-full h-full w-full flex items-center justify-center">
-                        <img 
-                            src="{{ asset($story->image) }}" 
-                            alt="{{ $story->user->name }}" 
-                            class="rounded-full h-full w-full object-cover"
-                            loading="lazy"
-                        >
+            <button class="flex flex-col items-center flex-shrink-0 group cursor-pointer" onclick="openStoriesModal({{ $story->user_id }})">
+                <!-- Contenedor externo para el efecto de escala -->
+                <div class="p-1 group-hover:scale-105 transition-transform duration-300">
+                    <div class="relative w-20 h-20 rounded-full p-1 bg-gradient-to-tr from-yellow-400 via-orange-500 to-red-500 hover:from-orange-500 hover:to-yellow-500 transition-all duration-300 group-hover:scale-105">
+                        <div class="bg-white p-0.5 rounded-full h-full w-full flex items-center justify-center">
+                            <img 
+                                src="{{ asset($story->image) }}" 
+                                alt="{{ $story->user->name }}" 
+                                class="rounded-full h-full w-full object-cover"
+                                loading="lazy"
+                            >
+                        </div>
+                        @if($story->is_new)
+                        <div class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
+                        @endif
                     </div>
-                    @if($story->is_new)
-                    <div class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
-                    @endif
                 </div>
                 <span class="mt-2 text-xs font-medium text-gray-700 truncate w-20 text-center">
                     {{ $story->user->name }}

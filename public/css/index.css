@@ -1,6 +1,9 @@
 @import url('https://fonts.cdnfonts.com/css/desire-2');
 @import url('https://fonts.cdnfonts.com/css/edu-vic-wa-nt-beginner');
-
+/* 
+* {
+    border: solid 1px red !important;
+} */
 
 h1 , h2 , h3 , h4 , h5 , h6 {
     font-family: 'Desire', sans-serif !important;                
