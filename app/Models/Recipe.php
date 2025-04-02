@@ -25,6 +25,7 @@ class Recipe extends Model
         'image',
         'video_url',
         'status',
+        'likes'
     ];
     
     protected $casts = [

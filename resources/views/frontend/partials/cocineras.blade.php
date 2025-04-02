@@ -1,6 +1,6 @@
 <section class="bg-gradient-to-r from-yellow-100 to-yellow-300 py-16 px-6 md:px-12 lg:px-24 text-center rounded-3xl">
     <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 tracking-widest">
-      Conozcamos a Nuestras Cocineras de la Semana
+      Conozcamos a Nuestros Cocineros de la Semana
     </h2>
     <p class="text-gray-600 mb-8">
       Ellas destacan por su pasión, talento y experiencia en la cocina, creando platos inolvidables para nuestros paladares.

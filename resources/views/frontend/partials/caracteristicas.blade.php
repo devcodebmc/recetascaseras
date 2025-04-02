@@ -12,7 +12,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
                     </svg>
                 </div>
-                <h3 class="mt-6 text-xl font-semibold text-gray-900">Variedad de Menús</h3>
+                <h3 class="mt-6 text-xl font-semibold text-gray-900 tracking-widest">Variedad de Menús</h3>
                 <p class="text-gray-600 mt-4">Explora menús de todo el mundo y disfruta diferentes estilos culinarios.</p>
             </div>
 
@@ -22,7 +22,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3" />
                     </svg>
                 </div>
-                <h3 class="mt-6 text-xl font-semibold text-gray-900">Utensilios de Cocina</h3>
+                <h3 class="mt-6 text-xl font-semibold text-gray-900 tracking-widest">Utensilios de Cocina</h3>
                 <p class="text-gray-600 mt-4">Desde herramientas básicas hasta equipos avanzados para cocinar.</p>
             </div>
 
@@ -32,7 +32,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                     </svg>
                 </div>
-                <h3 class="mt-6 text-xl font-semibold text-gray-900">Chefs Expertos</h3>
+                <h3 class="mt-6 text-xl font-semibold text-gray-900 tracking-widest">Cocineros Expertas</h3>
                 <p class="text-gray-600 mt-4">Aprende de los mejores chefs y mejora tus habilidades culinarias.</p>
             </div>
 
@@ -42,7 +42,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4" />
                     </svg>
                 </div>
-                <h3 class="mt-6 text-xl font-semibold text-gray-900">Diversión Garantizada</h3>
+                <h3 class="mt-6 text-xl font-semibold text-gray-900 tracking-widest">Diversión Garantizada</h3>
                 <p class="text-gray-600 mt-4">Disfruta cocinando y compartiendo momentos únicos en la cocina.</p>
             </div>
         </div>
