@@ -1,10 +1,3 @@
-<style>
-    @media (prefers-color-scheme: dark) {
-        .dark\:text-neutral-200 {
-            color: inherit !important;
-        }
-    }
-</style>
 <section class="bg-[#F5F3EF] p-10">
     <!-- Contenido Principal -->
     <div class="flex flex-col md:flex-row justify-between items-center mb-6">
