@@ -7,18 +7,25 @@
         <form method="GET" action="{{ route('welcome') }}" class="bg-white px-4 py-2 rounded-full shadow-md flex items-center border border-gray-300 font-secondary">
             <label for="sort" class="mr-2 font-medium text-gray-700">Ordenar por:</label>
             <div class="relative inline-block">
-                <select name="sort" id="sort" onchange="this.form.submit()" 
-                        class="bg-white text-gray-800 font-medium px-6 rounded-full appearance-none cursor-pointer focus:outline-none">
-                    <option value="nuevos" {{ request('sort', 'nuevos') === 'nuevos' ? 'selected' : '' }}>Nuevos</option>
-                    <option value="antiguos" {{ request('sort') === 'antiguos' ? 'selected' : '' }}> 
-                        Antiguos</option>
-                    <option value="populares" {{ request('sort') === 'populares' ? 'selected' : '' }}>
-                        Populares
-                    </option>
-                </select>
-                <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 pointer-events-none">▼</span>
+            <select name="sort" id="sort" onchange="this.form.submit()" 
+                class="bg-white text-gray-800 font-medium px-4 py-1 rounded-full appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition duration-200">
+                <option value="nuevos" {{ request('sort', 'nuevos') === 'nuevos' ? 'selected' : '' }} class="text-gray-800 font-medium">
+                    Nuevos
+                </option>
+                <option value="antiguos" {{ request('sort') === 'antiguos' ? 'selected' : '' }} class="text-gray-800 font-medium">
+                    Antiguos
+                </option>
+                <option value="populares" {{ request('sort') === 'populares' ? 'selected' : '' }} class="text-gray-800 font-medium">
+                    Populares
+                </option>
+            </select>
+            <span class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 pointer-events-none">
+                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </span>
             </div>
-        </form>                
+        </form>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
