@@ -65,7 +65,7 @@ class HomemadeRecipeController extends Controller
             ->limit(3)
             ->get();
     
-        $categories = Category::select('id', 'name', 'icon_url', 'description')->orderBy('name', 'asc')->get();
+        $categories = Category::select('id', 'name', 'slug', 'icon_url', 'description')->orderBy('name', 'asc')->get();
         $tags = Tag::select('id', 'name')->orderBy('name', 'asc')->limit(10)->get();
         
         return view('welcome', compact('recipes', 'images', 'stories', 'userRecipes', 'categories', 'tags', 'topChefs'));
@@ -78,6 +78,42 @@ class HomemadeRecipeController extends Controller
             'success' => true,
             'likes' => $recipe->likes
         ]);
+    }
+
+    public function showCategory($category)
+    {
+        $recipes = Recipe::with(['user', 'category', 'tags'])
+            ->where('status', 'published')
+            ->whereNull('deleted_at')
+            ->where('category_id', Category::where('slug', $category)->first()->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(9);
+
+             // Obtener historias (última receta de cada usuario)
+        $stories = Recipe::with(['user', 'category', 'tags'])
+            ->where('status', 'published')
+            ->whereNull('deleted_at')
+            ->where('category_id', Category::where('slug', $category)->first()->id)
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->unique('user_id');
+
+            // Obtener TODAS las recetas agrupadas por usuario para el modal
+        $userRecipes = Recipe::with('user:id,name','category', 'tags')
+            ->select('id', 'title', 'image', 'user_id')
+            ->where('status', 'published')
+            ->whereNull('deleted_at')
+            ->where('category_id', Category::where('slug', $category)->first()->id)
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->groupBy('user_id')
+            ->map(function($recipes) {
+                return $recipes->take(10); // Limitar a 10 recetas por usuario
+            });
+
+        $categories = Category::select('id', 'name', 'slug', 'icon_url', 'description')->orderBy('name', 'asc')->get();
+
+        return view('frontend.pages.categorias', compact('recipes', 'stories', 'userRecipes', 'categories'));
     }
    
 }
