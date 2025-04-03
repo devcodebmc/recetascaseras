@@ -95,6 +95,34 @@ p, li, a, button, input {
     }
 }
 
+/* Estilos  para el buscador*/
+#search-suggestions {
+    scrollbar-width: thin;
+    scrollbar-color: #e2e8f0 #f7fafc;
+}
+
+#search-suggestions::-webkit-scrollbar {
+    width: 8px;
+}
+
+#search-suggestions::-webkit-scrollbar-track {
+    background: #f7fafc;
+    border-radius: 0 0 0.375rem 0.375rem;
+}
+
+#search-suggestions::-webkit-scrollbar-thumb {
+    background-color: #e2e8f0;
+    border-radius: 4px;
+}
+
+#search-suggestions div {
+    transition: background-color 0.15s ease;
+}
+
+#search-suggestions div:hover {
+    background-color: #f8fafc;
+}
+
 /*  Resoluciones Pequeñas */
 
 @media only screen and (max-width: 599px) {

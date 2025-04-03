@@ -9,14 +9,26 @@ use App\Models\Tag;
 
 class HomemadeRecipeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $recipes = Recipe::with('user')
-                ->where('status', 'published')
-                ->whereNull('deleted_at')
-                ->orderBy('created_at', 'desc')
-                ->limit(9)
-                ->get();
+        $search = $request->input('searchfull');
+
+        $recipes = Recipe::with(['user', 'category', 'tags'])
+            ->where('status', 'published')
+            ->whereNull('deleted_at')
+            ->when($search, function ($query, $search) {
+                $query->fullSearch($search);
+            })
+            ->orderBy('created_at', 'desc')
+            ->limit(9)
+            ->get();
+    
+        // $recipes = Recipe::with('user')
+        //         ->where('status', 'published')
+        //         ->whereNull('deleted_at')
+        //         ->orderBy('created_at', 'desc')
+        //         ->limit(9)
+        //         ->get();
     
         // Obtener historias (última receta de cada usuario)
         $stories = Recipe::with('user:id,name')

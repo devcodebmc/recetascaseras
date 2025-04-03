@@ -51,6 +51,46 @@ class Recipe extends Model
                      ->orWhereRaw('LOWER(title) like ?', ['%' . strtolower($search) . '%']);
     }
 
+    public function scopeFullSearch($query, $searchTerm)
+    {
+        return $query->where(function($q) use ($searchTerm) {
+            $preparedTerm = $this->prepareSearchTerm($searchTerm);
+            
+            $q->whereRaw("to_tsvector('spanish', title) @@ to_tsquery('spanish', ?)", [$preparedTerm])
+            ->orWhereRaw("to_tsvector('spanish', ingredients) @@ to_tsquery('spanish', ?)", [$preparedTerm])
+            ->orWhereHas('category', function($q) use ($preparedTerm) {
+                $q->whereRaw("to_tsvector('spanish', name) @@ to_tsquery('spanish', ?)", [$preparedTerm]);
+            })
+            ->orWhereHas('tags', function($q) use ($preparedTerm) {
+                $q->whereRaw("to_tsvector('spanish', name) @@ to_tsquery('spanish', ?)", [$preparedTerm]);
+            })
+            ->orWhereHas('user', function($q) use ($preparedTerm) {
+                $q->whereRaw("to_tsvector('spanish', name) @@ to_tsquery('spanish', ?)", [$preparedTerm]);
+            });
+        });
+    }
+
+    protected function prepareSearchTerm($term)
+    {
+        // Normaliza el término: convierte a minúsculas y limpia
+        $normalized = mb_strtolower(trim($term), 'UTF-8');
+        
+        // Divide en palabras
+        $words = preg_split('/\s+/', $normalized);
+        $words = array_filter($words);
+        
+        if (empty($words)) {
+            return 'nada';
+        }
+        
+        // Prepara cada palabra para búsqueda por prefijo
+        $prefixedWords = array_map(function($word) {
+            return $word . ':*'; // Añade operador de prefijo
+        }, $words);
+        
+        return implode(' & ', $prefixedWords); // Combina con AND
+    }
+
     /**
      * Relación con la categoría (Muchas recetas pertenecen a una categoría).
      */
