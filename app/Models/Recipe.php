@@ -56,26 +56,32 @@ class Recipe extends Model
         return $query->where(function($q) use ($searchTerm) {
             $preparedTerm = $this->prepareSearchTerm($searchTerm);
             
-            $q->whereRaw("to_tsvector('spanish', title) @@ to_tsquery('spanish', ?)", [$preparedTerm])
-            ->orWhereRaw("to_tsvector('spanish', ingredients) @@ to_tsquery('spanish', ?)", [$preparedTerm])
-            ->orWhereHas('category', function($q) use ($preparedTerm) {
-                $q->whereRaw("to_tsvector('spanish', name) @@ to_tsquery('spanish', ?)", [$preparedTerm]);
-            })
-            ->orWhereHas('tags', function($q) use ($preparedTerm) {
-                $q->whereRaw("to_tsvector('spanish', name) @@ to_tsquery('spanish', ?)", [$preparedTerm]);
-            })
-            ->orWhereHas('user', function($q) use ($preparedTerm) {
-                $q->whereRaw("to_tsvector('spanish', name) @@ to_tsquery('spanish', ?)", [$preparedTerm]);
-            });
+            // Verificar si el término coincide exactamente con una categoría
+            $isExactCategoryMatch = Category::whereRaw(
+                "name ILIKE ?", ["%{$searchTerm}%"]
+            )->exists();
+            
+            if ($isExactCategoryMatch) {
+                // Si es una categoría exacta, buscar solo por categoría
+                $q->whereHas('category', function($q) use ($searchTerm) {
+                    $q->whereRaw("name ILIKE ?", ["%{$searchTerm}%"]);
+                });
+            } else {
+                // Búsqueda normal en todos los campos
+                $q->where(function($subQuery) use ($preparedTerm) {
+                    $subQuery->whereRaw("to_tsvector('spanish', title) @@ to_tsquery('spanish', ?)", [$preparedTerm])
+                            ->orWhereRaw("to_tsvector('spanish', ingredients) @@ to_tsquery('spanish', ?)", [$preparedTerm]);
+                })
+                ->orWhereHas('category', function($q) use ($preparedTerm) {
+                    $q->whereRaw("to_tsvector('spanish', name) @@ to_tsquery('spanish', ?)", [$preparedTerm]);
+                });
+            }
         });
     }
 
     protected function prepareSearchTerm($term)
     {
-        // Normaliza el término: convierte a minúsculas y limpia
         $normalized = mb_strtolower(trim($term), 'UTF-8');
-        
-        // Divide en palabras
         $words = preg_split('/\s+/', $normalized);
         $words = array_filter($words);
         
@@ -83,12 +89,7 @@ class Recipe extends Model
             return 'nada';
         }
         
-        // Prepara cada palabra para búsqueda por prefijo
-        $prefixedWords = array_map(function($word) {
-            return $word . ':*'; // Añade operador de prefijo
-        }, $words);
-        
-        return implode(' & ', $prefixedWords); // Combina con AND
+        return implode(' & ', $words) . ':*';
     }
 
     // Scope para ordenamiento

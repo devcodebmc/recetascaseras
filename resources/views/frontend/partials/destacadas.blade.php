@@ -9,13 +9,13 @@
             <div class="relative inline-block">
             <select name="sort" id="sort" onchange="this.form.submit()" 
                 class="bg-white text-gray-800 font-medium px-4 py-1 rounded-full appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition duration-200">
-                <option value="nuevos" {{ request('sort', 'nuevos') === 'nuevos' ? 'selected' : '' }} class="text-gray-800 font-medium">
+                <option value="nuevos" {{ request('sort', 'nuevos') === 'nuevos' ? 'selected' : '' }}>
                     Nuevos
                 </option>
-                <option value="antiguos" {{ request('sort') === 'antiguos' ? 'selected' : '' }} class="text-gray-800 font-medium">
+                <option value="antiguos" {{ request('sort') === 'antiguos' ? 'selected' : '' }}>
                     Antiguos
                 </option>
-                <option value="populares" {{ request('sort') === 'populares' ? 'selected' : '' }} class="text-gray-800 font-medium">
+                <option value="populares" {{ request('sort') === 'populares' ? 'selected' : '' }}>
                     Populares
                 </option>
             </select>

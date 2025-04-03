@@ -26,12 +26,13 @@ class HomemadeRecipeController extends Controller
             ->get();
         
     
-        // $recipes = Recipe::with('user')
-        //         ->where('status', 'published')
-        //         ->whereNull('deleted_at')
-        //         ->orderBy('created_at', 'desc')
-        //         ->limit(9)
-        //         ->get();
+        $images = Recipe::with('user')
+                ->select('id', 'title', 'image', 'likes', 'user_id')
+                ->where('status', 'published')
+                ->whereNull('deleted_at')
+                ->orderBy('likes', 'desc')
+                ->limit(9)
+                ->get();
     
         // Obtener historias (última receta de cada usuario)
         $stories = Recipe::with('user:id,name')
@@ -67,7 +68,7 @@ class HomemadeRecipeController extends Controller
         $categories = Category::select('id', 'name', 'icon_url', 'description')->orderBy('name', 'asc')->get();
         $tags = Tag::select('id', 'name')->orderBy('name', 'asc')->limit(10)->get();
         
-        return view('welcome', compact('recipes', 'stories', 'userRecipes', 'categories', 'tags', 'topChefs'));
+        return view('welcome', compact('recipes', 'images', 'stories', 'userRecipes', 'categories', 'tags', 'topChefs'));
     }
 
     public function like(Recipe $recipe)
