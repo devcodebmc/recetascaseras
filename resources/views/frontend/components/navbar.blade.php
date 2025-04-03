@@ -1,6 +1,6 @@
 <nav class="flex justify-between items-center">
     <div class="text-black font-bold text-xl">
-        <a href="/index.html">Recetas Caseras</a>
+        <a href="{{ route('welcome') }}">Recetas Caseras</a>
     </div>
     <ul class="hidden md:flex space-x-6 text-black font-medium">
         <li><a href="#">Tienda</a></li>

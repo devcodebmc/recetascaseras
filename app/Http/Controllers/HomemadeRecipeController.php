@@ -11,17 +11,20 @@ class HomemadeRecipeController extends Controller
 {
     public function index(Request $request)
     {
+        // Recoger los parámetros de búsqueda y ordenamiento
         $search = $request->input('searchfull');
-
+        $sortOption = $request->input('sort', 'nuevos'); // Valor por defecto 'nuevos'
+        
         $recipes = Recipe::with(['user', 'category', 'tags'])
             ->where('status', 'published')
             ->whereNull('deleted_at')
             ->when($search, function ($query, $search) {
                 $query->fullSearch($search);
             })
-            ->orderBy('created_at', 'desc')
+            ->orderBySelection($sortOption)
             ->limit(9)
             ->get();
+        
     
         // $recipes = Recipe::with('user')
         //         ->where('status', 'published')

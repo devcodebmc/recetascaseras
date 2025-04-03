@@ -91,6 +91,16 @@ class Recipe extends Model
         return implode(' & ', $prefixedWords); // Combina con AND
     }
 
+    // Scope para ordenamiento
+    public function scopeOrderBySelection($query, $sortOption)
+    {
+        return match ($sortOption) {
+            'antiguos' => $query->orderBy('created_at', 'asc'),
+            'populares' => $query->orderBy('likes', 'desc')->orderBy('created_at', 'desc'),
+            default => $query->orderBy('created_at', 'desc'), // 'nuevos' por defecto
+        };
+    }
+
     /**
      * Relación con la categoría (Muchas recetas pertenecen a una categoría).
      */
