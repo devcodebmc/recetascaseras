@@ -113,7 +113,9 @@ class HomemadeRecipeController extends Controller
 
         $categories = Category::select('id', 'name', 'slug', 'icon_url', 'description')->orderBy('name', 'asc')->get();
 
-        return view('frontend.pages.categorias', compact('recipes', 'stories', 'userRecipes', 'categories'));
+        $tags = Tag::select('id', 'name')->get()->shuffle();
+
+        return view('frontend.pages.categorias', compact('recipes', 'stories', 'userRecipes', 'categories', 'tags'));
     }
    
 }

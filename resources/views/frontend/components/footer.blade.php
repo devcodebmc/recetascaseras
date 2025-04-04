@@ -29,17 +29,20 @@
             </form>
         </div>
     </div>
-    <div class="mt-10 border-t border-gray-700 pt-6 text-center text-gray-400">
-        <p>&copy; 2025 Recetas Caseras. Todos los derechos reservados.</p>
-        <div class="mt-4 space-x-4 flex justify-center">
-            <a href="#" class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm leading-5 font-medium rounded-full text-white bg-gradient-to-r from-blue-600 to-blue-800 hover:from-blue-700 hover:to-blue-900 transition duration-300 ease-in-out transform hover:scale-105">
-            Facebook
+    <div class="mt-10 border-t border-gray-200 pt-6 text-center text-gray-400">
+        <p class="text-sm md:text-base">&copy; 2025 <span class="font-semibold text-gray-500">Recetas Caseras</span>. Todos los derechos reservados.</p>
+        <div class="mt-6 flex justify-center space-x-6">
+            <a href="#" class="group relative inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 text-white text-sm font-medium shadow-lg transform transition duration-300 hover:scale-110 hover:shadow-xl">
+                <span class="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-700 opacity-0 group-hover:opacity-100 transition duration-300"></span>
+                <span class="relative z-10">Facebook</span>
             </a>
-            <a href="#" class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm leading-5 font-medium rounded-full text-white bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 transition duration-300 ease-in-out transform hover:scale-105">
-            Instagram
+            <a href="#" class="group relative inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-pink-400 to-purple-600 text-white text-sm font-medium shadow-lg transform transition duration-300 hover:scale-110 hover:shadow-xl">
+                <span class="absolute inset-0 bg-gradient-to-r from-pink-500 to-purple-700 opacity-0 group-hover:opacity-100 transition duration-300"></span>
+                <span class="relative z-10">Instagram</span>
             </a>
-            <a href="#" class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm leading-5 font-medium rounded-full text-white bg-gradient-to-r from-red-600 to-red-800 hover:from-red-700 hover:to-red-900 transition duration-300 ease-in-out transform hover:scale-105">
-            YouTube
+            <a href="#" class="group relative inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-red-400 to-red-600 text-white text-sm font-medium shadow-lg transform transition duration-300 hover:scale-110 hover:shadow-xl">
+                <span class="absolute inset-0 bg-gradient-to-r from-red-500 to-red-700 opacity-0 group-hover:opacity-100 transition duration-300"></span>
+                <span class="relative z-10">YouTube</span>
             </a>
         </div>
     </div>
