@@ -1,5 +1,5 @@
 <footer class="bg-white text-gray-800 py-10 mt-10">
-    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
         <!-- About Us -->
         <div>
             <h3 class="text-xl font-bold mb-4 tracking-widest">Sobre Nosotros</h3>
@@ -27,6 +27,20 @@
                 <input type="email" placeholder="Tu correo electrónico" class="w-full px-4 py-2 text-gray-700 border border-red-300 rounded-full focus:outline-none focus:ring-2 focus:ring-red-400">
                 <button class="bg-red-400 hover:bg-red-500 text-white px-6 py-2 rounded-full text-lg font-semibold transition tracking-widest">Suscribirse</button>
             </form>
+        </div>
+        <!-- Gallery -->
+        <div>
+            <h3 class="text-xl font-bold mb-4 tracking-widest">Galería</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+            @foreach ($recipes as $key => $recipe)
+                @if ($key <= 4)
+                    <div class="{{ $key % 5 === 0 ? 'col-span-2 row-span-2' : ($key % 4 === 0 ? 'col-span-2' : 'col-span-1') }}">
+                        <img src="{{ $recipe->image }}" alt="{{ $recipe->title }}" 
+                         class="w-full h-full object-cover rounded-lg">
+                    </div>
+                @endif
+            @endforeach
+            </div>
         </div>
     </div>
     <div class="mt-10 border-t border-gray-200 pt-6 text-center text-gray-500">
