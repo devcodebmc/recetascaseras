@@ -29,20 +29,23 @@
             </form>
         </div>
     </div>
-    <div class="mt-10 border-t border-gray-200 pt-6 text-center text-gray-400">
-        <p class="text-sm md:text-base">&copy; 2025 <span class="font-semibold text-gray-500">Recetas Caseras</span>. Todos los derechos reservados.</p>
-        <div class="mt-6 flex justify-center space-x-6">
-            <a href="#" class="group relative inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 text-white text-sm font-medium shadow-lg transform transition duration-300 hover:scale-110 hover:shadow-xl">
-                <span class="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-700 opacity-0 group-hover:opacity-100 transition duration-300"></span>
-                <span class="relative z-10">Facebook</span>
+    <div class="mt-10 border-t border-gray-200 pt-6 text-center text-gray-500">
+        <p class="text-sm md:text-base">&copy; 2025 <span class="font-semibold text-red-500">Recetas Caseras</span>. Todos los derechos reservados.</p>
+        <div class="mt-4 flex justify-center space-x-4">
+            <a href="#" class="text-blue-500 hover:text-blue-600 bg-blue-100 p-2 rounded-full">
+                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M13.135 6H15V3h-1.865a4.147 4.147 0 0 0-4.142 4.142V9H7v3h2v9.938h3V12h2.021l.592-3H12V6.591A.6.6 0 0 1 12.592 6h.543Z" clip-rule="evenodd"/>
+                </svg>                  
             </a>
-            <a href="#" class="group relative inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-pink-400 to-purple-600 text-white text-sm font-medium shadow-lg transform transition duration-300 hover:scale-110 hover:shadow-xl">
-                <span class="absolute inset-0 bg-gradient-to-r from-pink-500 to-purple-700 opacity-0 group-hover:opacity-100 transition duration-300"></span>
-                <span class="relative z-10">Instagram</span>
+            <a href="#" class="text-purple-500 hover:text-purple-600 bg-purple-100 p-2 rounded-full">
+                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path fill="currentColor" fill-rule="evenodd" d="M3 8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8Zm5-3a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V8a3 3 0 0 0-3-3H8Zm7.597 2.214a1 1 0 0 1 1-1h.01a1 1 0 1 1 0 2h-.01a1 1 0 0 1-1-1ZM12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm-5 3a5 5 0 1 1 10 0 5 5 0 0 1-10 0Z" clip-rule="evenodd"/>
+                </svg>                  
             </a>
-            <a href="#" class="group relative inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-red-400 to-red-600 text-white text-sm font-medium shadow-lg transform transition duration-300 hover:scale-110 hover:shadow-xl">
-                <span class="absolute inset-0 bg-gradient-to-r from-red-500 to-red-700 opacity-0 group-hover:opacity-100 transition duration-300"></span>
-                <span class="relative z-10">YouTube</span>
+            <a href="#" class="text-red-500 hover:text-red-600 bg-red-100 p-2 rounded-full">
+                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M21.7 8.037a4.26 4.26 0 0 0-.789-1.964 2.84 2.84 0 0 0-1.984-.839c-2.767-.2-6.926-.2-6.926-.2s-4.157 0-6.928.2a2.836 2.836 0 0 0-1.983.839 4.225 4.225 0 0 0-.79 1.965 30.146 30.146 0 0 0-.2 3.206v1.5a30.12 30.12 0 0 0 .2 3.206c.094.712.364 1.39.784 1.972.604.536 1.38.837 2.187.848 1.583.151 6.731.2 6.731.2s4.161 0 6.928-.2a2.844 2.844 0 0 0 1.985-.84 4.27 4.27 0 0 0 .787-1.965 30.12 30.12 0 0 0 .2-3.206v-1.516a30.672 30.672 0 0 0-.202-3.206Zm-11.692 6.554v-5.62l5.4 2.819-5.4 2.801Z" clip-rule="evenodd"/>
+                </svg>                                    
             </a>
         </div>
     </div>
