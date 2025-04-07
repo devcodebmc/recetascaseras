@@ -117,5 +117,11 @@ class HomemadeRecipeController extends Controller
 
         return view('frontend.pages.categorias', compact('recipes', 'stories', 'userRecipes', 'categories', 'tags'));
     }
+    public function show(Recipe $recipe)
+    {
+        $recipe->load(['user', 'category', 'tags']);
+        // dd($recipe);
+        return view('frontend.posts.receta', compact('recipe'));
+    }
    
 }

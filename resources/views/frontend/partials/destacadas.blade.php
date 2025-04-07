@@ -34,56 +34,58 @@
         <div class="col-span-1 md:col-span-2 grid grid-cols-1 gap-8">
             <!-- Large Recipe Cards -->
             @foreach ($recipes as $key => $recipe)
-                @if ($key <= 3)
+            @if ($key <= 3)
+            <a href="{{ route('showRecipe', $recipe->id) }}" class="block">
                 <div class="bg-white rounded-xl md:rounded-l-full md:rounded-r-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                    <div class="flex flex-col md:flex-row h-full">
-                        <div class="md:w-1/1 p-4 flex items-center justify-center md:justify-start">
-                            <div class="relative w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 rounded-full overflow-hidden border-4 border-amber-100 shadow-inner">
-                                <img 
-                                    src="{{ asset($recipe->image) }}" 
-                                    alt="{{ $recipe->title }}" 
-                                    class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                                    loading="lazy"
-                                >
-                            </div>
-                        </div>
-                        <!-- Content - Ajustado para alineación perfecta -->
-                        <div class="p-6 md:w-2/3 flex flex-col justify-center">
-                            <div>
-                                <h3 class="text-2xl font-bold text-gray-800 mb-3 tracking-widest">{{ $recipe->title }}</h3>
-                                
-                                <div class="recipe-description text-gray-600 mb-1 line-clamp-4">
-                                    {!! $recipe->description !!}
-                                </div>
-                            </div>
-                            
-                            <div class="flex flex-col sm:flex-row gap-4 text-sm text-gray-500 mt-4">
-                                <span class="flex items-center">
-                                    <svg class="w-4 h-4 mr-2 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                                    </svg>
-                                    <span class="font-medium text-gray-700">{{ $recipe->servings }} porciones</span>
-                                </span>
-                                
-                                <span class="flex items-center">
-                                    <svg class="w-4 h-4 mr-2 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    <span class="font-medium text-gray-700">
-                                        @if ($recipe->cook_time > 60)
-                                            {{ intdiv($recipe->cook_time, 60) }}h {{ $recipe->cook_time % 60 }}m
-                                        @else
-                                            {{ $recipe->cook_time }}m
-                                        @endif
-                                    </span>
-                                </span>
-                            </div>
+                <div class="flex flex-col md:flex-row h-full">
+                    <div class="md:w-1/1 p-4 flex items-center justify-center md:justify-start">
+                    <div class="relative w-40 h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 rounded-full overflow-hidden border-4 border-amber-100 shadow-inner">
+                        <img 
+                        src="{{ asset($recipe->image) }}" 
+                        alt="{{ $recipe->title }}" 
+                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                        loading="lazy"
+                        >
+                    </div>
+                    </div>
+                    <!-- Content - Ajustado para alineación perfecta -->
+                    <div class="p-6 md:w-2/3 flex flex-col justify-center">
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-3 tracking-widest">{{ $recipe->title }}</h3>
+                        
+                        <div class="recipe-description text-gray-600 mb-1 line-clamp-4">
+                        {!! $recipe->description !!}
                         </div>
                     </div>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 text-sm text-gray-500 mt-4">
+                        <span class="flex items-center">
+                        <svg class="w-4 h-4 mr-2 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                        <span class="font-medium text-gray-700">{{ $recipe->servings }} porciones</span>
+                        </span>
+                        
+                        <span class="flex items-center">
+                        <svg class="w-4 h-4 mr-2 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="font-medium text-gray-700">
+                            @if ($recipe->cook_time > 60)
+                            {{ intdiv($recipe->cook_time, 60) }}h {{ $recipe->cook_time % 60 }}m
+                            @else
+                            {{ $recipe->cook_time }}m
+                            @endif
+                        </span>
+                        </span>
+                    </div>
+                    </div>
                 </div>
-                @endif
+                </div>
+            </a>
+            @endif
             @endforeach
-</div>
+        </div>
         <div class="col-span-1 grid grid-cols-1 gap-5">
             <!-- Recipe Cards with Background Image -->
             @foreach ($recipes as $key => $recipe)

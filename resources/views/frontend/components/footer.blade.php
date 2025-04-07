@@ -34,7 +34,7 @@
         <div class="md:col-span-2">
             <h3 class="text-xl font-bold mb-4 tracking-widest text-orange-600">Enlaces Rápidos</h3>
             <ul class="space-y-2">
-                <li><a href="#" class="text-gray-500 hover:text-orange-600 transition-colors duration-300">Inicio</a></li>
+                <li><a href="{{ route('welcome') }}" class="text-gray-500 hover:text-orange-600 transition-colors duration-300">Inicio</a></li>
                 <li><a href="#" class="text-gray-500 hover:text-orange-600 transition-colors duration-300">Recetas</a></li>
                 <li><a href="#" class="text-gray-500 hover:text-orange-600 transition-colors duration-300">Tienda</a></li>
                 <li><a href="#" class="text-gray-500 hover:text-orange-600 transition-colors duration-300">Contacto</a></li>
@@ -45,10 +45,9 @@
         <div class="md:col-span-2">
             <h3 class="text-xl font-bold mb-4 tracking-widest text-orange-600">Recetas Rápidas</h3>
             <ul class="space-y-2">
-                <li><a href="#" class="text-gray-500 hover:text-orange-600 transition-colors duration-300">Pollo Tikka</a></li>
-                <li><a href="#" class="text-gray-500 hover:text-orange-600 transition-colors duration-300">Pollo BBQ</a></li>
-                <li><a href="#" class="text-gray-500 hover:text-orange-600 transition-colors duration-300">Shawarma</a></li>
-                <li><a href="#" class="text-gray-500 hover:text-orange-600 transition-colors duration-300">Hamburguesas</a></li>
+            @foreach (\App\Models\Recipe::all()->shuffle()->take(5) as $recipe)
+                <li><a href="{{ route('recipes.show', $recipe->id) }}" class="text-gray-500 hover:text-orange-600 transition-colors duration-300">{{ $recipe->title }}</a></li>
+            @endforeach
             </ul>
         </div>
         

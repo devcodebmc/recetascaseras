@@ -23,6 +23,7 @@ use App\Http\Controllers\HomemadeRecipeController;
 Route::get('/', [HomemadeRecipeController::class, 'index'])->name('welcome');
 Route::get('/categoria/{category}', [HomemadeRecipeController::class,'showCategory'])->name('category.show');
 Route::post('/recipes/{recipe}/like', [HomemadeRecipeController::class, 'like'])->name('recipes.like');
+Route::get('/receta/{recipe}', [HomemadeRecipeController::class, 'show'])->name('showRecipe');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
