@@ -35,7 +35,7 @@
             <!-- Large Recipe Cards -->
             @foreach ($recipes as $key => $recipe)
             @if ($key <= 3)
-            <a href="{{ route('showRecipe', $recipe->id) }}" class="block">
+            <a href="{{ route('showRecipe', $recipe->slug) }}" class="block">
                 <div class="bg-white rounded-xl md:rounded-l-full md:rounded-r-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
                 <div class="flex flex-col md:flex-row h-full">
                     <div class="md:w-1/1 p-4 flex items-center justify-center md:justify-start">

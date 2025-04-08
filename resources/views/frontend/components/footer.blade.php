@@ -46,7 +46,7 @@
             <h3 class="text-xl font-bold mb-4 tracking-widest text-orange-600">Recetas Rápidas</h3>
             <ul class="space-y-2">
             @foreach (\App\Models\Recipe::all()->shuffle()->take(5) as $recipe)
-                <li><a href="{{ route('recipes.show', $recipe->id) }}" class="text-gray-500 hover:text-orange-600 transition-colors duration-300">{{ $recipe->title }}</a></li>
+                <li><a href="{{ route('showRecipe', $recipe->slug) }}" class="text-gray-500 hover:text-orange-600 transition-colors duration-300">{{ $recipe->title }}</a></li>
             @endforeach
             </ul>
         </div>

@@ -117,11 +117,23 @@ class HomemadeRecipeController extends Controller
 
         return view('frontend.pages.categorias', compact('recipes', 'stories', 'userRecipes', 'categories', 'tags'));
     }
-    public function show(Recipe $recipe)
+    public function show($slug)
     {
-        $recipe->load(['user', 'category', 'tags']);
-        // dd($recipe);
-        return view('frontend.posts.receta', compact('recipe'));
+        $recipe = Recipe::with(['user', 'category', 'tags'])
+            ->where('slug', $slug)
+            ->where('status', 'published')
+            ->whereNull('deleted_at')
+            ->firstOrFail();
+        
+        $smallRecipes = Recipe::with(['user', 'category', 'tags'])
+            ->where('status', 'published')
+            ->whereNull('deleted_at')
+            ->where('id', '!=', $recipe->id)
+            ->inRandomOrder()
+            ->take(6)
+            ->get();
+
+        return view('frontend.posts.receta', compact('recipe', 'smallRecipes'));
     }
    
 }
