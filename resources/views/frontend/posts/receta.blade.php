@@ -144,12 +144,11 @@
             <div class="order-6">
                 @include('frontend.components.minRecipes', ['limit' => 3])
             </div>
-            
 
         </div>
 
         <!-- Right Column - Hidden on mobile except for More Recipes -->
-        <div class="lg:w-80 xl:w-96 space-y-8 order-7">
+        <div class="lg:w-80 xl:w-96  order-7">
             <!-- Ingredients Card - Hidden on mobile, shown on lg+ -->
             <div class="bg-blue-50 rounded-xl p-6 shadow-md lg:mt-12 mt-0 hidden lg:block">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-4 tracking-widest border-b pb-2">
@@ -176,19 +175,8 @@
                 </ul>
             </div>
 
-            <!-- Chef Card -->
-            @include('frontend.components.chefCard')
-
-            <!-- Tags Card -->
-            <div class="bg-orange-50 rounded-xl p-6 shadow-md lg:mt-12 mt-0">
-                <h3 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2 tracking-widest mt-8">
-                    Etiquetas
-                </h3>
-                @include('frontend.components.tags')
-            </div>
-            
             <!-- More Recipes Card -->
-            <div class="bg-white p-6 sm:p-6 rounded-xl shadow-md lg:mt-8 mt-0">
+            <div class="bg-white p-6 sm:p-6 rounded-xl shadow-md mt-12">
                 <h3 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2 tracking-widest">
                     Más Recetas
                 </h3>
@@ -228,6 +216,20 @@
                     @endforeach
                 </div>
             </div>
+
+            <!-- Tags Card -->
+            <div class="bg-orange-50 rounded-xl p-6 shadow-md mt-12">
+                <h3 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2 tracking-widest mt-8">
+                    Etiquetas
+                </h3>
+                @include('frontend.components.tags')
+            </div>
+
+            <!-- Chef Card -->
+            <div class="lg:mt-12 mt-0">
+                @include('frontend.components.chefCard')
+            </div>
+            
         </div>
     </div>
     @include('frontend.partials.invitacionRecetas')

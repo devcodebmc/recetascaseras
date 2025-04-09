@@ -22,8 +22,10 @@
 @include('frontend.partials.suscribete')
 <!-- Galería -->
 @include('frontend.partials.galeria')
-<!-- Conteos -->
-@include('frontend.components.counters')
+<!-- Counters Section -->
+<section class="bg-white mb-12">
+    @include('frontend.components.counters')
+</section>
 <!-- Mejores Cocineras de la Semana -->
 @include('frontend.partials.cocineras')
 <!-- Invitación a recetas -->

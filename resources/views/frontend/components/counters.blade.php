@@ -1,4 +1,4 @@
-<section class="py-16 bg-white">
+<section class="py-16">
     <div class="container mx-auto px-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
             <!-- Usuarios (Home cooks) -->
