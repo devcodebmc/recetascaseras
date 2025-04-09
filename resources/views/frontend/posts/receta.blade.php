@@ -145,7 +145,7 @@
                 <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b pb-4">Otras recetas que te pueden gustar</h2>
                 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    @foreach($smallRecipes->shuffle()->take(6) as $recipe)
+                    @foreach(\App\Models\Recipe::all()->shuffle()->take(3) as $recipe)
                     <a href="{{ route('showRecipe', $recipe->slug) }}" class="group block rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 bg-white">
                         <!-- Imagen con overlay hover -->
                         <div class="relative overflow-hidden h-48">
@@ -189,16 +189,6 @@
                         </div>
                     </a>
                     @endforeach
-                </div>
-                
-                <!-- Botón para ver más recetas -->
-                <div class="text-center mt-10">
-                    <a href="{{ route('recipes.index') }}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-orange-600 hover:bg-orange-700 transition-colors duration-300">
-                        Ver más recetas
-                        <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                        </svg>
-                    </a>
                 </div>
             </div>
         </div>
