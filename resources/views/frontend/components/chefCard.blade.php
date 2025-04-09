@@ -1,4 +1,3 @@
-<!-- Chef Card -->
 <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100 p-8">
     <!-- Imagen circular con marco elegante -->
     <div class="flex justify-center mb-6">
