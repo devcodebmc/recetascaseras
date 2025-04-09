@@ -11,7 +11,9 @@
     </div>
 </section>
 <!-- Top Categories -->
-@include('frontend.components.topCategories')
+<section class="py-12 bg-white">
+    @include('frontend.components.topCategories')
+</section>
 <!-- Sección Descubre -->
 @include('frontend.partials.descubre')
 <!--Sección Características -->

@@ -98,7 +98,7 @@ class HomemadeRecipeController extends Controller
             ->get()
             ->unique('user_id');
 
-            // Obtener TODAS las recetas agrupadas por usuario para el modal
+        // Obtener TODAS las recetas agrupadas por usuario para el modal
         $userRecipes = Recipe::with('user:id,name','category', 'tags')
             ->select('id', 'title', 'image', 'user_id')
             ->where('status', 'published')
@@ -133,7 +133,12 @@ class HomemadeRecipeController extends Controller
             ->take(6)
             ->get();
 
-        return view('frontend.posts.receta', compact('recipe', 'smallRecipes'));
+        $categories = Category::select('id', 'name', 'slug', 'icon_url', 'description')
+            ->orderBy('name', 'asc')->get();
+
+        $tags = Tag::select('id', 'name')->get()->shuffle();
+
+        return view('frontend.posts.receta', compact('recipe', 'smallRecipes', 'categories', 'tags'));
     }
    
 }
