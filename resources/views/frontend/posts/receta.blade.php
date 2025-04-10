@@ -8,7 +8,7 @@
         <div class="flex-1 flex flex-col lg:block">
             <!-- Title & Metadata -->
             <div class="mb-8">
-                <h1 class="text-4xl md:text-5xl font-bold leading-tight text-gray-900 mb-4">
+                <h1 class="text-4xl md:text-5xl font-bold leading-tight text-gray-900 mb-4 tracking-wider">
                     {{ $recipe->title }}
                 </h1>
 
@@ -109,6 +109,7 @@
                 </h2>
 
                 <ol class="space-y-6">
+                    <!-- Steps List -->
                     @foreach (json_decode($recipe->steps) as $index => $step)
                         <li class="flex items-start gap-4">
                             <!-- Step Number -->
@@ -142,7 +143,11 @@
             </section>
 
             <div class="order-6">
-                @include('frontend.components.minRecipes', ['limit' => 3])
+                @php
+                    $steps = json_decode($recipe->steps);
+                    $stepsCount = count($steps);
+                @endphp
+                @include('frontend.components.minRecipes', ['limit' => $stepsCount >= 5 ? 3 : 6])
             </div>
 
         </div>
