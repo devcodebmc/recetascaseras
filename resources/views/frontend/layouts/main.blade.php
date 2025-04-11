@@ -44,7 +44,12 @@
         <!-- Footer -->
         @include('frontend.components.footer')
     
-        <script src="js/index.js" defer></script>
+        <script defer type="text/javascript">
+            document.getElementById('menu-button').addEventListener('click', function() {
+                var menu = document.getElementById('mobile-menu');
+                menu.classList.toggle('hidden');
+            });
+        </script>
         @stack('js')
     </body>    
 </html>
