@@ -52,6 +52,25 @@
                             {{ $recipe->category->name }}
                         </span>
                     </div>
+
+                    {{-- Print Button con Tooltip Elegante --}}
+                    <div class="flex items-center gap-2">
+                        <div class="relative group">
+                            <!-- Botón de imprimir -->
+                            <a href="#" onclick="window.print();" class="text-gray-500 hover:text-amber-500 transition-colors duration-300" aria-label="Imprimir receta">
+                                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" d="M8 3a2 2 0 0 0-2 2v3h12V5a2 2 0 0 0-2-2H8Zm-3 7a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h1v-4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v4h1a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2H5Zm4 11a1 1 0 0 1-1-1v-4h8v4a1 1 0 0 1-1 1H9Z" clip-rule="evenodd"/>
+                                </svg>
+                            </a>
+
+                            <!-- Tooltip personalizado -->
+                            <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block px-3 py-1 text-xs text-white bg-amber-400 whitespace-nowrap z-100 rounded-md shadow-lg transition-all duration-300">
+                                Imprimir
+                            </div>
+                        </div>
+                    </div>
+
+                    
                 </div>
             </div>
 
