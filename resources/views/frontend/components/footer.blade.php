@@ -46,10 +46,11 @@
             <h3 class="text-lg md:text-xl font-bold mb-3 md:mb-4 tracking-widest text-orange-600">Recetas Rápidas</h3>
             <ul class="space-y-2">
             @foreach (\App\Models\Recipe::all()->shuffle()->take(5) as $recipe)
-                <li class="flex items-start">  
-                    <svg class="h-4 w-4 md:h-5 md:w-5 text-orange-600 mt-1 mr-2 flex-shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m4 12 6.4267-4.65924c.6372.89667 1.8922 1.10897 2.7888.4718.8967-.63718 1.3493-1.69135.4681-2.80084C13.6373 4.95345 14.9106 4 15 4c.0894 0 5 1 5 8M4 12h16M4 12v8h16v-8M8 15h.01M12 17h.01M16 15h.01"/>
-                    </svg>                                          
+                <li class="flex items-start">   
+                    <svg  class="h-4 w-4 md:h-5 md:w-5 text-orange-600 mt-1 mr-2 flex-shrink-0"  aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M13.4228 7.00024c-2.2266.01465-4.24648.66154-5.73389 1.53827-.75153.44298-1.39556.9614-1.86395 1.51679-.05394.0639-.10674.1298-.1579.1975L3.70711 8.29288c-.39053-.39052-1.02369-.39052-1.41422 0-.39052.39053-.39052 1.02369 0 1.41422L4.58579 12l-2.2929 2.2929c-.39052.3905-.39052 1.0237 0 1.4142.39053.3905 1.02369.3905 1.41422 0l1.95995-1.96c.05116.0677.10396.1336.1579.1976.46839.5554 1.11242 1.0738 1.86395 1.5168 1.48608.8759 3.50369 1.5224 5.72789 1.5382-.1119-.1811-.2137-.3588-.2975-.5251-.8831-1.5257-1.4054-2.8736-1.4079-4.3386-.0025-1.4614.5132-2.89857 1.4025-4.59935.0088-.01699.0182-.03371.028-.05015.0924-.15428.1875-.31964.2809-.48626Z"/>
+                        <path fill="currentColor" fill-rule="evenodd" d="M15.6562 16.7394c1.3837-.3378 2.5644-.962 3.5044-1.6203 1.3918-.9748 2.3082-2.0596 2.6505-2.5342.2519-.3493.2519-.8206 0-1.1698-.3423-.4746-1.2587-1.55947-2.6505-2.53422-.9597-.6721-2.1702-1.30857-3.5914-1.64108-.2021.38166-.4544.84304-.696 1.24836-.8277 1.58764-1.1634 2.67234-1.1618 3.64444.0017.9646.3363 1.9584 1.1534 3.3652.0112.0193.0218.039.0317.059.1641.332.4642.7778.7597 1.1826Zm.3305-6.1117c-.5523 0-1 .4477-1 1s.4477 1 1 1h.01c.5523 0 1-.4477 1-1s-.4477-1-1-1h-.01Z" clip-rule="evenodd"/>
+                    </svg>                                                              
                     <a href="{{ route('showRecipe', $recipe->slug) }}" class="text-sm md:text-base text-gray-500 hover:text-orange-600 transition-colors duration-300 flex-1">
                         {{ $recipe->title }}
                     </a>
