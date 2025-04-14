@@ -8,43 +8,46 @@
         <div class="flex-1 flex flex-col lg:block">
             <!-- Title & Metadata -->
             <div class="mb-8">
-                <h1 class="text-4xl md:text-5xl font-bold leading-tight text-gray-900 mb-4 tracking-wider">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-gray-900 mb-4 tracking-wider">
                     {{ $recipe->title }}
                 </h1>
 
                 <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600">
                     <div class="flex items-center gap-2">
                         <img src="{{ asset('images/chef-masculino.png') }}" class="rounded-full w-8 h-8" alt="Author">
-                        <span class="font-medium text-gray-800">{{ $recipe->user->name }}</span>
-                        <span class="text-gray-400">· {{ $recipe->created_at->format('d M Y') }}</span>
+                        <div class="flex flex-col">
+                            <span class="font-medium text-gray-800">{{ $recipe->user->name }}</span>
+                            <span class="text-gray-400">{{ $recipe->created_at->format('d M Y') }}</span>
+                        </div>
                     </div>
-                    
-                    <div class="flex items-center gap-2">
-                        <span class="text-gray-500">⏱️</span>
-                        <span>
-                            Prep: 
-                            <strong>  
-                                @if ($recipe->prep_time > 60)
-                                    {{ intdiv($recipe->prep_time, 60) }}h {{ $recipe->prep_time % 60 }}m 
-                                @else
-                                    {{ $recipe->prep_time }}m 
-                                @endif
-                            </strong>
-                        </span>
-                    </div>
-                    
-                    <div class="flex items-center gap-2">
-                        <span class="text-gray-500">🔥</span>
-                        <span>
-                            Cocina: 
-                            <strong>
-                                @if ($recipe->cook_time > 60)
-                                    {{ intdiv($recipe->cook_time, 60) }}h {{ $recipe->cook_time % 60 }}m
-                                @else
-                                    {{ $recipe->cook_time }}m
-                                @endif
-                            </strong>
-                        </span>
+                    <div class="flex flex-col">
+                        <div class="flex items-center gap-2">
+                            <span class="text-gray-500">⏱️</span>
+                            <span>
+                                Prep: 
+                                <strong>  
+                                    @if ($recipe->prep_time > 60)
+                                        {{ intdiv($recipe->prep_time, 60) }}h {{ $recipe->prep_time % 60 }}m 
+                                    @else
+                                        {{ $recipe->prep_time }}m 
+                                    @endif
+                                </strong>
+                            </span>
+                        </div>
+                        
+                        <div class="flex items-center gap-2">
+                            <span class="text-gray-500">🔥</span>
+                            <span>
+                                Cocina: 
+                                <strong>
+                                    @if ($recipe->cook_time > 60)
+                                        {{ intdiv($recipe->cook_time, 60) }}h {{ $recipe->cook_time % 60 }}m
+                                    @else
+                                        {{ $recipe->cook_time }}m
+                                    @endif
+                                </strong>
+                            </span>
+                        </div>
                     </div>
                     
                     <div class="flex items-center gap-2">
@@ -52,6 +55,12 @@
                             {{ $recipe->category->name }}
                         </span>
                     </div>
+
+                    @if($recipe->likes)
+                    <div class="relative flex items-center gap-2 bg-gray-50 bg-opacity-75 px-3 py-1 rounded-full shadow-md">
+                        @include('frontend.components.likeButton')
+                    </div>
+                    @endif
 
                     {{-- Print Button con Tooltip Elegante --}}
                     <div class="flex items-center gap-2">
@@ -70,6 +79,8 @@
                         </div>
                     </div>
 
+                    {{-- Social Share Buttons --}}
+                    @include('frontend.components.socialButtons')
                     
                 </div>
             </div>
@@ -86,7 +97,7 @@
             </div>
 
             <!-- Description Section -->
-            <div class="bg-orange-50 rounded-xl p-6 shadow-md mb-8 order-2">
+            <div class="bg-white rounded-xl p-6 shadow-md mb-8 order-2">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2 tracking-widest">
                     Descripción
                 </h2>
@@ -96,7 +107,7 @@
             </div>
 
             <!-- Ingredients Card - Moved here for mobile -->
-            <div class="bg-blue-50 rounded-xl p-6 shadow-md mb-8 lg:hidden order-3">
+            <div class="bg-white rounded-xl p-6 shadow-md mb-8 lg:hidden order-3">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-4 tracking-widest border-b pb-2">
                     Ingredientes
                 </h2>
@@ -174,7 +185,7 @@
         <!-- Right Column - Hidden on mobile except for More Recipes -->
         <div class="lg:w-80 xl:w-96  order-7">
             <!-- Ingredients Card - Hidden on mobile, shown on lg+ -->
-            <div class="bg-blue-50 rounded-xl p-6 shadow-md lg:mt-12 mt-0 hidden lg:block">
+            <div class="bg-white rounded-xl p-6 shadow-md lg:mt-12 mt-0 hidden lg:block">
                 <h2 class="text-2xl font-semibold text-gray-800 mb-4 tracking-widest border-b pb-2">
                     Ingredientes
                 </h2>
@@ -242,7 +253,7 @@
             </div>
 
             <!-- Tags Card -->
-            <div class="bg-orange-50 rounded-xl p-6 shadow-md mt-12">
+            <div class="bg-white rounded-xl p-6 shadow-md mt-12">
                 <h3 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2 tracking-widest mt-8">
                     Etiquetas
                 </h3>
@@ -250,8 +261,13 @@
             </div>
 
             <!-- Chef Card -->
-            <div class="lg:mt-12 mt-0">
+            <div class="mt-12">
                 @include('frontend.components.chefCard')
+            </div>
+
+            <!-- Social Share Card -->
+            <div class="mt-12">
+                @include('frontend.components.socialCard')
             </div>
             
         </div>
