@@ -173,11 +173,7 @@
             </section>
 
             <div class="order-6">
-                @php
-                    $steps = json_decode($recipe->steps);
-                    $stepsCount = count($steps);
-                @endphp
-                @include('frontend.components.minRecipes', ['limit' => $stepsCount >= 5 ? 3 : 6])
+                @include('frontend.components.minRecipes', ['limit' => 6])
             </div>
 
         </div>
@@ -273,6 +269,9 @@
         </div>
     </div>
     @include('frontend.partials.invitacionRecetas')
+    <div class="mt-12">
+        @include('frontend.partials.suscribete')
+    </div>
 </div>
 @endsection
 

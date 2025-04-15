@@ -1,4 +1,4 @@
-<section class="bg-white py-16 px-6 md:px-12 lg:px-24 flex flex-col items-center text-center">
+<section class="bg-white py-16 px-6 md:px-12 lg:px-24 flex flex-col items-center text-center rounded-lg">
     <h2 class="text-3xl md:text-4xl font-bold text-gray-900 tracking-widest">
     Mantente al día con nuestras últimas recetas
     </h2>
@@ -11,7 +11,7 @@
         placeholder="Ingresa tu correo electrónico"
         class="w-full px-4 py-3 text-gray-700 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-yellow-300"
     />
-    <button class="bg-yellow-200 hover:bg-yellow-300 text-white px-6 py-3 rounded-full text-lg font-semibold transition tracking-widest">
+    <button class="bg-yellow-300 hover:bg-yellow-400 text-white px-6 py-3 rounded-full text-lg font-semibold transition tracking-widest">
         Suscribirse
     </button>
     </div>

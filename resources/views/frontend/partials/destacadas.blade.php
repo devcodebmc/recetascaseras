@@ -91,88 +91,90 @@
             @foreach ($recipes as $key => $recipe)
                 @if ($key >= 4 && $key <= 7)
                 <div class="relative rounded-xl shadow-lg overflow-hidden group min-h-[160px] hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                    <!-- Background Image Container -->
-                    <div class="absolute inset-0 bg-yellow-200">
-                        <img 
-                            src="{{ asset($recipe->image) }}" 
-                            alt="{{ $recipe->title }}" 
-                            class="w-full h-full object-cover object-center opacity-90 group-hover:opacity-80 group-hover:scale-105 transition-all duration-500 ease-in-out"
-                            loading="lazy"
-                        >
-                        <!-- Gradient Overlay -->
-                        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-amber-100/10 to-black/60"></div>
-                    </div>
-                    
-                    <!-- Content Container -->
-                    <div class="relative h-full flex flex-col justify-end p-5 text-white">
-                       <!-- Time Information -->
-                        <div class="flex flex-wrap items-center gap-3 text-sm">
-                            <!-- Prep Time (Knife Icon) -->
-                            <span class="flex items-center bg-black/40 rounded-full px-3 py-1 backdrop-blur-sm border border-white/10">
-                                <svg class="w-4 h-4 mr-1.5 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg> 
-                                @if ($recipe->prep_time > 60)
-                                    {{ intdiv($recipe->prep_time, 60) }}h {{ $recipe->prep_time % 60 }}m 
-                                @else
-                                    {{ $recipe->prep_time }}m 
-                                @endif
-                            </span>
-                            
-                            <!-- Cook Time (Pot Icon) -->
-                            <span class="flex items-center bg-black/40 rounded-full px-3 py-1 backdrop-blur-sm border border-white/10">
-                                <svg class="w-4 h-4 mr-1.5 text-amber-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 0 0 .495-7.468 5.99 5.99 0 0 0-1.925 3.547 5.975 5.975 0 0 1-2.133-1.001A3.75 3.75 0 0 0 12 18Z" />
-                                </svg>                                   
-                                @if ($recipe->cook_time > 60)
-                                    {{ intdiv($recipe->cook_time, 60) }}h {{ $recipe->cook_time % 60 }}m
-                                @else
-                                    {{ $recipe->cook_time }}m
-                                @endif
-                            </span>
-                            
-                            <!-- Servings -->
-                            <span class="flex items-center bg-black/40 rounded-full px-3 py-1 backdrop-blur-sm border border-white/10">
-                                <svg class="w-4 h-4 mr-1.5 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                                </svg>
-                                {{ $recipe->servings }} porciones
-                            </span>
-                            
-                            <!-- Calculated Difficulty -->
-                            @php
-                                $totalTime = ($recipe->prep_time ?? 0) + ($recipe->cook_time ?? 0);
-                                $difficulty = 'Fácil';
-                                
-                                if ($totalTime > 90 || $recipe->servings > 6) {
-                                    $difficulty = 'Difícil';
-                                } elseif ($totalTime > 45 || $recipe->servings > 4) {
-                                    $difficulty = 'Media';
-                                }
-                                
-                                $difficultyColor = [
-                                    'Fácil' => 'text-emerald-400',
-                                    'Media' => 'text-amber-400',
-                                    'Difícil' => 'text-red-400'
-                                ][$difficulty];
-                            @endphp
-                            <span class="flex items-center bg-black/40 rounded-full px-3 py-1 backdrop-blur-sm border border-white/10">
-                                <svg class="w-4 h-4 mr-1.5 {{ $difficultyColor }}" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-                                </svg>
-                                {{ $difficulty }}
-                            </span>
+                    <a href="{{ route('showRecipe', $recipe->slug) }}" class="block h-full">
+                        <!-- Background Image Container -->
+                        <div class="absolute inset-0 bg-yellow-200">
+                            <img 
+                                src="{{ asset($recipe->image) }}" 
+                                alt="{{ $recipe->title }}" 
+                                class="w-full h-full object-cover object-center opacity-90 group-hover:opacity-80 group-hover:scale-105 transition-all duration-500 ease-in-out"
+                                loading="lazy"
+                            >
+                            <!-- Gradient Overlay -->
+                            <div class="absolute inset-0 bg-gradient-to-b from-transparent via-amber-100/10 to-black/60"></div>
                         </div>
-                    </div>
-                    
-                    <!-- Hover Effect Indicator -->
-                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <!-- Recipe Title -->
-                        <h3 class="text-lg sm:text-xl text-white font-semibold bg-black/40 backdrop-blur-md rounded-full px-4 py-2 shadow-lg tracking-widest">
-                            {{ $recipe->title }}
-                        </h3>
-                    </div>
+                        
+                        <!-- Content Container -->
+                        <div class="relative h-full flex flex-col justify-end p-5 text-white">
+                        <!-- Time Information -->
+                            <div class="flex flex-wrap items-center gap-3 text-sm">
+                                <!-- Prep Time (Knife Icon) -->
+                                <span class="flex items-center bg-black/40 rounded-full px-3 py-1 backdrop-blur-sm border border-white/10">
+                                    <svg class="w-4 h-4 mr-1.5 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg> 
+                                    @if ($recipe->prep_time > 60)
+                                        {{ intdiv($recipe->prep_time, 60) }}h {{ $recipe->prep_time % 60 }}m 
+                                    @else
+                                        {{ $recipe->prep_time }}m 
+                                    @endif
+                                </span>
+                                
+                                <!-- Cook Time (Pot Icon) -->
+                                <span class="flex items-center bg-black/40 rounded-full px-3 py-1 backdrop-blur-sm border border-white/10">
+                                    <svg class="w-4 h-4 mr-1.5 text-amber-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 0 0 .495-7.468 5.99 5.99 0 0 0-1.925 3.547 5.975 5.975 0 0 1-2.133-1.001A3.75 3.75 0 0 0 12 18Z" />
+                                    </svg>                                   
+                                    @if ($recipe->cook_time > 60)
+                                        {{ intdiv($recipe->cook_time, 60) }}h {{ $recipe->cook_time % 60 }}m
+                                    @else
+                                        {{ $recipe->cook_time }}m
+                                    @endif
+                                </span>
+                                
+                                <!-- Servings -->
+                                <span class="flex items-center bg-black/40 rounded-full px-3 py-1 backdrop-blur-sm border border-white/10">
+                                    <svg class="w-4 h-4 mr-1.5 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                    </svg>
+                                    {{ $recipe->servings }} porciones
+                                </span>
+                                
+                                <!-- Calculated Difficulty -->
+                                @php
+                                    $totalTime = ($recipe->prep_time ?? 0) + ($recipe->cook_time ?? 0);
+                                    $difficulty = 'Fácil';
+                                    
+                                    if ($totalTime > 90 || $recipe->servings > 6) {
+                                        $difficulty = 'Difícil';
+                                    } elseif ($totalTime > 45 || $recipe->servings > 4) {
+                                        $difficulty = 'Media';
+                                    }
+                                    
+                                    $difficultyColor = [
+                                        'Fácil' => 'text-emerald-400',
+                                        'Media' => 'text-amber-400',
+                                        'Difícil' => 'text-red-400'
+                                    ][$difficulty];
+                                @endphp
+                                <span class="flex items-center bg-black/40 rounded-full px-3 py-1 backdrop-blur-sm border border-white/10">
+                                    <svg class="w-4 h-4 mr-1.5 {{ $difficultyColor }}" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                                    </svg>
+                                    {{ $difficulty }}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <!-- Hover Effect Indicator -->
+                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <!-- Recipe Title -->
+                            <h3 class="text-lg sm:text-xl text-white font-semibold bg-black/40 backdrop-blur-md rounded-full px-4 py-2 shadow-lg tracking-widest">
+                                {{ $recipe->title }}
+                            </h3>
+                        </div>
+                    </a>
                 </div>
                 @endif
             @endforeach
