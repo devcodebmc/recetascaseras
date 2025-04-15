@@ -166,4 +166,39 @@ class HomemadeRecipeController extends Controller
         
         return view('frontend.posts.tag', compact('recipes', 'smallRecipes', 'tag', 'categories', 'tags'));
     }
+
+    public function userRecipes($user)
+    {
+        $recipes = Recipe::with(['user', 'category', 'tags'])
+            ->where('user_id', $user)
+            ->where('status', 'published')
+            ->whereNull('deleted_at')
+            ->orderBy('created_at', 'desc')
+            ->paginate(9);
+
+        $stories = Recipe::with(['user', 'category', 'tags'])
+            ->where('user_id', $user)
+            ->where('status', 'published')
+            ->whereNull('deleted_at')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->unique('user_id');
+
+        $userRecipes = Recipe::with('user:id,name','category', 'tags')
+            ->select('id', 'title', 'image', 'user_id')
+            ->where('user_id', $user)
+            ->where('status', 'published')
+            ->whereNull('deleted_at')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->groupBy('user_id')
+            ->map(function($recipes) {
+                return $recipes->take(10); // Limitar a 10 recetas por usuario
+            });
+
+        $categories = Category::select('id', 'name', 'slug', 'icon_url', 'description')->orderBy('name', 'asc')->get(); 
+        $tags = Tag::select('id', 'name')->get()->shuffle();
+
+        return view('frontend.posts.user', compact('recipes', 'stories', 'userRecipes', 'categories', 'tags'));
+    }
 }
