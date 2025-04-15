@@ -24,6 +24,7 @@ Route::get('/', [HomemadeRecipeController::class, 'index'])->name('welcome');
 Route::get('/categoria/{category}', [HomemadeRecipeController::class,'showCategory'])->name('category.show');
 Route::post('/recipes/{recipe}/like', [HomemadeRecipeController::class, 'like'])->name('recipes.like');
 Route::get('/receta/{recipe}', [HomemadeRecipeController::class, 'show'])->name('showRecipe');
+Route::get('/etiqueta/{tag}', [HomemadeRecipeController::class, 'showTag'])->name('tag.show');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -113,7 +113,7 @@ class HomemadeRecipeController extends Controller
 
         $categories = Category::select('id', 'name', 'slug', 'icon_url', 'description')->orderBy('name', 'asc')->get();
 
-        $tags = Tag::select('id', 'name')->get()->shuffle();
+        $tags = Tag::select('id', 'slug', 'name')->get()->shuffle();
 
         return view('frontend.pages.categorias', compact('recipes', 'stories', 'userRecipes', 'categories', 'tags'));
     }
@@ -136,9 +136,34 @@ class HomemadeRecipeController extends Controller
         $categories = Category::select('id', 'name', 'slug', 'icon_url', 'description')
             ->orderBy('name', 'asc')->get();
 
-        $tags = Tag::select('id', 'name')->get()->shuffle();
+        $tags = Tag::select('id', 'slug', 'name')->get()->shuffle();
 
-        return view('frontend.posts.receta', compact('recipe', 'smallRecipes', 'categories', 'tags'));
+        return view('frontend.posts.recipe', compact('recipe', 'smallRecipes', 'categories', 'tags'));
     }
-   
+
+    public function showTag($tag)
+    {
+        $recipes = Recipe::with(['user', 'category', 'tags'])
+            ->where('status', 'published')
+            ->whereNull('deleted_at')
+            ->whereHas('tags', function ($query) use ($tag) {
+                $query->where('slug', $tag);
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(9);
+
+        $smallRecipes = Recipe::with(['user', 'category', 'tags'])
+            ->where('status', 'published')
+            ->whereNull('deleted_at')
+            ->inRandomOrder()
+            ->take(6)
+            ->get();
+
+        $tag = Tag::where('slug', $tag)->firstOrFail();
+
+        $categories = Category::select('id', 'name', 'slug', 'icon_url', 'description')->orderBy('name', 'asc')->get();
+        $tags = Tag::select('id', 'name')->get()->shuffle();
+        
+        return view('frontend.posts.tag', compact('recipes', 'smallRecipes', 'tag', 'categories', 'tags'));
+    }
 }

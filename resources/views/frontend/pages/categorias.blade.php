@@ -69,7 +69,7 @@
                                 </svg>
                                 {{ $recipe->prep_time + $recipe->cook_time }} min
                             </span>
-                            <a href="{{ route('recipes.show', $recipe->slug) }}" class="text-amber-600 hover:text-amber-700 font-medium text-sm flex items-center">
+                            <a href="{{ route('showRecipe', $recipe->slug) }}" class="text-amber-600 hover:text-amber-700 font-medium text-base flex items-center tracking-wider">
                                 Ver receta
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
@@ -116,7 +116,7 @@
                         </svg>
                         {{ $recipe->likes }} Me gusta
                         </span>
-                        <a href="{{ route('recipes.show', $recipe->slug) }}" class="text-amber-600 hover:text-amber-700 font-medium text-sm flex items-center">
+                        <a href="{{ route('showRecipe', $recipe->slug) }}" class="text-amber-600 hover:text-amber-700 font-medium text-base flex items-center">
                             Ver receta
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />

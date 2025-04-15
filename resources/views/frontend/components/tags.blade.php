@@ -44,7 +44,7 @@
                 ];
                 $randomColor = $colors[array_rand($colors)];
             @endphp
-            <a href="#" class="px-6 py-2 {{ $randomColor }} rounded-full font-medium hover:opacity-80 transition-opacity duration-300 shadow-sm">
+            <a href="{{ route('tag.show', $tag->slug) }}" class="px-6 py-2 {{ $randomColor }} rounded-full font-medium hover:opacity-80 transition-opacity duration-300 shadow-sm">
                 {{ $tag->name }}
             </a>
             @endif

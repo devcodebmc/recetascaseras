@@ -51,9 +51,11 @@
                     </div>
                     
                     <div class="flex items-center gap-2">
-                        <span class="bg-amber-500 text-white text-xs font-semibold px-2.5 py-1 rounded-full">
-                            {{ $recipe->category->name }}
-                        </span>
+                        <a href="{{ route('category.show', $recipe->category->slug) }}" class="block w-full tracking-widest">
+                            <span class="bg-amber-500 text-white text-sm px-2.5 py-1 rounded-full">
+                                {{ $recipe->category->name }}
+                            </span>
+                        </a>
                     </div>
 
                     @if($recipe->likes)
@@ -173,7 +175,11 @@
             </section>
 
             <div class="order-6">
-                @include('frontend.components.minRecipes', ['limit' => 6])
+                @php
+                    $steps = json_decode($recipe->steps);
+                    $stepsCount = count($steps);
+                @endphp
+                @include('frontend.components.minRecipes', ['limit' => $stepsCount >= 8 ? 3 : 6])
             </div>
 
         </div>
@@ -207,7 +213,7 @@
             </div>
 
             <!-- More Recipes Card -->
-            <div class="bg-white p-6 sm:p-6 rounded-xl shadow-md mt-12">
+            <div class="bg-white p-6 sm:p-6 rounded-xl shadow-md mt-4 lg:mt-12">
                 <h3 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2 tracking-widest">
                     Más Recetas
                 </h3>
