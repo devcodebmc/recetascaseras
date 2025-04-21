@@ -6,7 +6,7 @@
         <li class="flex items-center p-3 rounded-full bg-gray-200 cursor-pointer">
             <a href="{{ route('category.show', $category->slug) }}" class="flex items-center w-full">
                 <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-                    <img src="{{ asset($category->icon_url) }}" alt="{{ $category->name }}" class="w-6 h-6">
+                    <img src="{{ asset($category->icon_url) }}" alt="{{ $category->name }}" class="w-6 h-6" loading="lazy">
                 </div>
                 <span class="ml-3 font-medium">{{ $category->name }}</span>
             </a>
