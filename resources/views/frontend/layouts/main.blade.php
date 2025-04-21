@@ -24,7 +24,7 @@
                     </p>
                 </div>
                 <div class="flex justify-center">
-                    <img src="/images/hero-Photoroom.png" alt="Chef Illustration" 
+                    <img src="{{ asset('images/hero-Photoroom.png') }}" alt="Chef Illustration" 
                         class="w-full max-w-sm">
                 </div>
             </div>

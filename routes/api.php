@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\DB;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 Route::get('/search/suggestions', function (Request $request) {
     $query = trim($request->input('q'));
