@@ -303,9 +303,9 @@
         if (e.target === this) closeStoriesModal();
     });
 
-    // Verificación inicial
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('Datos de userRecipes cargados:', @json($userRecipes));
-    });
+    // // Verificación inicial
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     console.log('Datos de userRecipes cargados:', @json($userRecipes));
+    // });
 </script>
 @endpush
