@@ -1,7 +1,7 @@
 <div class="flex flex-col md:flex-row items-center bg-gray-100 p-6 rounded-lg shadow-md mt-6">
     <!-- Image Section -->
     <div class="md:w-1/2">
-        <img src="{{ asset('images/recetas.jpg') }}" alt="Recipe Image" class="rounded-lg shadow-md">
+        <img src="{{ asset('images/recetas.png') }}" alt="Recipe Image" class="rounded-lg shadow-md">
     </div>
 
     <!-- Content Section -->
