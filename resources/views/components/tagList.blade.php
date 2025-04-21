@@ -125,7 +125,7 @@
         // Cargar etiquetas desde el backend
         async function cargarEtiquetas() {
             try {
-                const response = await fetch('/fetch-tags');
+                const response = await fetch('{{ route('fetch-tags.index') }}');
                 if (!response.ok) throw new Error('Error al cargar etiquetas');
                 todasLasEtiquetas = await response.json();
     

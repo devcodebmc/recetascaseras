@@ -352,7 +352,7 @@
                 </svg>
             `;
 
-            const response = await fetch(`/recipes/images/${imageId}`, {
+            const response = await fetch(`../recipes/images/${imageId}`, {
                 method: 'DELETE',
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,

@@ -45,7 +45,7 @@ function likeRecipe(recipeId) {
     likeButton.appendChild(floatingHeart);
     
     // Hacer la petición al servidor
-    fetch(`/recipes/${recipeId}/like`, {
+    fetch(`../recipes/${recipeId}/like`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
