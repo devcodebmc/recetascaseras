@@ -15,7 +15,7 @@
             <!-- Main Content -->
             <div class="grid md:grid-cols-2 items-center gap-4">
                 <div class="space-y-1 px-6 md:px-0 text-center md:text-left">
-                    <h1 class="text-5xl md:text-7xl lg:text-9xl font-bold text-black leading-tight">
+                    <h1 class="text-5xl md:text-7xl lg:text-9xl font-bold text-black leading-tight" loading="lazy">
                         El <span class="text-yellow-600">Sabor</span> 
                         del <span class="text-yellow-600">Amor</span>
                     </h1>
@@ -25,7 +25,7 @@
                 </div>
                 <div class="flex justify-center">
                     <img src="{{ asset('images/hero-Photoroom.png') }}" alt="Chef Illustration" 
-                        class="w-full max-w-sm">
+                        class="w-auto max-w-sm" loading="lazy">
                 </div>
             </div>
         
