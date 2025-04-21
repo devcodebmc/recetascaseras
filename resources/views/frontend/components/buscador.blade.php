@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 suggestionsContainer.innerHTML = '<div class="px-4 py-2 text-gray-500">Buscando...</div>';
                 suggestionsContainer.classList.remove('hidden');
                 
-                const response = await fetch(`/api/search/suggestions?q=${encodeURIComponent(query)}`, {
+                const response = await fetch(`./api/search/suggestions?q=${encodeURIComponent(query)}`, {
                     signal: controller.signal
                 });
                 

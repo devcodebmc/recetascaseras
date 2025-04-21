@@ -64,4 +64,4 @@ Route::get('/search/suggestions', function (Request $request) {
         
         return array_slice($suggestions, 0, 8);
     });
-});
+})->name('search.suggestions');
