@@ -58,11 +58,9 @@
                         </a>
                     </div>
 
-                    @if($recipe->likes)
                     <div class="relative flex items-center gap-2 bg-gray-50 bg-opacity-75 px-3 py-1 rounded-full shadow-md">
                         @include('frontend.components.likeButton')
                     </div>
-                    @endif
 
                     {{-- Print Button con Tooltip Elegante --}}
                     <div class="flex items-center gap-2">
