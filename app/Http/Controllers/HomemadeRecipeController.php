@@ -73,7 +73,9 @@ class HomemadeRecipeController extends Controller
 
     public function like(Recipe $recipe)
     {
-        $recipe->increment('likes');
+        $recipe->likes += 1;
+        $recipe->save();
+
         return response()->json([
             'success' => true,
             'likes' => $recipe->likes
